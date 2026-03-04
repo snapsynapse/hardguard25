@@ -6,7 +6,7 @@ A human-friendly unique ID alphabet. 25 characters, zero ambiguity.
 0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y
 ```
 
-HardGuard25 removes every letter that competes with a digit (O/0, I/1, S/5, Z/2, E/3, B/8), eliminates dyslexia mirror pairs (B/D, Q/P), and drops characters that cause trouble in specific contexts (V/U, T/+, X/*). What remains is a 25-character set where every symbol is visually distinct in any typeface, at any size, for any reader.
+HardGuard25 removes every letter that competes with a digit (O/0, I/1, S/5, Z/2, B/8), eliminates dyslexia mirror pairs (B/D, Q/P, E/3), and drops characters that cause trouble in specific contexts (V/U, T/+, X/*). What remains is a 25-character set where every symbol is visually distinct in any typeface, at any size, for any reader.
 
 ## Quickstart
 
