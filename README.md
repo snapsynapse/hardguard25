@@ -1,5 +1,9 @@
 # HardGuard25
 
+<p align="center">
+  <img src="/.github/assets/social-preview.jpg" alt="HardGuard25 — 25 characters. Zero confusion." width="100%">
+</p>
+
 A human-friendly unique ID alphabet. 25 characters, zero ambiguity.
 
 ```
