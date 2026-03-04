@@ -1,0 +1,20 @@
+{
+  "name": "@snapsynapse/hardguard25",
+  "version": "1.2.0",
+  "description": "HardGuard25: A human-friendly unique ID alphabet. 25 unambiguous characters.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "scripts": {
+    "test": "node --test index.test.js"
+  },
+  "keywords": ["id", "uid", "unique-id", "identifier", "human-readable", "unambiguous", "base25", "hardguard25"],
+  "author": "Snap Synapse <info@snapsynapse.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/snapsynapse/hardguard25"
+  }
+}

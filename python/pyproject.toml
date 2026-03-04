@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hardguard25"
+version = "1.2.0"
+description = "HardGuard25: A human-friendly unique ID alphabet. 25 unambiguous characters."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+authors = [
+    {name = "Snap Synapse", email = "info@snapsynapse.com"}
+]
+keywords = ["id", "uid", "unique-id", "identifier", "human-readable", "unambiguous"]
+
+[project.urls]
+Homepage = "https://github.com/snapsynapse/hardguard25"
+Documentation = "https://github.com/snapsynapse/hardguard25/blob/main/SPEC.md"
+Repository = "https://github.com/snapsynapse/hardguard25"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

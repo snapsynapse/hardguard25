@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HardGuard25 -- ID Generator</title>
+<meta name="description" content="Generate human-friendly unique IDs using the HardGuard25 alphabet. 25 unambiguous characters, zero confusion.">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #242836;
+    --border: #2e3345;
+    --text: #e1e4ed;
+    --text-dim: #8b90a0;
+    --accent: #6c8cff;
+    --accent-hover: #8aa4ff;
+    --green: #4ecb71;
+    --red: #ff6b6b;
+    --radius: 10px;
+    --font: 'SF Mono', 'Fira Code', 'JetBrains Mono', 'Cascadia Code', monospace;
+    --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font-ui);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+  }
+  .container { max-width: 720px; width: 100%; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.5px; }
+  .subtitle { color: var(--text-dim); font-size: 15px; margin-bottom: 32px; }
+  .controls { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: end; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  label {
+    font-size: 12px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--text-dim);
+  }
+  input[type="number"], .separator-field input[type="text"] {
+    background: var(--surface); border: 1px solid var(--border); color: var(--text);
+    border-radius: var(--radius); padding: 10px 14px; font-size: 16px;
+    font-family: var(--font); width: 100px; outline: none; transition: border-color 0.15s;
+  }
+  .separator-field input[type="text"] { width: 60px; text-align: center; }
+  input[type="number"]:focus, .separator-field input[type="text"]:focus { border-color: var(--accent); }
+  .check-toggle {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 8px 14px; cursor: pointer; user-select: none;
+    transition: border-color 0.15s; height: 42px;
+  }
+  .check-toggle:hover { border-color: var(--accent); }
+  .check-toggle input { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
+  .check-toggle span { font-size: 13px; color: var(--text-dim); }
+  .case-toggle {
+    display: flex; background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden;
+  }
+  .case-toggle button {
+    background: none; border: none; color: var(--text-dim); padding: 10px 16px;
+    font-size: 14px; font-family: var(--font); cursor: pointer; transition: all 0.15s;
+  }
+  .case-toggle button.active { background: var(--accent); color: #fff; }
+  .case-toggle button:hover:not(.active) { color: var(--text); }
+  .btn {
+    background: var(--accent); color: #fff; border: none; border-radius: var(--radius);
+    padding: 10px 24px; font-size: 15px; font-weight: 600; cursor: pointer;
+    transition: background 0.15s; font-family: var(--font-ui);
+  }
+  .btn:hover { background: var(--accent-hover); }
+  .btn-secondary { background: var(--surface); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: var(--surface2); }
+  .actions { display: flex; gap: 8px; margin-bottom: 20px; }
+  .output-area {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px; min-height: 160px; margin-bottom: 32px; position: relative;
+  }
+  .output-area .placeholder { color: var(--text-dim); font-style: italic; font-size: 14px; }
+  .codes { display: flex; flex-wrap: wrap; gap: 8px; }
+  .code-chip {
+    font-family: var(--font); font-size: 16px; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 6px; padding: 6px 14px;
+    cursor: pointer; transition: all 0.15s; user-select: all; letter-spacing: 1.5px;
+  }
+  .code-chip:hover { border-color: var(--accent); background: rgba(108, 140, 255, 0.1); }
+  .code-chip.copied { border-color: var(--green); background: rgba(78, 203, 113, 0.1); }
+  .copy-all {
+    position: absolute; top: 12px; right: 12px; font-size: 12px;
+    padding: 6px 12px; border-radius: 6px;
+  }
+  .toast {
+    position: fixed; bottom: 30px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--green); color: #000; padding: 10px 20px;
+    border-radius: var(--radius); font-weight: 600; font-size: 14px;
+    opacity: 0; transition: all 0.25s ease; pointer-events: none; z-index: 100;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .stats { display: flex; gap: 24px; margin-bottom: 32px; flex-wrap: wrap; }
+  .stat {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 20px; flex: 1; min-width: 140px;
+  }
+  .stat-value { font-family: var(--font); font-size: 22px; font-weight: 700; color: var(--accent); }
+  .stat-label { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+  .rationale {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden; margin-bottom: 16px;
+  }
+  .rationale-header {
+    padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between;
+    align-items: center; font-weight: 600; font-size: 15px; user-select: none;
+    transition: background 0.15s;
+  }
+  .rationale-header:hover { background: var(--surface2); }
+  .rationale-arrow { transition: transform 0.2s; font-size: 12px; color: var(--text-dim); }
+  .rationale.open .rationale-arrow { transform: rotate(180deg); }
+  .rationale-body { display: none; padding: 0 20px 20px; }
+  .rationale.open .rationale-body { display: block; }
+  .charset-display {
+    font-family: var(--font); font-size: 20px; letter-spacing: 4px; text-align: center;
+    padding: 16px; background: var(--bg); border-radius: 8px; margin: 16px 0; color: var(--accent);
+  }
+  .removed-table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }
+  .removed-table th {
+    text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border);
+    color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .removed-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .removed-table .char { font-family: var(--font); font-size: 16px; color: var(--red); width: 50px; }
+  .removed-table .reason { color: var(--text-dim); }
+  .credit { text-align: center; margin-top: 24px; font-size: 13px; color: var(--text-dim); line-height: 1.8; }
+  .credit a { color: var(--accent); text-decoration: none; }
+  .credit a:hover { text-decoration: underline; }
+  @media (max-width: 600px) {
+    .controls { flex-direction: column; align-items: stretch; }
+    .controls .field { width: 100%; }
+    .controls input[type="number"] { width: 100%; }
+    .stats { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>HardGuard25</h1>
+  <p class="subtitle">Generate human-friendly unique IDs using a 25-character alphabet designed to eliminate visual confusion.</p>
+
+  <div class="controls">
+    <div class="field">
+      <label>Code Length</label>
+      <input type="number" id="codeLength" value="8" min="1" max="32">
+    </div>
+    <div class="field">
+      <label>Quantity</label>
+      <input type="number" id="quantity" value="10" min="1" max="500">
+    </div>
+    <div class="field">
+      <label>Group every N</label>
+      <input type="number" id="groupSize" value="4" min="0" max="16" title="0 = no grouping">
+    </div>
+    <div class="field separator-field">
+      <label>Separator</label>
+      <input type="text" id="separator" value="-" maxlength="1">
+    </div>
+    <div class="field">
+      <label>Check digit</label>
+      <label class="check-toggle">
+        <input type="checkbox" id="checkDigit">
+        <span>Mod-25</span>
+      </label>
+    </div>
+    <div class="field">
+      <label>Case</label>
+      <div class="case-toggle">
+        <button class="active" data-case="upper" onclick="setCase('upper', this)">ABC</button>
+        <button data-case="lower" onclick="setCase('lower', this)">abc</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn" onclick="generate()">Generate</button>
+    <button class="btn btn-secondary" onclick="clearOutput()">Clear</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value" id="permutations">--</div>
+      <div class="stat-label">Possible combinations</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="bitsEntropy">--</div>
+      <div class="stat-label">Bits of entropy</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="generated">0</div>
+      <div class="stat-label">Generated this session</div>
+    </div>
+  </div>
+
+  <div class="output-area" id="outputArea">
+    <button class="btn btn-secondary copy-all" onclick="copyAll()" id="copyAllBtn" style="display:none;">Copy All</button>
+    <p class="placeholder" id="placeholder">Codes will appear here</p>
+    <div class="codes" id="codesContainer"></div>
+  </div>
+
+  <div class="rationale" id="rationale">
+    <div class="rationale-header" onclick="toggleRationale()">
+      <span>Why these 25 characters?</span>
+      <span class="rationale-arrow">&#9660;</span>
+    </div>
+    <div class="rationale-body">
+      <p style="color:var(--text-dim); font-size:14px; line-height:1.6; margin-bottom:12px;">
+        Standard alphanumeric codes use 36 characters (0-9, A-Z). That creates problems when humans read, transcribe, or dictate codes aloud. HardGuard25 keeps all 10 digits and 15 carefully chosen letters, removing 11 sources of confusion. When a letter and a digit compete for the same visual slot, the digit always wins.
+      </p>
+      <div class="charset-display" id="charsetDisplay">0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y</div>
+      <table class="removed-table">
+        <thead>
+          <tr><th>Removed</th><th>Reason</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="char">O</td><td class="reason">Looks like 0 (zero)</td></tr>
+          <tr><td class="char">I</td><td class="reason">Looks like 1 (one) or l (lowercase L)</td></tr>
+          <tr><td class="char">L</td><td class="reason">Looks like 1 (one) or I (uppercase i)</td></tr>
+          <tr><td class="char">B</td><td class="reason">Looks like 8; dyslexia mirror pair with D</td></tr>
+          <tr><td class="char">S</td><td class="reason">Looks like 5</td></tr>
+          <tr><td class="char">Z</td><td class="reason">Looks like 2</td></tr>
+          <tr><td class="char">E</td><td class="reason">Looks like 3 for dyslexic readers; digits take priority</td></tr>
+          <tr><td class="char">Q</td><td class="reason">Looks like O in some typefaces; dyslexia mirror pair with P</td></tr>
+          <tr><td class="char">V</td><td class="reason">Easily confused with U</td></tr>
+          <tr><td class="char">T</td><td class="reason">Resembles a plus sign in some contexts</td></tr>
+          <tr><td class="char">X</td><td class="reason">Collides with multiplication operator; varies by locale</td></tr>
+        </tbody>
+      </table>
+      <p style="color:var(--text-dim); font-size:13px; margin-top:16px; line-height:1.5;">
+        Read the full specification on
+        <a href="https://github.com/snapsynapse/hardguard25" style="color:var(--accent);">GitHub</a>.
+      </p>
+    </div>
+  </div>
+
+  <p class="credit">
+    HardGuard25 by <a href="https://www.linkedin.com/in/samrogers" target="_blank">Sam Rogers</a>
+    &middot; <a href="https://snapsynapse.com" target="_blank">Snap Synapse</a><br>
+    <a href="https://sam-rogers.com/blog/best-unique-ids/" target="_blank">Original article</a>
+    &middot; <a href="https://github.com/snapsynapse/hardguard25" target="_blank">GitHub</a>
+    &middot; <a href="https://github.com/snapsynapse/hardguard25/blob/main/SPEC.md" target="_blank">Specification</a>
+  </p>
+</div>
+
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+const ALPHABET = '0123456789ACDFGHJKMNPRUWY';
+const CHAR_TO_INDEX = {};
+for (let i = 0; i < ALPHABET.length; i++) CHAR_TO_INDEX[ALPHABET[i]] = i;
+
+let useUpper = true;
+let totalGenerated = 0;
+let allCodes = [];
+
+function getCharset() {
+  return useUpper ? ALPHABET : ALPHABET.toLowerCase();
+}
+
+function setCase(c, btn) {
+  useUpper = c === 'upper';
+  document.querySelectorAll('.case-toggle button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('charsetDisplay').textContent = getCharset().split('').join(' ');
+  const chips = document.querySelectorAll('.code-chip');
+  chips.forEach(chip => {
+    chip.textContent = useUpper ? chip.textContent.toUpperCase() : chip.textContent.toLowerCase();
+  });
+  allCodes = allCodes.map(c => useUpper ? c.toUpperCase() : c.toLowerCase());
+}
+
+// Rejection sampling: accept bytes < 225 (25*9), then % 25
+function generateCode(length) {
+  const chars = getCharset();
+  const result = [];
+  while (result.length < length) {
+    const buf = new Uint8Array(length - result.length + 16); // overshoot to reduce iterations
+    crypto.getRandomValues(buf);
+    for (let i = 0; i < buf.length && result.length < length; i++) {
+      if (buf[i] < 225) {
+        result.push(chars[buf[i] % 25]);
+      }
+    }
+  }
+  return result.join('');
+}
+
+function computeCheckDigit(code) {
+  const upper = code.toUpperCase();
+  let sum = 0;
+  for (let i = 0; i < upper.length; i++) {
+    const idx = CHAR_TO_INDEX[upper[i]];
+    if (idx === undefined) return null;
+    sum += idx * (i + 1);
+  }
+  const ch = ALPHABET[sum % 25];
+  return useUpper ? ch : ch.toLowerCase();
+}
+
+function formatCode(code) {
+  const groupSize = parseInt(document.getElementById('groupSize').value) || 0;
+  const sep = document.getElementById('separator').value || '-';
+  if (groupSize <= 0) return code;
+  const groups = [];
+  for (let i = 0; i < code.length; i += groupSize) {
+    groups.push(code.slice(i, i + groupSize));
+  }
+  return groups.join(sep);
+}
+
+function generate() {
+  const length = Math.max(1, Math.min(32, parseInt(document.getElementById('codeLength').value) || 8));
+  const qty = Math.max(1, Math.min(500, parseInt(document.getElementById('quantity').value) || 10));
+  const withCheck = document.getElementById('checkDigit').checked;
+  const container = document.getElementById('codesContainer');
+  const placeholder = document.getElementById('placeholder');
+  const copyAllBtn = document.getElementById('copyAllBtn');
+
+  placeholder.style.display = 'none';
+  copyAllBtn.style.display = 'block';
+  container.innerHTML = '';
+  allCodes = [];
+
+  for (let i = 0; i < qty; i++) {
+    let raw = generateCode(length);
+    if (withCheck) raw += computeCheckDigit(raw);
+    allCodes.push(raw);
+    const chip = document.createElement('span');
+    chip.className = 'code-chip';
+    chip.textContent = formatCode(raw);
+    chip.title = 'Click to copy';
+    chip.addEventListener('click', () => copyOne(chip));
+    container.appendChild(chip);
+  }
+
+  totalGenerated += qty;
+  updateStats();
+}
+
+function updateStats() {
+  const length = parseInt(document.getElementById('codeLength').value) || 8;
+  const perms = Math.pow(25, length);
+
+  let permStr;
+  if (perms >= 1e15) permStr = perms.toExponential(2);
+  else if (perms >= 1e9) permStr = (perms / 1e9).toFixed(1) + 'B';
+  else if (perms >= 1e6) permStr = (perms / 1e6).toFixed(1) + 'M';
+  else if (perms >= 1e3) permStr = (perms / 1e3).toFixed(1) + 'K';
+  else permStr = perms.toString();
+
+  document.getElementById('permutations').textContent = permStr;
+  document.getElementById('bitsEntropy').textContent = (length * Math.log2(25)).toFixed(1) + ' bits';
+  document.getElementById('generated').textContent = totalGenerated;
+}
+
+function copyOne(chip) {
+  const text = chip.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    chip.classList.add('copied');
+    showToast('Copied: ' + text);
+    setTimeout(() => chip.classList.remove('copied'), 1200);
+  });
+}
+
+function copyAll() {
+  const formatted = allCodes.map(c => formatCode(c));
+  navigator.clipboard.writeText(formatted.join('\n')).then(() => {
+    showToast('Copied ' + allCodes.length + ' codes');
+  });
+}
+
+function clearOutput() {
+  document.getElementById('codesContainer').innerHTML = '';
+  document.getElementById('placeholder').style.display = 'block';
+  document.getElementById('copyAllBtn').style.display = 'none';
+  allCodes = [];
+}
+
+function toggleRationale() {
+  document.getElementById('rationale').classList.toggle('open');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1500);
+}
+
+updateStats();
+document.getElementById('codeLength').addEventListener('input', updateStats);
+</script>
+
+</body>
+</html>
