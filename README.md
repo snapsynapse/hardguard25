@@ -1,7 +1,5 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/snapsynapse/hardguard25/blob/main/LICENSE)
 [![Latest release](https://img.shields.io/github/v/release/snapsynapse/hardguard25)](https://github.com/snapsynapse/hardguard25/releases/latest)
-[![npm](https://img.shields.io/npm/v/@snapsynapse/hardguard25)](https://www.npmjs.com/package/@snapsynapse/hardguard25)
-[![PyPI](https://img.shields.io/pypi/v/hardguard25)](https://pypi.org/project/hardguard25/)
 
 # HardGuard25
 
