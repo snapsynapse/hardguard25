@@ -1,0 +1,36 @@
+bundle: hardguard25
+bundle_version: 1.0.0
+bundle_date: 2026-03-09
+description: >
+  Skill for working with HardGuard25, an open standard for human-safe
+  identifiers. Provides the alphabet reference, exclusion rationale,
+  length/entropy guidance, code examples in JS/Python/Go, normalization
+  rules, check digit algorithm, and comparison to alternatives.
+
+compatibility:
+  designed_for:
+    surfaces:
+      - chat
+      - cli
+      - ide
+    capabilities:
+      - minimal or metadata SKILL.md frontmatter
+      - no external dependencies
+  tested_on:
+    - platform: Anthropic Claude
+      model: Claude Opus 4.6
+      surface: Code
+      status: pass
+      date: 2026-03-09
+      notes: Initial skill creation and bootstrap
+  spec_version: agentskills.io/1.0
+  frontmatter_mode: metadata
+
+dependencies: []
+
+files:
+  - path: SKILL.md
+    role: skill
+    version: 1
+    hash: sha256:503983f8869aaeb654e5fe0da940ed77c979f69c7748666df0cad9b5facc8551
+    note: Canonical skill definition with alphabet reference, code examples, and comparison matrix

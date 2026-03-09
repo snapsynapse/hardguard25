@@ -12,7 +12,7 @@ import re
 import secrets
 from typing import Dict
 
-__version__ = "1.2.0"
+__version__ = "1.3.0"
 
 # The 25-character HardGuard25 alphabet
 ALPHABET = "0123456789ACDFGHJKMNPRUWY"

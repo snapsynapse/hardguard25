@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.3.0 -- 2026-03-09
+
+### Added
+- Claude Code skill (Agent Skills format) with full alphabet reference, code examples, and comparison matrix
+- Skill Provenance metaskill for version tracking across sessions and platforms
+- Plugin metadata (.claude-plugin/plugin.json) for Claude Code integration
+- Use case table in README covering 10 domains (orders, tickets, logistics, manufacturing, licensing, healthcare, promos, education, IoT, short links)
+- "No Library Needed" section in README for direct alphabet usage
+- npm and PyPI badges in README
+
+### Changed
+- Repositioned README as an open standard for human-safe identifiers, not just a token library
+- Reorganized README flow: what it is → use cases → install → sizing → spec
+
 ## 1.2.0 -- 2025-10-03
 
 ### Added

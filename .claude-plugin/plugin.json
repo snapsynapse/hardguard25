@@ -1,0 +1,8 @@
+{
+  "name": "hardguard25",
+  "description": "HardGuard25 — an open standard for human-safe identifiers. 25 unambiguous characters for any ID that humans read, type, print, or dictate.",
+  "author": {
+    "name": "Snap Synapse",
+    "email": "hello@snapsynapse.com"
+  }
+}
