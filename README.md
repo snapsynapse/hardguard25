@@ -1,3 +1,5 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/snapsynapse/hardguard25/blob/main/LICENSE)
+[![Latest release](https://img.shields.io/github/v/release/snapsynapse/hardguard25)](https://github.com/snapsynapse/hardguard25/releases/latest)
 # HardGuard25
 
 <p align="center">
