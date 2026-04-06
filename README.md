@@ -157,6 +157,10 @@ cd python && ../.venv/bin/python -m pytest
 cd go && GOCACHE=../.gocache go test ./...
 ```
 
+## Sponsor
+
+HardGuard25 is free and open. If you use this encoding, consider [sponsoring its maintenance](https://github.com/sponsors/snapsynapse). See [SPONSORS.md](SPONSORS.md).
+
 ## License
 
 - **Specification:** [CC BY 4.0](LICENSE-SPEC) — cite, adapt, and redistribute
