@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <title>HardGuard25 &mdash; An open standard for human-safe identifiers</title>
-  <meta name="description" content="HardGuard25 is a 25-character alphabet designed so every symbol is visually distinct in any typeface, at any size, for any reader. Use it anywhere humans read, type, print, or say an identifier out loud.">
+  <meta name="description" content="A 25-character ID alphabet with every symbol visually distinct in any typeface &mdash; for codes humans read, type, print, or say out loud without confusion.">
   <meta name="keywords" content="hardguard25, unambiguous IDs, human-readable identifiers, confusable characters, dyslexia-friendly IDs, base-25 alphabet, check digit, mod-25, Crockford Base32 alternative, id generator, ticket codes, order numbers">
   <meta name="author" content="Sam Rogers">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
@@ -14,7 +15,12 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="mask-icon" href="/favicon.svg" color="#8aa4ff">
   <link rel="apple-touch-icon" href="/favicon.svg">
+  <link rel="manifest" href="/site.webmanifest">
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+  <link rel="alternate" type="text/plain" href="https://hardguard25.com/llms.txt" title="LLM-readable summary">
+
+  <!-- Identity verification (IndieWeb rel=me) -->
+  <link rel="me" href="https://paice.work">
 
   <!-- Open Graph -->
   <meta property="og:type" content="article">
@@ -40,6 +46,7 @@
   <meta name="twitter:title" content="HardGuard25">
   <meta name="twitter:description" content="An open standard for human-safe identifiers. 25 characters, zero confusion.">
   <meta name="twitter:image" content="https://hardguard25.com/imgs/og.png">
+  <meta name="twitter:site" content="@snapsynapse">
   <meta name="twitter:creator" content="@snapsynapse">
 
   <!-- JSON-LD: TechArticle -->
@@ -638,6 +645,7 @@ s := hardguard25.Normalize("ac3h-7puw")</pre>
         <a href="https://github.com/snapsynapse/hardguard25/blob/main/SPEC.md" target="_blank" rel="noopener">Specification</a>
         <a href="https://github.com/snapsynapse/hardguard25/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a>
         <a href="https://github.com/snapsynapse/hardguard25/commits/main/SPEC.md" target="_blank" rel="noopener">Revisions</a>
+        <a href="/llms.txt">llms.txt</a>
         <a href="https://sam-rogers.com/blog/best-unique-ids/" target="_blank" rel="noopener">Original article</a>
         <a href="https://github.com/sponsors/snapsynapse" target="_blank" rel="noopener">Sponsor</a>
       </div>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 &mdash; HardGuard25</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#6c8cff">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://hardguard25.com/">
+  <style>
+    :root {
+      --accent:      #6c8cff;
+      --accent-hover:#8aa4ff;
+      --bg:          #0f1117;
+      --surface:     #1a1d27;
+      --text:        #e1e4ed;
+      --muted:       #8b90a0;
+      --border:      #2e3345;
+      --mono:        "SF Mono", "Fira Code", "Fira Mono", Menlo, Consolas, monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .logo-wrap {
+      margin-bottom: 2rem;
+      opacity: .6;
+      color: var(--accent-hover);
+    }
+
+    .code {
+      font-family: var(--mono);
+      font-size: clamp(5rem, 20vw, 9rem);
+      font-weight: 800;
+      line-height: 1;
+      color: var(--accent);
+      letter-spacing: .08em;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-size: clamp(1.25rem, 4vw, 1.75rem);
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.01em;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 42ch;
+      margin: 0 auto 1.5rem;
+    }
+    p strong { color: var(--text); }
+
+    .proof {
+      display: block;
+      margin: 0 auto 2rem;
+      padding: 0.85rem 1.25rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      line-height: 1.55;
+      text-align: left;
+      color: var(--muted);
+      max-width: 32rem;
+      width: fit-content;
+    }
+    .proof .c { color: var(--accent); }
+    .proof .ok { color: #4ecb71; }
+    .proof .comment { color: #8b90a0; }
+
+    .home-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 0.5rem;
+      transition: background 0.15s;
+    }
+    .home-btn:hover { background: var(--accent-hover); }
+    .home-btn:focus-visible {
+      outline: 2px solid var(--accent-hover);
+      outline-offset: 3px;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 1.25rem;
+      font-size: 0.8125rem;
+      color: var(--muted);
+    }
+    footer a {
+      color: var(--muted);
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<main>
+
+  <div class="logo-wrap" aria-hidden="true">
+    <svg width="52" height="52" viewBox="0 0 32 32" fill="none">
+      <ellipse cx="16" cy="16" rx="7.5" ry="11" stroke="currentColor" stroke-width="3"/>
+      <line x1="11.5" y1="21.5" x2="20.5" y2="10.5" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="code" aria-hidden="true">404</div>
+
+  <h1>ID not found in the catalog</h1>
+
+  <p>The page you asked for isn&rsquo;t here &mdash; but the code <strong>404</strong> itself is a perfectly valid HardGuard25 identifier. All three digits are in the alphabet.</p>
+
+  <pre class="proof" aria-label="HardGuard25 validation of the string '404'">
+<span class="comment">// Every digit 0&ndash;9 is in the HardGuard25 alphabet.</span>
+validate(<span class="c">"404"</span>);   <span class="ok">// true</span>
+normalize(<span class="c">"404"</span>);  <span class="ok">// "404"</span>
+  </pre>
+
+  <a href="/" class="home-btn">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M6.5 3L2 8l4.5 5M2 8h12" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Return to the catalog
+  </a>
+
+</main>
+
+  <footer>
+    <a href="/">hardguard25.com</a>
+  </footer>
+
+</body>
+</html>

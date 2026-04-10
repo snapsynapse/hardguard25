@@ -1,0 +1,21 @@
+{
+  "name": "HardGuard25",
+  "short_name": "HG25",
+  "description": "A 25-character ID alphabet with every symbol visually distinct in any typeface — for codes humans read, type, print, or say out loud without confusion.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "minimal-ui",
+  "orientation": "any",
+  "theme_color": "#6c8cff",
+  "background_color": "#0f1117",
+  "lang": "en-US",
+  "categories": ["reference", "developer-tools"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
