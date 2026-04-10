@@ -210,6 +210,7 @@
       transform: translateY(-1px);
     }
     .gh-star svg { flex: 0 0 auto; color: #eab308; }
+    .gh-star span { white-space: nowrap; }
 
     /* Byline */
     .byline {
@@ -432,6 +433,15 @@
       nav .links.mobile-compact { display: flex; gap: 0.75rem; }
       .footer-grid { flex-direction: column; }
       pre { font-size: 0.75rem; }
+    }
+    /* Narrow-phone nav collapse — template safety net for projects with
+       longer nav labels than HG25. HG25's own nav fits at 375px so this
+       rule is a no-op for this page, but keeping it here keeps HG25 and
+       the canonical-spec-page template.html source-of-truth consistent.
+       See canonical-spec-page a11y-fix-recipes "Mobile nav overflow". */
+    @media (max-width: 520px) {
+      nav .links.mobile-compact a:not(.gh-star) { display: none; }
+      nav .container { gap: 0.5rem; }
     }
   </style>
 </head>
