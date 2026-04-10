@@ -56,8 +56,14 @@ checkDigit("AC3H7PUW");              // "R" (example)
 
 ### Python
 
+**Install from PyPI:**
 ```bash
 pip install hardguard25
+```
+
+**Install from GitHub (Development):**
+```bash
+pip install "git+https://github.com/snapsynapse/hardguard25.git#subdirectory=python"
 ```
 
 ```python
@@ -69,6 +75,8 @@ validate("AC3H-7PUW")                # True
 normalize("ac3h-7puw")               # "AC3H7PUW"
 check_digit("AC3H7PUW")              # "R" (example)
 ```
+
+
 
 ### Go
 
