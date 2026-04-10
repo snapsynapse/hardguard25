@@ -1,0 +1,77 @@
+# HardGuard25
+
+> An open standard for human-safe identifiers.
+
+HardGuard25 is a 25-character alphabet designed so every symbol is visually distinct in any typeface, at any size, for any reader — including those with dyslexia. Use it anywhere humans read, type, print, or say an identifier out loud.
+
+## Alphabet
+
+0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y
+
+25 characters: 10 digits + 15 letters. Regex: ^[0-9ACDFGHJKMNPRUWY]+$
+
+## Design principle
+
+When a letter and a digit compete for the same visual slot, the digit always wins.
+
+## Excluded characters
+
+- O → confusable with 0
+- I → confusable with 1 and lowercase L
+- L → confusable with 1 and uppercase I
+- B → confusable with 8; dyslexia mirror pair with D
+- S → confusable with 5
+- Z → confusable with 2
+- E → confusable with 3 for dyslexic readers
+- Q → confusable with O; dyslexia mirror pair with P
+- V → confusable with U
+- T → resembles + in some contexts
+- X → collides with multiplication operator
+
+## Entropy
+
+Each character provides 4.64 bits of entropy (log2 25).
+
+- 4 chars: 390,625 unique IDs (small inventory, tickets)
+- 6 chars: 244 million (medium businesses)
+- 8 chars: 152 billion (large systems)
+- 12 chars: 59.6 trillion (internal tokens)
+- 16 chars: 3.55 × 10^22 (cross-system identifiers)
+- 20 chars: 2.11 × 10^27 (public tokens)
+
+## Normalization
+
+1. Trim whitespace
+2. Remove separators (hyphens, spaces, underscores, dots)
+3. Uppercase all letters
+4. Reject characters outside the alphabet
+
+## Check digit (optional)
+
+Mod-25 weighted checksum (ISO 7064 style). Catches all single-character substitution errors and most transpositions.
+
+Algorithm: sum = Σ(index[i] × (i+1)), check = alphabet[sum % 25]
+
+## Install
+
+- JavaScript: npm install @snapsynapse/hardguard25
+- Python: pip install hardguard25
+- Go: import "github.com/snapsynapse/hardguard25/go"
+
+## Links
+
+- Specification: https://hardguard25.com/
+- GitHub: https://github.com/snapsynapse/hardguard25
+- Full spec (SPEC.md): https://github.com/snapsynapse/hardguard25/blob/main/SPEC.md
+- Interactive generator: https://hardguard25.com/generator/
+- npm: https://www.npmjs.com/package/@snapsynapse/hardguard25
+- PyPI: https://pypi.org/project/hardguard25/
+
+## License
+
+- Specification: CC BY 4.0
+- Code: MIT
+
+## Author
+
+Sam Rogers, Snap Synapse (snapsynapse.com)

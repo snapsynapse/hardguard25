@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hardguard25.com/sitemap.xml
