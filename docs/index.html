@@ -1,407 +1,633 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HardGuard25 -- ID Generator</title>
-<meta name="description" content="Generate human-friendly unique IDs using the HardGuard25 alphabet. 25 unambiguous characters, zero confusion.">
-<style>
-  :root {
-    --bg: #0f1117;
-    --surface: #1a1d27;
-    --surface2: #242836;
-    --border: #2e3345;
-    --text: #e1e4ed;
-    --text-dim: #8b90a0;
-    --accent: #6c8cff;
-    --accent-hover: #8aa4ff;
-    --green: #4ecb71;
-    --red: #ff6b6b;
-    --radius: 10px;
-    --font: 'SF Mono', 'Fira Code', 'JetBrains Mono', 'Cascadia Code', monospace;
-    --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HardGuard25 &mdash; An open standard for human-safe identifiers</title>
+  <meta name="description" content="HardGuard25 is a 25-character alphabet designed so every symbol is visually distinct in any typeface, at any size, for any reader. Use it anywhere humans read, type, print, or say an identifier out loud.">
+  <meta name="keywords" content="hardguard25, unambiguous IDs, human-readable identifiers, confusable characters, dyslexia-friendly IDs, base-25 alphabet, check digit, mod-25, Crockford Base32 alternative, id generator, ticket codes, order numbers">
+  <meta name="author" content="Sam Rogers">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <meta name="theme-color" content="#6c8cff">
+  <link rel="canonical" href="https://hardguard25.com/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="HardGuard25">
+  <meta property="og:title" content="HardGuard25">
+  <meta property="og:description" content="An open standard for human-safe identifiers. 25 characters, zero confusion.">
+  <meta property="og:image" content="https://hardguard25.com/imgs/og.png">
+  <meta property="og:url" content="https://hardguard25.com/">
+  <meta property="og:locale" content="en_US">
+  <meta property="article:published_time" content="2019-11-14T00:00:00Z">
+  <meta property="article:modified_time" content="2026-04-09T00:00:00Z">
+  <meta property="article:author" content="Sam Rogers">
+  <meta property="article:publisher" content="https://paice.work/">
+  <meta property="article:section" content="Open Patterns">
+  <meta property="article:tag" content="hardguard25">
+  <meta property="article:tag" content="unambiguous-ids">
+  <meta property="article:tag" content="human-readable-identifiers">
+  <meta property="article:tag" content="base-25">
+  <meta property="article:tag" content="check-digit">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HardGuard25">
+  <meta name="twitter:description" content="An open standard for human-safe identifiers. 25 characters, zero confusion.">
+  <meta name="twitter:image" content="https://hardguard25.com/imgs/og.png">
+  <meta name="twitter:creator" content="@snapsynapse">
+
+  <!-- JSON-LD: TechArticle -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "HardGuard25",
+    "alternativeHeadline": "An open standard for human-safe identifiers",
+    "description": "HardGuard25 defines a 25-character alphabet optimized for human readability and low error rates. It removes 11 letters that cause real-world errors (O/0, I/1, S/5, Z/2, B/8, E/3, B/D, Q/P, V/U, T/+, X/*) so identifiers can be printed, dictated, transcribed, and OCR'd without confusion.",
+    "inLanguage": "en",
+    "url": "https://hardguard25.com/",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "https://hardguard25.com/" },
+    "datePublished": "2019-11-14",
+    "dateModified": "2026-04-09",
+    "author": {
+      "@type": "Person",
+      "name": "Sam Rogers",
+      "url": "https://paice.work/",
+      "affiliation": { "@type": "Organization", "name": "PAICE.work PBC" }
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "PAICE.work PBC",
+      "url": "https://paice.work/",
+      "logo": { "@type": "ImageObject", "url": "https://paice.work/logo.png" }
+    },
+    "image": "https://hardguard25.com/imgs/og.png",
+    "keywords": ["hardguard25", "unambiguous IDs", "human-readable identifiers", "confusable characters", "base-25", "check digit", "mod-25", "dyslexia-friendly"],
+    "isPartOf": { "@type": "CreativeWork", "name": "PAICE.work Open Patterns" },
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "copyrightHolder": { "@type": "Organization", "name": "PAICE.work PBC" },
+    "copyrightYear": 2026,
+    "citation": [
+      { "@type": "WebPage", "name": "Graceful Boundaries", "url": "https://gracefulboundaries.dev/" },
+      { "@type": "WebPage", "name": "Knowledge as Code", "url": "https://knowledge-as-code.com/" },
+      { "@type": "WebPage", "name": "Skill Provenance", "url": "https://skillprovenance.dev/" },
+      { "@type": "WebPage", "name": "Original LinkedIn article (2019)", "url": "https://www.linkedin.com/pulse/unambigious-id-code-character-set-makes-your-life-less-sam-rogers/" }
+    ]
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: var(--font-ui);
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 20px;
+  </script>
+
+  <!-- JSON-LD: DefinedTerm (stake the term) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "DefinedTerm",
+    "name": "HardGuard25",
+    "alternateName": ["hardguard25", "HG25", "HardGuard-25"],
+    "description": "A 25-character alphabet (0-9 plus A C D F G H J K M N P R U W Y) designed so every symbol is visually distinct in any typeface, at any size, for any reader. When a letter and a digit compete for the same visual slot, the digit always wins.",
+    "url": "https://hardguard25.com/",
+    "inDefinedTermSet": {
+      "@type": "DefinedTermSet",
+      "name": "PAICE.work Open Patterns",
+      "url": "https://paice.work/"
+    },
+    "sameAs": [
+      "https://github.com/snapsynapse/hardguard25",
+      "https://www.npmjs.com/package/@snapsynapse/hardguard25",
+      "https://pypi.org/project/hardguard25/"
+    ]
   }
-  .container { max-width: 720px; width: 100%; }
-  h1 { font-size: 28px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.5px; }
-  .subtitle { color: var(--text-dim); font-size: 15px; margin-bottom: 32px; }
-  .controls { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: end; }
-  .field { display: flex; flex-direction: column; gap: 6px; }
-  label {
-    font-size: 12px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.5px; color: var(--text-dim);
-  }
-  input[type="number"], .separator-field input[type="text"] {
-    background: var(--surface); border: 1px solid var(--border); color: var(--text);
-    border-radius: var(--radius); padding: 10px 14px; font-size: 16px;
-    font-family: var(--font); width: 100px; outline: none; transition: border-color 0.15s;
-  }
-  .separator-field input[type="text"] { width: 60px; text-align: center; }
-  input[type="number"]:focus, .separator-field input[type="text"]:focus { border-color: var(--accent); }
-  .check-toggle {
-    display: flex; align-items: center; gap: 8px;
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 8px 14px; cursor: pointer; user-select: none;
-    transition: border-color 0.15s; height: 42px;
-  }
-  .check-toggle:hover { border-color: var(--accent); }
-  .check-toggle input { accent-color: var(--accent); width: 16px; height: 16px; cursor: pointer; }
-  .check-toggle span { font-size: 13px; color: var(--text-dim); }
-  .case-toggle {
-    display: flex; background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); overflow: hidden;
-  }
-  .case-toggle button {
-    background: none; border: none; color: var(--text-dim); padding: 10px 16px;
-    font-size: 14px; font-family: var(--font); cursor: pointer; transition: all 0.15s;
-  }
-  .case-toggle button.active { background: var(--accent); color: #fff; }
-  .case-toggle button:hover:not(.active) { color: var(--text); }
-  .btn {
-    background: var(--accent); color: #fff; border: none; border-radius: var(--radius);
-    padding: 10px 24px; font-size: 15px; font-weight: 600; cursor: pointer;
-    transition: background 0.15s; font-family: var(--font-ui);
-  }
-  .btn:hover { background: var(--accent-hover); }
-  .btn-secondary { background: var(--surface); border: 1px solid var(--border); }
-  .btn-secondary:hover { background: var(--surface2); }
-  .actions { display: flex; gap: 8px; margin-bottom: 20px; }
-  .output-area {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-    padding: 20px; min-height: 160px; margin-bottom: 32px; position: relative;
-  }
-  .output-area .placeholder { color: var(--text-dim); font-style: italic; font-size: 14px; }
-  .codes { display: flex; flex-wrap: wrap; gap: 8px; }
-  .code-chip {
-    font-family: var(--font); font-size: 16px; background: var(--surface2);
-    border: 1px solid var(--border); border-radius: 6px; padding: 6px 14px;
-    cursor: pointer; transition: all 0.15s; user-select: all; letter-spacing: 1.5px;
-  }
-  .code-chip:hover { border-color: var(--accent); background: rgba(108, 140, 255, 0.1); }
-  .code-chip.copied { border-color: var(--green); background: rgba(78, 203, 113, 0.1); }
-  .copy-all {
-    position: absolute; top: 12px; right: 12px; font-size: 12px;
-    padding: 6px 12px; border-radius: 6px;
-  }
-  .toast {
-    position: fixed; bottom: 30px; left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: var(--green); color: #000; padding: 10px 20px;
-    border-radius: var(--radius); font-weight: 600; font-size: 14px;
-    opacity: 0; transition: all 0.25s ease; pointer-events: none; z-index: 100;
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-  .stats { display: flex; gap: 24px; margin-bottom: 32px; flex-wrap: wrap; }
-  .stat {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); padding: 16px 20px; flex: 1; min-width: 140px;
-  }
-  .stat-value { font-family: var(--font); font-size: 22px; font-weight: 700; color: var(--accent); }
-  .stat-label { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
-  .rationale {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); overflow: hidden; margin-bottom: 16px;
-  }
-  .rationale-header {
-    padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between;
-    align-items: center; font-weight: 600; font-size: 15px; user-select: none;
-    transition: background 0.15s;
-  }
-  .rationale-header:hover { background: var(--surface2); }
-  .rationale-arrow { transition: transform 0.2s; font-size: 12px; color: var(--text-dim); }
-  .rationale.open .rationale-arrow { transform: rotate(180deg); }
-  .rationale-body { display: none; padding: 0 20px 20px; }
-  .rationale.open .rationale-body { display: block; }
-  .charset-display {
-    font-family: var(--font); font-size: 20px; letter-spacing: 4px; text-align: center;
-    padding: 16px; background: var(--bg); border-radius: 8px; margin: 16px 0; color: var(--accent);
-  }
-  .removed-table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }
-  .removed-table th {
-    text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border);
-    color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
-  }
-  .removed-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
-  .removed-table .char { font-family: var(--font); font-size: 16px; color: var(--red); width: 50px; }
-  .removed-table .reason { color: var(--text-dim); }
-  .credit { text-align: center; margin-top: 24px; font-size: 13px; color: var(--text-dim); line-height: 1.8; }
-  .credit a { color: var(--accent); text-decoration: none; }
-  .credit a:hover { text-decoration: underline; }
-  @media (max-width: 600px) {
-    .controls { flex-direction: column; align-items: stretch; }
-    .controls .field { width: 100%; }
-    .controls input[type="number"] { width: 100%; }
-    .stats { flex-direction: column; }
-  }
-</style>
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --bg-alt: #1a1d27;
+      --surface2: #242836;
+      --text: #e1e4ed;
+      --text-muted: #8b90a0;
+      --accent: #6c8cff;
+      --accent-hover: #8aa4ff;
+      --border: #2e3345;
+      --green: #4ecb71;
+      --red: #ff6b6b;
+      --code-bg: #0b0d13;
+      --code-text: #e1e4ed;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --mono: "SF Mono", "Fira Code", "Fira Mono", Menlo, Consolas, monospace;
+      --max-width: 960px;
+      --radius: 10px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-hover); text-decoration: underline; }
+
+    /* Skip link (a11y) */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      z-index: 100;
+    }
+    .skip-link:focus { left: 0; }
+
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Nav */
+    nav {
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 10;
+    }
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    nav .logo {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+    nav .links { display: flex; align-items: center; gap: 1.5rem; font-size: 0.9rem; }
+    nav .links a { color: var(--text-muted); }
+    nav .links a:hover { color: var(--text); text-decoration: none; }
+
+    /* GitHub star button */
+    .gh-star {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg-alt);
+      color: var(--text) !important;
+      font-weight: 600;
+      font-size: 0.8rem;
+      transition: border-color 0.1s ease, transform 0.05s ease;
+    }
+    .gh-star:hover {
+      border-color: var(--accent);
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+    .gh-star svg { flex: 0 0 auto; color: #eab308; }
+
+    /* Byline */
+    .byline {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0.75rem 0 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.9rem;
+      align-items: center;
+      justify-content: center;
+    }
+    .byline .sep { color: var(--border); }
+    /* Underline byline links: contrast between --accent link text and --text-muted
+       surrounding text is only 1.03:1, so rely on non-color affordance. */
+    .byline a { color: var(--text); text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 2px; }
+    .byline a:hover { color: var(--accent-hover); text-decoration-color: var(--accent-hover); }
+    .byline .version {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      background: var(--bg-alt);
+      color: var(--accent);
+      border: 1px solid var(--border);
+    }
+
+    /* Canonical note */
+    .canonical-note {
+      margin-top: 2.5rem;
+      padding: 1rem 1.25rem;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .canonical-note strong { color: var(--text); }
+    /* Underline inline links in the canonical note — accent-vs-muted contrast is 1.03:1. */
+    .canonical-note a { text-decoration: underline; text-underline-offset: 2px; }
+
+    /* Sections */
+    section { padding: 4rem 0; }
+    section.alt { background: var(--bg-alt); }
+
+    h1 { font-size: 2.75rem; line-height: 1.15; letter-spacing: -0.02em; font-weight: 800; }
+    h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: -0.01em; }
+    h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+
+    p { margin-bottom: 1rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* Hero */
+    .hero { padding: 5rem 0 4rem; text-align: center; }
+    .hero h1 { margin-bottom: 1rem; }
+    .hero .subtitle {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 1.5rem;
+    }
+    .hero .hook {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 620px;
+      margin: 0 auto 2.5rem;
+    }
+
+    /* Alphabet display — one char per cell, letter-spacing creates the gaps. */
+    .charset {
+      font-family: var(--mono);
+      font-size: 1.5rem;
+      letter-spacing: 0.5em;
+      text-align: center;
+      padding: 1.75rem 1rem 1.75rem 1.5rem; /* extra right padding offsets trailing letter-spacing */
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--accent-hover);
+      margin: 1rem 0 2rem;
+      white-space: nowrap;
+      overflow-x: auto;
+    }
+    .charset:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Pillars */
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      text-align: left;
+    }
+    .pillar {
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-alt);
+    }
+    .pillar h3 { color: var(--accent); font-size: 1rem; }
+    .pillar p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0; }
+
+    /* Buttons */
+    .cta-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.15s, color 0.15s;
+    }
+    /* Dark text on light accent gives ~6.1:1 contrast; white on --accent fails WCAG AA */
+    .btn-primary { background: var(--accent); color: var(--bg); }
+    .btn-primary:hover { background: var(--accent-hover); text-decoration: none; color: var(--bg); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--accent-hover);
+      border: 1px solid var(--accent);
+    }
+    .btn-secondary:hover { background: var(--accent); color: var(--bg); text-decoration: none; }
+
+    /* Code blocks */
+    .code-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .code-block { text-align: left; }
+    .code-block h3 { font-size: 0.95rem; margin-bottom: 0.75rem; }
+    .code-block .annotation {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.75rem;
+      font-style: italic;
+    }
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 1.25rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      line-height: 1.5;
+      border: 1px solid var(--border);
+    }
+    code { font-family: var(--mono); font-size: 0.88em; color: var(--accent); }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
+    th, td {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    th { font-weight: 600; color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    td.char {
+      font-family: var(--mono);
+      color: var(--red);
+      width: 60px;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    td.num { font-family: var(--mono); text-align: right; white-space: nowrap; }
+
+    /* Demo callout */
+    .demo-block {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .demo-preview {
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      letter-spacing: 0.2em;
+      padding: 1.25rem;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--accent);
+      margin: 1.25rem 0 1.5rem;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 0;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .footer-grid {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .footer-meta p { margin-bottom: 0.25rem; }
+    /* Underline footer-meta inline links — accent-on-muted contrast is only 1.03:1. */
+    .footer-meta a { text-decoration: underline; text-underline-offset: 2px; }
+    .footer-links a { text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--border); }
+    .footer-links a:hover { text-decoration-color: var(--accent-hover); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      .hero { padding: 3rem 0 2.5rem; }
+      .charset { font-size: 0.85rem; letter-spacing: 0.2em; padding: 1.1rem 0.25rem 1.1rem 0.45rem; }
+      .pillars { grid-template-columns: 1fr; }
+      .code-grid { grid-template-columns: 1fr; }
+      nav .links { display: none; }
+      nav .links.mobile-compact { display: flex; gap: 0.75rem; }
+      .footer-grid { flex-direction: column; }
+      pre { font-size: 0.75rem; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>HardGuard25</h1>
-  <p class="subtitle">Generate human-friendly unique IDs using a 25-character alphabet designed to eliminate visual confusion.</p>
+<a class="skip-link" href="#main-content">Skip to content</a>
 
-  <div class="controls">
-    <div class="field">
-      <label>Code Length</label>
-      <input type="number" id="codeLength" value="8" min="1" max="32">
+<nav>
+  <div class="container">
+    <a href="/" class="logo">HardGuard25</a>
+    <div class="links mobile-compact">
+      <a href="#alphabet">Alphabet</a>
+      <a href="#install">Install</a>
+      <a href="/generator/">Generator</a>
+      <a href="https://github.com/snapsynapse/hardguard25" class="gh-star" target="_blank" rel="noopener" aria-label="Star snapsynapse/hardguard25 on GitHub">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/>
+        </svg>
+        <span>Star on GitHub</span>
+      </a>
     </div>
-    <div class="field">
-      <label>Quantity</label>
-      <input type="number" id="quantity" value="10" min="1" max="500">
+  </div>
+</nav>
+
+<main id="main-content">
+<section class="hero">
+  <div class="container">
+    <h1>25 characters. Zero confusion.</h1>
+    <p class="subtitle">An open standard for human-safe identifiers. Visually distinct in any typeface, at any size, for any reader &mdash; including those with dyslexia.</p>
+    <p class="byline">
+      By <a href="https://www.linkedin.com/in/samrogers" target="_blank" rel="noopener author">Sam Rogers</a>, <a href="https://snapsynapse.com" target="_blank" rel="noopener">Snap Synapse</a>
+      <span class="sep">&middot;</span>
+      Published <time datetime="2019-11-14">November 14, 2019</time>
+      <span class="sep">&middot;</span>
+      Updated <time datetime="2026-04-09">April 9, 2026</time>
+      <span class="sep">&middot;</span>
+      <span class="version">v1.3.0</span>
+      <span class="sep">&middot;</span>
+      <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank">CC&nbsp;BY&nbsp;4.0</a>
+    </p>
+    <p class="hook">Every ambiguous character in an ID is a future support ticket. HardGuard25 removes the 11 letters that get misread, mis-dictated, and OCR'd wrong &mdash; and keeps all ten digits so versioning stays natural.</p>
+
+    <div class="charset" role="img" tabindex="0" aria-label="HardGuard25 alphabet: 0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y">0123456789ACDFGHJKMNPRUWY</div>
+
+    <div class="cta-row">
+      <a href="https://github.com/snapsynapse/hardguard25/blob/main/SPEC.md" class="btn btn-primary" target="_blank" rel="noopener">Read the Specification</a>
+      <a href="/generator/" class="btn btn-secondary">Try the Generator</a>
     </div>
-    <div class="field">
-      <label>Group every N</label>
-      <input type="number" id="groupSize" value="4" min="0" max="16" title="0 = no grouping">
+  </div>
+</section>
+
+<section class="alt" id="alphabet">
+  <div class="container">
+    <h2>Why these 25 characters?</h2>
+    <p>Standard alphanumerics give you 36 characters (0&ndash;9, A&ndash;Z). That creates real problems when a human reads, transcribes, or dictates a code out loud. HardGuard25 keeps all ten digits and fifteen carefully chosen letters, removing eleven sources of confusion. Design principle: <strong>when a letter and a digit compete for the same visual slot, the digit always wins.</strong></p>
+
+    <div class="pillars">
+      <div class="pillar">
+        <h3>Visually distinct</h3>
+        <p>No confusable pairs &mdash; no more O vs 0, I vs 1, S vs 5, or B vs 8 in printed or dictated identifiers.</p>
+      </div>
+      <div class="pillar">
+        <h3>Dyslexia-aware</h3>
+        <p>Mirror pairs (B/D, Q/P) and visually-similar shapes (E/3) are removed to reduce error rates for dyslexic readers.</p>
+      </div>
+      <div class="pillar">
+        <h3>OCR-friendly</h3>
+        <p>Works reliably with OCR-A, Menlo, and other monospace typefaces on receipts, labels, and printed materials.</p>
+      </div>
     </div>
-    <div class="field separator-field">
-      <label>Separator</label>
-      <input type="text" id="separator" value="-" maxlength="1">
-    </div>
-    <div class="field">
-      <label>Check digit</label>
-      <label class="check-toggle">
-        <input type="checkbox" id="checkDigit">
-        <span>Mod-25</span>
-      </label>
-    </div>
-    <div class="field">
-      <label>Case</label>
-      <div class="case-toggle">
-        <button class="active" data-case="upper" onclick="setCase('upper', this)">ABC</button>
-        <button data-case="lower" onclick="setCase('lower', this)">abc</button>
+
+    <table>
+      <thead>
+        <tr><th>Removed</th><th>Reason</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="char">O</td><td>Confusable with 0 (zero)</td></tr>
+        <tr><td class="char">I</td><td>Confusable with 1 (one) and lowercase L</td></tr>
+        <tr><td class="char">L</td><td>Confusable with 1 (one) and uppercase I</td></tr>
+        <tr><td class="char">B</td><td>Confusable with 8; dyslexia mirror pair with D</td></tr>
+        <tr><td class="char">S</td><td>Confusable with 5</td></tr>
+        <tr><td class="char">Z</td><td>Confusable with 2</td></tr>
+        <tr><td class="char">E</td><td>Confusable with 3 for dyslexic readers; digits take priority</td></tr>
+        <tr><td class="char">Q</td><td>Confusable with O in some typefaces; dyslexia mirror pair with P</td></tr>
+        <tr><td class="char">V</td><td>Confusable with U in many typefaces</td></tr>
+        <tr><td class="char">T</td><td>Resembles a plus sign in some contexts</td></tr>
+        <tr><td class="char">X</td><td>Collides with multiplication operator; varies by locale</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top: 2rem;">Entropy and length</h3>
+    <p>Each HardGuard25 character carries <code>log2(25) &approx; 4.64</code> bits of entropy. Pick a length for your risk profile:</p>
+    <table>
+      <thead>
+        <tr><th>Length</th><th class="num">Unique IDs</th><th>Sweet spot for</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>4</td><td class="num">390,625</td><td>Small inventory, tickets</td></tr>
+        <tr><td>6</td><td class="num">244 million</td><td>Medium businesses</td></tr>
+        <tr><td>8</td><td class="num">152 billion</td><td>Large systems</td></tr>
+        <tr><td>12</td><td class="num">59.6 trillion</td><td>Internal tokens</td></tr>
+        <tr><td>16</td><td class="num">3.55 &times; 10<sup>22</sup></td><td>Cross-system identifiers</td></tr>
+        <tr><td>20</td><td class="num">2.11 &times; 10<sup>27</sup></td><td>Public tokens</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="install">
+  <div class="container">
+    <h2>Install</h2>
+    <p>Reference implementations are available in JavaScript, Python, and Go. Each includes generation, validation, normalization, and an optional Mod-25 check digit.</p>
+
+    <div class="code-grid">
+      <div class="code-block">
+        <h3>JavaScript</h3>
+<pre>npm install @snapsynapse/hardguard25
+
+import { generate, validate, normalize, checkDigit }
+  from '@snapsynapse/hardguard25';
+
+generate(8);                        // "AC3H7PUW"
+generate(8, { checkDigit: true });  // + check char
+validate("AC3H-7PUW");              // true
+normalize("ac3h-7puw");             // "AC3H7PUW"</pre>
+      </div>
+
+      <div class="code-block">
+        <h3>Python</h3>
+<pre>pip install hardguard25
+
+from hardguard25 import (
+  generate, validate, normalize, check_digit,
+)
+
+generate(8)                         # "AC3H7PUW"
+generate(8, check_digit=True)       # + check char
+validate("AC3H-7PUW")               # True
+normalize("ac3h-7puw")              # "AC3H7PUW"</pre>
+      </div>
+
+      <div class="code-block">
+        <h3>Go</h3>
+<pre>import "github.com/snapsynapse/hardguard25/go"
+
+id, _ := hardguard25.Generate(8)
+id, _ = hardguard25.GenerateWithCheck(8)
+ok := hardguard25.Validate("AC3H-7PUW")
+s := hardguard25.Normalize("ac3h-7puw")</pre>
+      </div>
+
+      <div class="code-block">
+        <h3>No library needed</h3>
+<pre># Alphabet
+0123456789ACDFGHJKMNPRUWY
+
+# Regex
+^[0-9ACDFGHJKMNPRUWY]+$
+
+# Normalization: trim, strip separators,
+# uppercase, reject anything outside the set.</pre>
+        <p class="annotation">The alphabet is the standard. If you just need the character set, use it directly.</p>
       </div>
     </div>
   </div>
+</section>
 
-  <div class="actions">
-    <button class="btn" onclick="generate()">Generate</button>
-    <button class="btn btn-secondary" onclick="clearOutput()">Clear</button>
+<section class="alt" id="demo">
+  <div class="container">
+    <div class="demo-block">
+      <h2>Try it live</h2>
+      <p>The interactive generator produces real HardGuard25 codes in the browser &mdash; pick a length, quantity, grouping, case, and optional check digit.</p>
+      <div class="demo-preview">AC3H&ndash;7PUW&ndash;K2MN&ndash;PR4Y</div>
+      <div class="cta-row">
+        <a href="/generator/" class="btn btn-primary">Open the generator &rarr;</a>
+        <a href="https://github.com/snapsynapse/hardguard25" class="btn btn-secondary" target="_blank" rel="noopener">View on GitHub</a>
+      </div>
+    </div>
+
+    <aside class="canonical-note" role="note">
+      <strong>Canonical reference.</strong> This page is the authoritative definition of the
+      HardGuard25 alphabet and reference implementations. Any cross-posts on
+      <a href="https://www.linkedin.com/pulse/unambigious-id-code-character-set-makes-your-life-less-sam-rogers/" target="_blank" rel="noopener">LinkedIn</a>,
+      <a href="https://sam-rogers.com/blog/best-unique-ids/" target="_blank" rel="noopener">sam-rogers.com</a>,
+      or other platforms are derived from this source and should cite
+      <a href="https://hardguard25.com/">hardguard25.com</a> as canonical.
+      Last substantive revision: <time datetime="2026-04-09">2026-04-09</time>.
+      <a href="https://github.com/snapsynapse/hardguard25/commits/main/SPEC.md" target="_blank" rel="noopener">Revision history &rarr;</a>
+    </aside>
   </div>
+</section>
+</main>
 
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-value" id="permutations">--</div>
-      <div class="stat-label">Possible combinations</div>
-    </div>
-    <div class="stat">
-      <div class="stat-value" id="bitsEntropy">--</div>
-      <div class="stat-label">Bits of entropy</div>
-    </div>
-    <div class="stat">
-      <div class="stat-value" id="generated">0</div>
-      <div class="stat-label">Generated this session</div>
-    </div>
-  </div>
-
-  <div class="output-area" id="outputArea">
-    <button class="btn btn-secondary copy-all" onclick="copyAll()" id="copyAllBtn" style="display:none;">Copy All</button>
-    <p class="placeholder" id="placeholder">Codes will appear here</p>
-    <div class="codes" id="codesContainer"></div>
-  </div>
-
-  <div class="rationale" id="rationale">
-    <div class="rationale-header" onclick="toggleRationale()">
-      <span>Why these 25 characters?</span>
-      <span class="rationale-arrow">&#9660;</span>
-    </div>
-    <div class="rationale-body">
-      <p style="color:var(--text-dim); font-size:14px; line-height:1.6; margin-bottom:12px;">
-        Standard alphanumeric codes use 36 characters (0-9, A-Z). That creates problems when humans read, transcribe, or dictate codes aloud. HardGuard25 keeps all 10 digits and 15 carefully chosen letters, removing 11 sources of confusion. When a letter and a digit compete for the same visual slot, the digit always wins.
-      </p>
-      <div class="charset-display" id="charsetDisplay">0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y</div>
-      <table class="removed-table">
-        <thead>
-          <tr><th>Removed</th><th>Reason</th></tr>
-        </thead>
-        <tbody>
-          <tr><td class="char">O</td><td class="reason">Looks like 0 (zero)</td></tr>
-          <tr><td class="char">I</td><td class="reason">Looks like 1 (one) or l (lowercase L)</td></tr>
-          <tr><td class="char">L</td><td class="reason">Looks like 1 (one) or I (uppercase i)</td></tr>
-          <tr><td class="char">B</td><td class="reason">Looks like 8; dyslexia mirror pair with D</td></tr>
-          <tr><td class="char">S</td><td class="reason">Looks like 5</td></tr>
-          <tr><td class="char">Z</td><td class="reason">Looks like 2</td></tr>
-          <tr><td class="char">E</td><td class="reason">Looks like 3 for dyslexic readers; digits take priority</td></tr>
-          <tr><td class="char">Q</td><td class="reason">Looks like O in some typefaces; dyslexia mirror pair with P</td></tr>
-          <tr><td class="char">V</td><td class="reason">Easily confused with U</td></tr>
-          <tr><td class="char">T</td><td class="reason">Resembles a plus sign in some contexts</td></tr>
-          <tr><td class="char">X</td><td class="reason">Collides with multiplication operator; varies by locale</td></tr>
-        </tbody>
-      </table>
-      <p style="color:var(--text-dim); font-size:13px; margin-top:16px; line-height:1.5;">
-        Read the full specification on
-        <a href="https://github.com/snapsynapse/hardguard25" style="color:var(--accent);">GitHub</a>.
-      </p>
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-meta">
+        <p>HardGuard25 v1.3.0 &middot; <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank">CC BY 4.0</a> (spec) &middot; <a href="https://github.com/snapsynapse/hardguard25/blob/main/LICENSE" target="_blank" rel="noopener">MIT</a> (code)</p>
+        <p>A <a href="https://snapsynapse.com" target="_blank" rel="noopener">Snap Synapse</a> project by <a href="https://www.linkedin.com/in/samrogers" target="_blank" rel="noopener author">Sam Rogers</a>.</p>
+        <p style="margin-top: 0.5rem;">See also: <a href="https://gracefulboundaries.dev/" target="_blank" rel="noopener">Graceful Boundaries</a> &middot; <a href="https://knowledge-as-code.com/" target="_blank" rel="noopener">Knowledge as Code</a> &middot; <a href="https://skillprovenance.dev/" target="_blank" rel="noopener">Skill Provenance</a></p>
+      </div>
+      <div class="footer-links">
+        <a href="/generator/">Generator</a>
+        <a href="https://github.com/snapsynapse/hardguard25" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/snapsynapse/hardguard25/blob/main/SPEC.md" target="_blank" rel="noopener">Specification</a>
+        <a href="https://github.com/snapsynapse/hardguard25/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a>
+        <a href="https://github.com/snapsynapse/hardguard25/commits/main/SPEC.md" target="_blank" rel="noopener">Revisions</a>
+        <a href="https://sam-rogers.com/blog/best-unique-ids/" target="_blank" rel="noopener">Original article</a>
+        <a href="https://github.com/sponsors/snapsynapse" target="_blank" rel="noopener">Sponsor</a>
+      </div>
     </div>
   </div>
-
-  <p class="credit">
-    HardGuard25 by <a href="https://www.linkedin.com/in/samrogers" target="_blank">Sam Rogers</a>
-    &middot; <a href="https://snapsynapse.com" target="_blank">Snap Synapse</a><br>
-    <a href="https://sam-rogers.com/blog/best-unique-ids/" target="_blank">Original article</a>
-    &middot; <a href="https://github.com/snapsynapse/hardguard25" target="_blank">GitHub</a>
-    &middot; <a href="https://github.com/snapsynapse/hardguard25/blob/main/SPEC.md" target="_blank">Specification</a>
-  </p>
-</div>
-
-<div class="toast" id="toast">Copied!</div>
-
-<script>
-const ALPHABET = '0123456789ACDFGHJKMNPRUWY';
-const CHAR_TO_INDEX = {};
-for (let i = 0; i < ALPHABET.length; i++) CHAR_TO_INDEX[ALPHABET[i]] = i;
-
-let useUpper = true;
-let totalGenerated = 0;
-let allCodes = [];
-
-function getCharset() {
-  return useUpper ? ALPHABET : ALPHABET.toLowerCase();
-}
-
-function setCase(c, btn) {
-  useUpper = c === 'upper';
-  document.querySelectorAll('.case-toggle button').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('charsetDisplay').textContent = getCharset().split('').join(' ');
-  const chips = document.querySelectorAll('.code-chip');
-  chips.forEach(chip => {
-    chip.textContent = useUpper ? chip.textContent.toUpperCase() : chip.textContent.toLowerCase();
-  });
-  allCodes = allCodes.map(c => useUpper ? c.toUpperCase() : c.toLowerCase());
-}
-
-// Rejection sampling: accept bytes < 225 (25*9), then % 25
-function generateCode(length) {
-  const chars = getCharset();
-  const result = [];
-  while (result.length < length) {
-    const buf = new Uint8Array(length - result.length + 16); // overshoot to reduce iterations
-    crypto.getRandomValues(buf);
-    for (let i = 0; i < buf.length && result.length < length; i++) {
-      if (buf[i] < 225) {
-        result.push(chars[buf[i] % 25]);
-      }
-    }
-  }
-  return result.join('');
-}
-
-function computeCheckDigit(code) {
-  const upper = code.toUpperCase();
-  let sum = 0;
-  for (let i = 0; i < upper.length; i++) {
-    const idx = CHAR_TO_INDEX[upper[i]];
-    if (idx === undefined) return null;
-    sum += idx * (i + 1);
-  }
-  const ch = ALPHABET[sum % 25];
-  return useUpper ? ch : ch.toLowerCase();
-}
-
-function formatCode(code) {
-  const groupSize = parseInt(document.getElementById('groupSize').value) || 0;
-  const sep = document.getElementById('separator').value || '-';
-  if (groupSize <= 0) return code;
-  const groups = [];
-  for (let i = 0; i < code.length; i += groupSize) {
-    groups.push(code.slice(i, i + groupSize));
-  }
-  return groups.join(sep);
-}
-
-function generate() {
-  const length = Math.max(1, Math.min(32, parseInt(document.getElementById('codeLength').value) || 8));
-  const qty = Math.max(1, Math.min(500, parseInt(document.getElementById('quantity').value) || 10));
-  const withCheck = document.getElementById('checkDigit').checked;
-  const container = document.getElementById('codesContainer');
-  const placeholder = document.getElementById('placeholder');
-  const copyAllBtn = document.getElementById('copyAllBtn');
-
-  placeholder.style.display = 'none';
-  copyAllBtn.style.display = 'block';
-  container.innerHTML = '';
-  allCodes = [];
-
-  for (let i = 0; i < qty; i++) {
-    let raw = generateCode(length);
-    if (withCheck) raw += computeCheckDigit(raw);
-    allCodes.push(raw);
-    const chip = document.createElement('span');
-    chip.className = 'code-chip';
-    chip.textContent = formatCode(raw);
-    chip.title = 'Click to copy';
-    chip.addEventListener('click', () => copyOne(chip));
-    container.appendChild(chip);
-  }
-
-  totalGenerated += qty;
-  updateStats();
-}
-
-function updateStats() {
-  const length = parseInt(document.getElementById('codeLength').value) || 8;
-  const perms = Math.pow(25, length);
-
-  let permStr;
-  if (perms >= 1e15) permStr = perms.toExponential(2);
-  else if (perms >= 1e9) permStr = (perms / 1e9).toFixed(1) + 'B';
-  else if (perms >= 1e6) permStr = (perms / 1e6).toFixed(1) + 'M';
-  else if (perms >= 1e3) permStr = (perms / 1e3).toFixed(1) + 'K';
-  else permStr = perms.toString();
-
-  document.getElementById('permutations').textContent = permStr;
-  document.getElementById('bitsEntropy').textContent = (length * Math.log2(25)).toFixed(1) + ' bits';
-  document.getElementById('generated').textContent = totalGenerated;
-}
-
-function copyOne(chip) {
-  const text = chip.textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    chip.classList.add('copied');
-    showToast('Copied: ' + text);
-    setTimeout(() => chip.classList.remove('copied'), 1200);
-  });
-}
-
-function copyAll() {
-  const formatted = allCodes.map(c => formatCode(c));
-  navigator.clipboard.writeText(formatted.join('\n')).then(() => {
-    showToast('Copied ' + allCodes.length + ' codes');
-  });
-}
-
-function clearOutput() {
-  document.getElementById('codesContainer').innerHTML = '';
-  document.getElementById('placeholder').style.display = 'block';
-  document.getElementById('copyAllBtn').style.display = 'none';
-  allCodes = [];
-}
-
-function toggleRationale() {
-  document.getElementById('rationale').classList.toggle('open');
-}
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 1500);
-}
-
-updateStats();
-document.getElementById('codeLength').addEventListener('input', updateStats);
-</script>
+</footer>
 
 </body>
 </html>
