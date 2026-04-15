@@ -74,4 +74,4 @@ Algorithm: sum = Σ(index[i] × (i+1)), check = alphabet[sum % 25]
 
 ## Author
 
-Sam Rogers, Snap Synapse (snapsynapse.com)
+Sam Rogers, PAICE.work PBC (paice.work)
