@@ -15,7 +15,7 @@ HardGuard25 is a 25-character alphabet designed so that every symbol is visually
 0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y
 ```
 
-It removes 11 letters that cause real-world errors (O/0, I/1, S/5, Z/2, B/8, E/3, B/D, Q/P, V/U, T/+, X/\*). When a letter and a digit compete for the same visual slot, the digit always wins.
+It removes 11 letters that cause real-world errors (O/0, I/1, L/1, S/5, Z/2, B/8, E/3, Q/P, V/U, T/+, X/\*). When a letter and a digit compete for the same visual slot, the digit always wins.
 
 ## Use Cases
 
@@ -100,16 +100,25 @@ Regex: `^[0-9ACDFGHJKMNPRUWY]+$`
 
 ## How Many IDs Can I Make?
 
-| Length | Unique IDs | Sweet Spot For |
-|-------:|-----------:|----------------|
-| 4 | 390,625 | Small inventory, tickets |
-| 6 | 244 million | Medium businesses |
-| 8 | 152 billion | Large systems |
-| 12 | 59.6 trillion | Internal tokens |
-| 16 | 3.55 x 10^22 | Cross-system identifiers |
-| 20 | 2.11 x 10^27 | Public tokens |
+Each character carries `log2(25) = 4.64` bits of entropy.
 
-Each character provides 4.64 bits of entropy (log2 25).
+| Length | Bits | Unique IDs | Typical Use |
+|-------:|-----:|-----------:|-------------|
+| 4 | 18.6 | 390,625 | Small inventory, tickets |
+| 5 | 23.2 | 9,765,625 | Small business |
+| 6 | 27.9 | 244,140,625 | Medium businesses |
+| 7 | 32.5 | 6.1 billion | Large catalogs |
+| 8 | 37.2 | 152.6 billion | Large systems |
+| 12 | 55.7 | 5.96 × 10¹⁶ | Internal tokens |
+| 16 | 74.2 | 3.55 × 10²² | Cross-system IDs |
+| 20 | 92.8 | 2.11 × 10²⁷ | Public tokens |
+| 22 | 102.1 | 1.32 × 10³⁰ | Internet-scale |
+
+Recommended defaults:
+
+- 16 for internal systems up to millions of IDs
+- 20 for public tokens or cross-org use
+- 22 for long-lived, internet-scale identifiers
 
 ## Check Digit
 

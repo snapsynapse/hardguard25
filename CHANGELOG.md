@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.3.1 -- 2026-04-14
+
+### Added (Python package)
+- Full PyPI landing page: install, quickstart, API reference table, sizing table, "When NOT to use" guardrails
+- SPDX license expression (PEP 639) and expanded classifier set
+- Explicit setuptools package discovery config
+- `LICENSE` symlink in `python/` so sdist/wheel include it
+
+### Changed (root README)
+- Fixed excluded-letter pairings to cover all 11 removed letters (added `L/1`, removed duplicate `B/D`)
+- Expanded sizing table from 6 rows to the full 9-row spec set with entropy column and recommended defaults
+
+### Published
+- `hardguard25` on PyPI: https://pypi.org/project/hardguard25/
+
 ## 1.3.0 -- 2026-03-09
 
 ### Added
