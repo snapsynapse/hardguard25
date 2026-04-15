@@ -60,6 +60,12 @@ checkDigit("AC3H7PUW");              // "R" (example)
 pip install hardguard25
 ```
 
+To install the latest unreleased code directly from GitHub:
+
+```bash
+pip install "git+https://github.com/snapsynapse/hardguard25.git#subdirectory=python"
+```
+
 ```python
 from hardguard25 import generate, validate, normalize, check_digit
 
