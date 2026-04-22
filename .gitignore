@@ -9,3 +9,9 @@ build/
 .gocache/
 .DS_Store
 .claude/settings.local.json
+
+# --- baseline additions (automated audit 2026-04-21) ---
+.env
+.env.*
+.vscode/
+.idea/
