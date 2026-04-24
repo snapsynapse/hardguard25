@@ -12,7 +12,7 @@ import re
 import secrets
 from typing import Dict
 
-__version__ = "1.3.1"
+__version__ = "1.3.2"
 
 # The 25-character HardGuard25 alphabet
 ALPHABET = "0123456789ACDFGHJKMNPRUWY"
@@ -25,6 +25,7 @@ _CHAR_TO_INDEX: Dict[str, int] = {char: idx for idx, char in enumerate(ALPHABET)
 
 # Compiled regex pattern for validation
 _REGEX = re.compile(r"^[0-9ACDFGHJKMNPRUWY]+$")
+_SEPARATOR_REGEX = re.compile(r"[-\s_.]+")
 
 
 def generate(length: int, *, check_digit: bool = False) -> str:
@@ -112,7 +113,7 @@ def normalize(input_str: str) -> str:
     normalized = input_str.strip()
 
     # Remove common separators
-    normalized = normalized.replace("-", "").replace(" ", "").replace("_", "").replace(".", "")
+    normalized = _SEPARATOR_REGEX.sub("", normalized)
 
     # Convert to uppercase
     normalized = normalized.upper()
@@ -171,9 +172,12 @@ def verify_check_digit(code_with_check: str) -> bool:
         return False
 
     try:
-        upper = code_with_check.upper()
-        code = upper[:-1]
-        provided_check = upper[-1]
+        normalized = normalize(code_with_check)
+        if len(normalized) < 2:
+            return False
+
+        code = normalized[:-1]
+        provided_check = normalized[-1]
         computed_check = check_digit(code)
         return provided_check == computed_check
     except (ValueError, AttributeError):

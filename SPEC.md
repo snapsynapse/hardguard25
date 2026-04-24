@@ -1,7 +1,7 @@
 # HardGuard25 Specification
 
-**Version:** 1.3
-**Date:** March 2026
+**Version:** 1.3.2
+**Date:** April 2026
 **Author:** Sam Rogers -- Snap Synapse
 **Spec License:** Creative Commons Attribution 4.0 International (CC BY 4.0)
 
@@ -96,11 +96,20 @@ Birthday-bound approximation: for alphabet size N and length L, the probability 
 ## Normalization Rules
 
 1. Trim leading and trailing whitespace
-2. Collapse any separator characters (hyphens, spaces, underscores, dots)
+2. Collapse any separator characters (hyphens, underscores, dots, and any Unicode whitespace)
 3. Uppercase fold all letters
 4. Reject any character outside the alphabet
 
 A normalizer must be idempotent: `normalize(normalize(x)) === normalize(x)`.
+
+### API Contract
+
+Reference implementations in JavaScript, Python, and Go must expose the same behavioral contract:
+
+- `normalize(x)` returns canonical uppercase form or errors on invalid characters
+- `validate(x)` applies normalization first and returns a boolean
+- `checkDigit(x)` accepts canonical or lowercase input and computes the checksum after uppercase folding
+- verification helpers accept canonical, lowercase, and grouped forms, normalize first, then compare the trailing check character
 
 ## Optional Check Digit
 
@@ -115,7 +124,7 @@ Use a Mod-25 weighted checksum appended as the last character of the ID.
 
 ### Verification
 
-To verify, strip the last character, recompute the check digit, and compare. A valid ID with check digit has `length >= 2`.
+To verify, normalize the full input, strip the last character, recompute the check digit, and compare. A valid ID with check digit has `length >= 2` after normalization.
 
 ### Properties
 
@@ -168,6 +177,8 @@ HardGuard25-16:    D7H2GJ0KMW1PRUYA
 Input bytes (hex): b0 45 f2 1c 8e 09 33 4c 6a 70 56 11 d1 a7 2e 90 ...
 HardGuard25-16:    0CNG5J7KM2PRUWAH
 ```
+
+Additional conformance vectors for normalization, validation, checksum calculation, and checksum verification live in `conformance/vectors.json`. All runtime implementations should consume the same fixture data in tests.
 
 ## Accessibility Notes
 

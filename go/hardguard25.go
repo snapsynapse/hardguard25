@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"unicode"
 )
 
 // Alphabet is the 25-character set used for HardGuard25 IDs.
@@ -106,10 +107,16 @@ func Normalize(input string) (string, error) {
 	normalized := strings.TrimSpace(input)
 
 	// Replace common separators with empty string
-	normalized = strings.ReplaceAll(normalized, "-", "")
-	normalized = strings.ReplaceAll(normalized, " ", "")
-	normalized = strings.ReplaceAll(normalized, "_", "")
-	normalized = strings.ReplaceAll(normalized, ".", "")
+	normalized = strings.Map(func(r rune) rune {
+		switch {
+		case r == '-', r == '_', r == '.':
+			return -1
+		case unicode.IsSpace(r):
+			return -1
+		default:
+			return r
+		}
+	}, normalized)
 
 	// Convert to uppercase
 	normalized = strings.ToUpper(normalized)
@@ -128,6 +135,8 @@ func Normalize(input string) (string, error) {
 // The checksum is: sum of (charIndex[i] * (i+1)) % 25
 // Returns the alphabet character at the resulting index.
 func CheckDigit(code string) (byte, error) {
+	code = strings.ToUpper(code)
+
 	sum := 0
 	for i, ch := range code {
 		idx, ok := charToIndex[byte(ch)]
@@ -146,12 +155,17 @@ func CheckDigit(code string) (byte, error) {
 // Returns true if the check digit is valid, false otherwise.
 // Returns an error if the input is too short or contains invalid characters.
 func VerifyCheckDigit(codeWithCheck string) (bool, error) {
-	if len(codeWithCheck) < 2 {
+	normalized, err := Normalize(codeWithCheck)
+	if err != nil {
+		return false, err
+	}
+
+	if len(normalized) < 2 {
 		return false, fmt.Errorf("code with check digit must be at least 2 characters, got %d", len(codeWithCheck))
 	}
 
-	code := codeWithCheck[:len(codeWithCheck)-1]
-	providedDigit := codeWithCheck[len(codeWithCheck)-1]
+	code := normalized[:len(normalized)-1]
+	providedDigit := normalized[len(normalized)-1]
 
 	computed, err := CheckDigit(code)
 	if err != nil {

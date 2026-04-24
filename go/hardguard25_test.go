@@ -1,9 +1,47 @@
 package hardguard25
 
 import (
+	"encoding/json"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 )
+
+type conformanceFixture struct {
+	Normalize []struct {
+		Input  string `json:"input"`
+		Output string `json:"output"`
+	} `json:"normalize"`
+	Validate []struct {
+		Input string `json:"input"`
+		Valid bool   `json:"valid"`
+	} `json:"validate"`
+	CheckDigit []struct {
+		Code  string `json:"code"`
+		Digit string `json:"digit"`
+	} `json:"check_digit"`
+	Verify []struct {
+		Input string `json:"input"`
+		Valid bool   `json:"valid"`
+	} `json:"verify"`
+}
+
+func loadConformanceFixture(t *testing.T) conformanceFixture {
+	t.Helper()
+
+	data, err := os.ReadFile(filepath.Join("..", "conformance", "vectors.json"))
+	if err != nil {
+		t.Fatalf("failed to read conformance vectors: %v", err)
+	}
+
+	var fixture conformanceFixture
+	if err := json.Unmarshal(data, &fixture); err != nil {
+		t.Fatalf("failed to parse conformance vectors: %v", err)
+	}
+
+	return fixture
+}
 
 // TestAlphabetLength verifies the alphabet has exactly 25 characters.
 func TestAlphabetLength(t *testing.T) {
@@ -75,6 +113,7 @@ func TestGenerateWithCheck(t *testing.T) {
 
 // TestValidate verifies validation of valid and invalid IDs.
 func TestValidate(t *testing.T) {
+	fixture := loadConformanceFixture(t)
 	tests := []struct {
 		name  string
 		input string
@@ -93,6 +132,18 @@ func TestValidate(t *testing.T) {
 		{"Mixed case valid", "0123-acdf-ghkm", true},
 	}
 
+	for _, vector := range fixture.Validate {
+		tests = append(tests, struct {
+			name  string
+			input string
+			valid bool
+		}{
+			name:  "Conformance " + vector.Input,
+			input: vector.Input,
+			valid: vector.Valid,
+		})
+	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			result := Validate(tt.input)
@@ -105,6 +156,7 @@ func TestValidate(t *testing.T) {
 
 // TestNormalize verifies normalization behavior.
 func TestNormalize(t *testing.T) {
+	fixture := loadConformanceFixture(t)
 	tests := []struct {
 		name    string
 		input   string
@@ -114,6 +166,7 @@ func TestNormalize(t *testing.T) {
 		{"Simple ID", "0123456789", "0123456789", false},
 		{"With hyphens", "0123-4567-89", "0123456789", false},
 		{"With spaces", "0123 4567 89", "0123456789", false},
+		{"With tabs and newlines", "0123\t4567\n89", "0123456789", false},
 		{"With underscores", "0123_4567_89", "0123456789", false},
 		{"With dots", "0123.4567.89", "0123456789", false},
 		{"With leading/trailing space", "  0123456789  ", "0123456789", false},
@@ -121,6 +174,20 @@ func TestNormalize(t *testing.T) {
 		{"Mixed separators", "01-23_45.67 89", "0123456789", false},
 		{"Invalid character", "0123B456789", "", true},
 		{"Invalid character O", "0123O456789", "", true},
+	}
+
+	for _, vector := range fixture.Normalize {
+		tests = append(tests, struct {
+			name    string
+			input   string
+			want    string
+			wantErr bool
+		}{
+			name:    "Conformance " + vector.Input,
+			input:   vector.Input,
+			want:    vector.Output,
+			wantErr: false,
+		})
 	}
 
 	for _, tt := range tests {
@@ -153,6 +220,7 @@ func TestNormalize(t *testing.T) {
 
 // TestCheckDigit verifies check digit computation.
 func TestCheckDigit(t *testing.T) {
+	fixture := loadConformanceFixture(t)
 	codes := []string{
 		"0",
 		"0123456789",
@@ -173,8 +241,30 @@ func TestCheckDigit(t *testing.T) {
 		}
 	}
 
+	lowerDigit, err := CheckDigit("acdfghjkmnpruwy")
+	if err != nil {
+		t.Fatalf("CheckDigit should accept lowercase input: %v", err)
+	}
+	upperDigit, err := CheckDigit("ACDFGHJKMNPRUWY")
+	if err != nil {
+		t.Fatalf("CheckDigit failed on uppercase input: %v", err)
+	}
+	if lowerDigit != upperDigit {
+		t.Errorf("CheckDigit should be case-insensitive: got %c and %c", lowerDigit, upperDigit)
+	}
+
+	for _, vector := range fixture.CheckDigit {
+		digit, err := CheckDigit(vector.Code)
+		if err != nil {
+			t.Fatalf("CheckDigit(%q) returned error: %v", vector.Code, err)
+		}
+		if string(digit) != vector.Digit {
+			t.Errorf("CheckDigit(%q) = %q, want %q", vector.Code, string(digit), vector.Digit)
+		}
+	}
+
 	// Test with invalid character
-	_, err := CheckDigit("0123B456")
+	_, err = CheckDigit("0123B456")
 	if err == nil {
 		t.Error("CheckDigit should error on invalid character")
 	}
@@ -182,6 +272,7 @@ func TestCheckDigit(t *testing.T) {
 
 // TestVerifyCheckDigit verifies check digit validation.
 func TestVerifyCheckDigit(t *testing.T) {
+	fixture := loadConformanceFixture(t)
 	// Generate valid codes with check digits
 	testCodes := []string{"012", "0123456789", "ACDFGHJKMN"}
 
@@ -200,6 +291,16 @@ func TestVerifyCheckDigit(t *testing.T) {
 		}
 		if !valid {
 			t.Errorf("VerifyCheckDigit(%q) should be valid", codeWithCheck)
+		}
+
+		split := len(code) / 2
+		formatted := strings.ToLower(code[:split] + "-" + code[split:] + "-" + string(digit))
+		valid, err = VerifyCheckDigit(formatted)
+		if err != nil {
+			t.Errorf("VerifyCheckDigit(%q) should normalize formatted input: %v", formatted, err)
+		}
+		if !valid {
+			t.Errorf("VerifyCheckDigit(%q) should be valid after normalization", formatted)
 		}
 
 		// Invalid check digit should fail
@@ -230,6 +331,16 @@ func TestVerifyCheckDigit(t *testing.T) {
 	_, err = VerifyCheckDigit("0123B456")
 	if err == nil {
 		t.Error("VerifyCheckDigit should error on invalid character")
+	}
+
+	for _, vector := range fixture.Verify {
+		valid, err := VerifyCheckDigit(vector.Input)
+		if vector.Valid && err != nil {
+			t.Fatalf("VerifyCheckDigit(%q) returned error: %v", vector.Input, err)
+		}
+		if valid != vector.Valid {
+			t.Errorf("VerifyCheckDigit(%q) = %v, want %v", vector.Input, valid, vector.Valid)
+		}
 	}
 }
 

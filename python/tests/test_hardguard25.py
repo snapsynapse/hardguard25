@@ -5,10 +5,16 @@ Tests cover alphabet validation, ID generation, validation, normalization,
 check digits, and distribution characteristics.
 """
 
+import json
 import pytest
 from collections import Counter
+from pathlib import Path
 
 import hardguard25
+
+CONFORMANCE = json.loads(
+    Path(__file__).resolve().parents[2].joinpath("conformance", "vectors.json").read_text()
+)
 
 
 class TestAlphabet:
@@ -125,6 +131,7 @@ class TestNormalization:
         assert hardguard25.normalize("A_C_D_1_2_3") == "ACD123"
         assert hardguard25.normalize("A.C.D.1.2.3") == "ACD123"
         assert hardguard25.normalize("A-C D_1.2 3") == "ACD123"
+        assert hardguard25.normalize("A\tC\nD_1.2 3") == "ACD123"
 
     def test_normalize_idempotent(self):
         test_ids = ["acd-123", "A C D 1 2 3", "A_C_D_1_2_3", "A.C.D.1.2.3"]
@@ -144,6 +151,10 @@ class TestNormalization:
             hardguard25.normalize(123)
         with pytest.raises(ValueError):
             hardguard25.normalize(None)
+
+    def test_normalize_matches_shared_vectors(self):
+        for vector in CONFORMANCE["normalize"]:
+            assert hardguard25.normalize(vector["input"]) == vector["output"]
 
 
 class TestCheckDigit:
@@ -179,11 +190,21 @@ class TestCheckDigit:
         code = "ACD123"
         assert hardguard25.check_digit(code) == hardguard25.check_digit_func(code)
 
+    def test_check_digit_matches_shared_vectors(self):
+        for vector in CONFORMANCE["check_digit"]:
+            assert hardguard25.check_digit(vector["code"]) == vector["digit"]
+
     def test_verify_check_digit_valid(self):
         code = hardguard25.generate(10)
         digit = hardguard25.check_digit(code)
         full_code = code + digit
         assert hardguard25.verify_check_digit(full_code)
+
+    def test_verify_check_digit_accepts_formatted_input(self):
+        code = "ACDF0G7HJ2KMNP3R"
+        digit = hardguard25.check_digit(code)
+        formatted = f"acdf-0g7h-j2km-np3r-{digit.lower()}"
+        assert hardguard25.verify_check_digit(formatted)
 
     def test_verify_check_digit_invalid(self):
         code = hardguard25.generate(10)
@@ -215,6 +236,10 @@ class TestCheckDigit:
             corrupted = code + wrong_chars[0]
             assert not hardguard25.verify_check_digit(corrupted)
 
+    def test_verify_matches_shared_vectors(self):
+        for vector in CONFORMANCE["verify"]:
+            assert hardguard25.verify_check_digit(vector["input"]) is vector["valid"]
+
 
 class TestDistribution:
 
@@ -236,3 +261,10 @@ class TestDistribution:
             count = counter.get(char, 0)
             ratio = count / expected_per_char
             assert 0.5 < ratio < 1.5
+
+
+class TestConformanceValidation:
+
+    def test_validate_matches_shared_vectors(self):
+        for vector in CONFORMANCE["validate"]:
+            assert hardguard25.validate(vector["input"]) is vector["valid"]

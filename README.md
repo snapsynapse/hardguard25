@@ -124,6 +124,13 @@ Recommended defaults:
 
 All three libraries include an optional Mod-25 weighted check digit (ISO 7064 style) that catches every single-character substitution error and most transpositions. Enable it when IDs are manually entered.
 
+API contract across JavaScript, Python, and Go:
+
+- `normalize(...)` trims outer whitespace, removes separator characters (`-`, `_`, `.`, and any whitespace), uppercases, and returns canonical form
+- `validate(...)` applies normalization first, then checks the canonical regex
+- `checkDigit(...)` accepts canonical or lowercase input and computes the checksum on the normalized uppercase characters
+- verify helpers accept canonical, lowercase, and grouped input, normalize it, then compare the trailing check character
+
 ## Why Not Crockford Base32?
 
 Crockford Base32 removes 4 characters. HardGuard25 removes 11. The tradeoff: HardGuard25 codes are 1-2 characters longer for the same entropy, but significantly harder to misread. If your IDs are printed on labels, read over the phone, or entered by hand, that tradeoff pays for itself.
@@ -156,6 +163,7 @@ The full specification is in [SPEC.md](SPEC.md), covering:
 - Entropy math and collision guidance tables
 - Normalization rules
 - Check digit algorithm and test vectors
+- Shared conformance vectors for cross-language implementations
 - Formatting and accessibility guidelines
 
 The spec is licensed [CC BY 4.0](LICENSE-SPEC) — reference it freely.

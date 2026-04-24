@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.3.2 -- 2026-04-23
+
+### Added
+- Shared cross-language conformance vectors in `conformance/vectors.json` covering normalization, validation, check digits, and verification
+
+### Changed
+- Aligned JS, Python, and Go API contract documentation for normalization, validation, checksum generation, and checksum verification
+- Clarified in the spec that normalization removes any whitespace separator and that verification runs on normalized input
+- Synced package versions after the checksum and normalization compatibility fixes
+
+### Fixed
+- Verification now accepts grouped and lowercase human input consistently across all three runtimes
+- Go and Python normalization now match JavaScript for tab and newline separators
+- Go checksum helpers now match JS and Python case-handling behavior
+
 ## 1.3.1 -- 2026-04-14
 
 ### Added (Python package)

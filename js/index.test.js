@@ -1,5 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   ALPHABET,
   ALPHABET_SET,
@@ -10,6 +13,12 @@ import {
   checkDigit,
   verifyCheckDigit
 } from './index.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const conformance = JSON.parse(
+  fs.readFileSync(path.join(__dirname, '..', 'conformance', 'vectors.json'), 'utf8')
+);
 
 // Test suite
 test('HardGuard25 Alphabet', async (t) => {
@@ -249,6 +258,10 @@ test('normalize()', async (t) => {
     assert.strictEqual(normalize('\t3KMN7FUA9CD1\n'), '3KMN7FUA9CD1');
   });
 
+  await t.test('removes all whitespace separators', () => {
+    assert.strictEqual(normalize('3KMN\t7FUA\n9CD1'), '3KMN7FUA9CD1');
+  });
+
   await t.test('is idempotent', () => {
     const input = '3KMN-7FUA_9CD.1';
     const first = normalize(input);
@@ -275,6 +288,12 @@ test('normalize()', async (t) => {
     assert.throws(() => normalize(null), /must be a string/);
     assert.throws(() => normalize(undefined), /must be a string/);
     assert.throws(() => normalize(123), /must be a string/);
+  });
+
+  await t.test('matches shared conformance vectors', () => {
+    for (const vector of conformance.normalize) {
+      assert.strictEqual(normalize(vector.input), vector.output);
+    }
   });
 });
 
@@ -334,6 +353,12 @@ test('checkDigit()', async (t) => {
     assert.throws(() => checkDigit(null), /non-empty string/);
     assert.throws(() => checkDigit(123), /non-empty string/);
   });
+
+  await t.test('matches shared conformance vectors', () => {
+    for (const vector of conformance.check_digit) {
+      assert.strictEqual(checkDigit(vector.code), vector.digit);
+    }
+  });
 });
 
 test('verifyCheckDigit()', async (t) => {
@@ -373,6 +398,16 @@ test('verifyCheckDigit()', async (t) => {
     assert.strictEqual(verifyCheckDigit(codeWithCheck.toUpperCase()), true, 'Should verify uppercase');
   });
 
+  await t.test('accepts formatted input after normalization', () => {
+    const code = 'ACDF0G7HJ2KMNP3R';
+    const digit = checkDigit(code);
+    assert.strictEqual(
+      verifyCheckDigit(`acdf-0g7h-j2km-np3r-${digit.toLowerCase()}`),
+      true,
+      'Should verify grouped lowercase input'
+    );
+  });
+
   await t.test('returns false for too-short input', () => {
     assert.strictEqual(verifyCheckDigit(''), false, 'Should reject empty string');
     assert.strictEqual(verifyCheckDigit('A'), false, 'Should reject single character');
@@ -396,6 +431,12 @@ test('verifyCheckDigit()', async (t) => {
     const id2Check = code + digit1 + digit2;
     assert.strictEqual(verifyCheckDigit(id2Check), true, 'Should verify second check digit');
   });
+
+  await t.test('matches shared conformance vectors', () => {
+    for (const vector of conformance.verify) {
+      assert.strictEqual(verifyCheckDigit(vector.input), vector.valid);
+    }
+  });
 });
 
 test('Integration', async (t) => {
@@ -417,6 +458,12 @@ test('Integration', async (t) => {
     for (const id of ids) {
       const normalized = normalize(id);
       assert.strictEqual(validate(normalized), true, `Normalized '${id}' should validate`);
+    }
+  });
+
+  await t.test('validate matches shared conformance vectors', () => {
+    for (const vector of conformance.validate) {
+      assert.strictEqual(validate(vector.input), vector.valid);
     }
   });
 

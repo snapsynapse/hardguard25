@@ -1,0 +1,63 @@
+{
+  "version": "1.3.2",
+  "normalize": [
+    {
+      "input": "acdf-0g7h-j2km-np3r",
+      "output": "ACDF0G7HJ2KMNP3R"
+    },
+    {
+      "input": "ACDF\t0G7H\nJ2KM_NP3R",
+      "output": "ACDF0G7HJ2KMNP3R"
+    },
+    {
+      "input": "  0123.4567 89  ",
+      "output": "0123456789"
+    }
+  ],
+  "validate": [
+    {
+      "input": "acdf-0g7h-j2km-np3r",
+      "valid": true
+    },
+    {
+      "input": "ACDF\t0G7H\nJ2KM_NP3R",
+      "valid": true
+    },
+    {
+      "input": "ACDF0G7HXB",
+      "valid": false
+    }
+  ],
+  "check_digit": [
+    {
+      "code": "ACDF0G7HJ2KMNP3R",
+      "digit": "W"
+    },
+    {
+      "code": "0123456789",
+      "digit": "5"
+    },
+    {
+      "code": "acdf0g7h",
+      "digit": "W"
+    }
+  ],
+  "verify": [
+    {
+      "input": "ACDF0G7HJ2KMNP3RW",
+      "valid": true
+    },
+    {
+      "input": "acdf-0g7h-j2km-np3r-w",
+      "valid": true
+    },
+    {
+      "input": "ACDF\t0G7H\nJ2KM_NP3R.W",
+      "valid": true
+    },
+    {
+      "input": "ACDF0G7HJ2KMNP3R0",
+      "valid": false
+    }
+  ]
+}

@@ -186,8 +186,13 @@ export function verifyCheckDigit(codeWithCheck) {
   }
 
   try {
-    const code = codeWithCheck.slice(0, -1);
-    const providedCheck = codeWithCheck.slice(-1).toUpperCase();
+    const normalized = normalize(codeWithCheck);
+    if (normalized.length < 2) {
+      return false;
+    }
+
+    const code = normalized.slice(0, -1);
+    const providedCheck = normalized.slice(-1);
     const computedCheck = checkDigit(code);
     return providedCheck === computedCheck;
   } catch {
