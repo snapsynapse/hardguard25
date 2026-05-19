@@ -23,6 +23,18 @@ jobs:
         working-directory: js
         run: npm pack --dry-run
 
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check docs generator conformance
+        run: node scripts/check-docs-generator.mjs
+      - name: Check URL conventions
+        run: node scripts/check-url-conventions.mjs
+
   python:
     runs-on: ubuntu-latest
     steps:

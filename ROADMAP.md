@@ -2,11 +2,14 @@
 
 This roadmap tracks follow-up work that would further strengthen HardGuard25 after the trust and shareability hardening pass.
 
+## Completed Follow-Ups
+
+- Added shared conformance checks for the static docs generator.
+- Added a URL convention checker for stale GitHub Pages URLs, `http`, and non-canonical `www` forms.
+
 ## Next Evaluation Work
 
-- Add shared conformance tests for the static docs generator so the browser implementation is covered by the same rejection-sampling and check-digit vectors as the runtime packages.
 - Add a non-flaky statistical distribution eval script for larger RNG samples. Keep it outside ordinary unit tests or run it as a scheduled/manual check.
-- Add a docs link and URL convention checker that rejects stale GitHub Pages URLs, `http`, and non-canonical `www` forms except where DNS, SSL, or server configuration requires them.
 - Add an accessibility smoke test for the generator covering keyboard flow, label associations, contrast-sensitive states, and copy-status announcements.
 - Add snippet checks for README, skill, and docs examples so Go, JavaScript, and Python examples stay parseable as APIs evolve.
 
