@@ -1,7 +1,7 @@
 {
   "name": "HardGuard25",
   "short_name": "HG25",
-  "description": "A 25-character ID alphabet with every symbol visually distinct in any typeface — for codes humans read, type, print, or say out loud without confusion.",
+  "description": "A 25-character ID alphabet with visually distinct symbols for codes humans read, type, print, or say out loud with less confusion.",
   "start_url": "/",
   "scope": "/",
   "display": "minimal-ui",

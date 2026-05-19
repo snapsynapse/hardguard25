@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- GitHub Actions test workflow for JavaScript, Python, and Go
+- Expanded shared conformance vectors for separators, excluded characters, checksum behavior profiles, and deterministic rejection sampling
+- Conformance report, human-factors evidence notes, security policy, contribution guide, and release checklist
+
+### Changed
+- Removed JavaScript's unconditional Node `crypto` import so the module loads cleanly in browser-oriented environments
+- Updated public examples, canonical demo URL, and docs-site metadata
+- Replaced overbroad check-digit claims with measured substitution and transposition profiles
+
 ## 1.3.2 -- 2026-04-23
 
 ### Added
@@ -24,7 +36,7 @@
 - `LICENSE` symlink in `python/` so sdist/wheel include it
 
 ### Changed (root README)
-- Fixed excluded-letter pairings to cover all 11 removed letters (added `L/1`, removed duplicate `B/D`)
+- Fixed excluded-letter pairings to cover all 11 removed letters (added `L/1`, removed duplicate mirror-pair wording)
 - Expanded sizing table from 6 rows to the full 9-row spec set with entropy column and recommended defaults
 
 ### Published

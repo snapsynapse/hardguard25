@@ -1,0 +1,51 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  javascript:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test JavaScript package
+        working-directory: js
+        run: npm test
+      - name: Check JavaScript package metadata
+        working-directory: js
+        run: npm pack --dry-run
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependencies
+        run: python -m pip install pytest build
+      - name: Test Python package
+        working-directory: python
+        run: python -m pytest
+      - name: Check Python package build
+        working-directory: python
+        run: python -m build
+
+  go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+      - name: Test Go package
+        working-directory: go
+        run: GOCACHE="${{ github.workspace }}/.gocache" go test ./...

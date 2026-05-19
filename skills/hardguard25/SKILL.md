@@ -25,7 +25,7 @@ An open standard for human-safe identifiers.
 0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y
 ```
 
-25 characters. 10 digits + 15 letters. Every symbol is visually distinct in any typeface, at any size, for any reader — including those with dyslexia.
+25 characters. 10 digits + 15 letters. Every symbol is visually distinct in common identifier contexts, including dyslexia-sensitive workflows.
 
 **Regex:** `^[0-9ACDFGHJKMNPRUWY]+$`
 
@@ -93,9 +93,9 @@ import "github.com/snapsynapse/hardguard25/go"
 id, _ := hardguard25.Generate(8)
 id, _ = hardguard25.GenerateWithCheck(8)
 ok := hardguard25.Validate("AC3H-7PUW")
-s := hardguard25.Normalize("ac3h-7puw")
+s, _ := hardguard25.Normalize("ac3h-7puw")
 ch, _ := hardguard25.CheckDigit("AC3H7PUW")
-ok = hardguard25.VerifyCheckDigit("AC3H7PUWR")
+ok, _ = hardguard25.VerifyCheckDigit("AC3H7PUWR")
 ```
 
 ### No Library — Just Use the Alphabet
@@ -126,7 +126,7 @@ Mod-25 weighted checksum, appended as the last character.
 2. `sum = sum of (index[i] * (i + 1))` for each position i
 3. Check digit = alphabet character at `sum % 25`
 
-Catches all single-character substitution errors and most transpositions.
+Catches many single-character substitution errors and most adjacent transpositions.
 
 ## Human Formatting
 

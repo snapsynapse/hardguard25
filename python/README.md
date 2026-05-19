@@ -6,7 +6,7 @@ Python reference implementation of **HardGuard25** — an open standard for huma
 0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y
 ```
 
-HardGuard25 is a 25-character alphabet designed so every symbol is visually distinct in any typeface, at any size, for any reader — including those with dyslexia. It removes 11 letters that cause real-world errors (`I L O B S Z E T V X Q`) so IDs survive handwriting, phone calls, OCR, and support tickets without corrections. When a letter and a digit compete for the same visual slot, the digit always wins.
+HardGuard25 is a 25-character alphabet designed so every symbol is visually distinct in common identifier contexts, including dyslexia-sensitive workflows. It removes 11 letters that cause real-world errors (`I L O B S Z E T V X Q`) so IDs survive handwriting, phone calls, OCR, and support tickets with fewer corrections. When a letter and a digit compete for the same visual slot, the digit always wins.
 
 ## Install
 
@@ -38,7 +38,7 @@ verify_check_digit("AC3H7PUWR")   # True
 | `generate(length, *, check_digit=False)` | Cryptographically secure random ID using rejection sampling for uniform distribution |
 | `validate(s)` | `True` if `s` normalizes to a valid HardGuard25 ID; never raises |
 | `normalize(s)` | Trim, uppercase, strip `-` `_` `.` and spaces; raises `ValueError` on invalid chars |
-| `check_digit(code)` | Mod-25 weighted check digit (ISO 7064 style) |
+| `check_digit(code)` | Mod-25 weighted check digit for manual-entry error detection |
 | `verify_check_digit(code)` | Strip last char, recompute, compare |
 | `ALPHABET` | `"0123456789ACDFGHJKMNPRUWY"` |
 

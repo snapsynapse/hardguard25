@@ -20,6 +20,52 @@ const conformance = JSON.parse(
   fs.readFileSync(path.join(__dirname, '..', 'conformance', 'vectors.json'), 'utf8')
 );
 
+function deterministicGenerate(bytesHex, length) {
+  const bytes = bytesHex.split(/\s+/).map((hex) => Number.parseInt(hex, 16));
+  let result = '';
+
+  for (const byte of bytes) {
+    if (byte < 225) {
+      result += ALPHABET[byte % 25];
+    }
+    if (result.length === length) {
+      return result;
+    }
+  }
+
+  throw new Error('Not enough accepted bytes in deterministic vector');
+}
+
+function countCaughtSingleSubstitutions(code, digit) {
+  let caught = 0;
+  let total = 0;
+
+  for (let i = 0; i < code.length; i++) {
+    for (const char of ALPHABET) {
+      if (char === code[i]) continue;
+      total++;
+      const mutated = code.slice(0, i) + char + code.slice(i + 1) + digit;
+      if (!verifyCheckDigit(mutated)) caught++;
+    }
+  }
+
+  return { caught, total };
+}
+
+function countCaughtAdjacentTranspositions(code, digit) {
+  let caught = 0;
+  let total = 0;
+
+  for (let i = 0; i < code.length - 1; i++) {
+    if (code[i] === code[i + 1]) continue;
+    total++;
+    const mutated = code.slice(0, i) + code[i + 1] + code[i] + code.slice(i + 2) + digit;
+    if (!verifyCheckDigit(mutated)) caught++;
+  }
+
+  return { caught, total };
+}
+
 // Test suite
 test('HardGuard25 Alphabet', async (t) => {
   await t.test('alphabet is exactly 25 characters', () => {
@@ -295,6 +341,12 @@ test('normalize()', async (t) => {
       assert.strictEqual(normalize(vector.input), vector.output);
     }
   });
+
+  await t.test('matches shared separator vectors', () => {
+    for (const vector of conformance.separators) {
+      assert.strictEqual(normalize(vector.input), vector.output);
+    }
+  });
 });
 
 test('checkDigit()', async (t) => {
@@ -436,6 +488,47 @@ test('verifyCheckDigit()', async (t) => {
     for (const vector of conformance.verify) {
       assert.strictEqual(verifyCheckDigit(vector.input), vector.valid);
     }
+  });
+});
+
+test('Expanded conformance vectors', async (t) => {
+  await t.test('rejects every excluded character', () => {
+    for (const char of conformance.excluded_characters) {
+      assert.strictEqual(validate(`ACD${char}123`), false, `validate should reject ${char}`);
+      assert.throws(() => normalize(`ACD${char}123`), /Invalid character/);
+    }
+  });
+
+  await t.test('matches single substitution detection profiles', () => {
+    for (const vector of conformance.single_substitution_checks) {
+      assert.strictEqual(checkDigit(vector.code), vector.check_digit);
+      assert.deepStrictEqual(
+        countCaughtSingleSubstitutions(vector.code, vector.check_digit),
+        { caught: vector.caught, total: vector.total }
+      );
+    }
+  });
+
+  await t.test('matches adjacent transposition detection profiles', () => {
+    for (const vector of conformance.adjacent_transposition_checks) {
+      assert.strictEqual(checkDigit(vector.code), vector.check_digit);
+      assert.deepStrictEqual(
+        countCaughtAdjacentTranspositions(vector.code, vector.check_digit),
+        { caught: vector.caught, total: vector.total }
+      );
+    }
+  });
+
+  await t.test('matches deterministic rejection-sampling vectors', () => {
+    for (const vector of conformance.deterministic_generation) {
+      assert.strictEqual(deterministicGenerate(vector.bytes_hex, vector.length), vector.output);
+    }
+  });
+
+  await t.test('does not import Node crypto at module load', () => {
+    const source = fs.readFileSync(path.join(__dirname, 'index.js'), 'utf8');
+    assert.doesNotMatch(source, /from ['"]crypto['"]/);
+    assert.doesNotMatch(source, /from ['"]node:crypto['"]/);
   });
 });
 

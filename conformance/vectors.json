@@ -1,5 +1,5 @@
 {
-  "version": "1.3.2",
+  "version": "1.3.3",
   "normalize": [
     {
       "input": "acdf-0g7h-j2km-np3r",
@@ -12,6 +12,14 @@
     {
       "input": "  0123.4567 89  ",
       "output": "0123456789"
+    },
+    {
+      "input": "A\u00a0C\u2003D\u20281\u20292",
+      "output": "ACD12"
+    },
+    {
+      "input": "0-1_2.3 4\t5\n6\r7",
+      "output": "01234567"
     }
   ],
   "validate": [
@@ -24,8 +32,59 @@
       "valid": true
     },
     {
+      "input": "A\u00a0C\u2003D\u20281\u20292",
+      "valid": true
+    },
+    {
       "input": "ACDF0G7HXB",
       "valid": false
+    },
+    {
+      "input": "",
+      "valid": false
+    },
+    {
+      "input": "   ",
+      "valid": false
+    }
+  ],
+  "excluded_characters": [
+    "B",
+    "E",
+    "I",
+    "L",
+    "O",
+    "Q",
+    "S",
+    "T",
+    "V",
+    "X",
+    "Z"
+  ],
+  "separators": [
+    {
+      "input": "ACDF-0G7H",
+      "output": "ACDF0G7H"
+    },
+    {
+      "input": "ACDF_0G7H",
+      "output": "ACDF0G7H"
+    },
+    {
+      "input": "ACDF.0G7H",
+      "output": "ACDF0G7H"
+    },
+    {
+      "input": "ACDF 0G7H",
+      "output": "ACDF0G7H"
+    },
+    {
+      "input": "ACDF\t0G7H\nJ2KM\rNP3R",
+      "output": "ACDF0G7HJ2KMNP3R"
+    },
+    {
+      "input": "ACDF\u00a00G7H\u2003J2KM",
+      "output": "ACDF0G7HJ2KM"
     }
   ],
   "check_digit": [
@@ -40,6 +99,106 @@
     {
       "code": "acdf0g7h",
       "digit": "W"
+    },
+    {
+      "code": "1",
+      "digit": "1"
+    },
+    {
+      "code": "01",
+      "digit": "2"
+    },
+    {
+      "code": "001",
+      "digit": "3"
+    },
+    {
+      "code": "0001",
+      "digit": "4"
+    },
+    {
+      "code": "00001",
+      "digit": "5"
+    },
+    {
+      "code": "000001",
+      "digit": "6"
+    },
+    {
+      "code": "0000001",
+      "digit": "7"
+    },
+    {
+      "code": "00000001",
+      "digit": "8"
+    },
+    {
+      "code": "000000001",
+      "digit": "9"
+    },
+    {
+      "code": "0000000001",
+      "digit": "A"
+    },
+    {
+      "code": "00000000001",
+      "digit": "C"
+    },
+    {
+      "code": "000000000001",
+      "digit": "D"
+    },
+    {
+      "code": "0000000000001",
+      "digit": "F"
+    },
+    {
+      "code": "00000000000001",
+      "digit": "G"
+    },
+    {
+      "code": "000000000000001",
+      "digit": "H"
+    },
+    {
+      "code": "0000000000000001",
+      "digit": "J"
+    },
+    {
+      "code": "00000000000000001",
+      "digit": "K"
+    },
+    {
+      "code": "000000000000000001",
+      "digit": "M"
+    },
+    {
+      "code": "0000000000000000001",
+      "digit": "N"
+    },
+    {
+      "code": "00000000000000000001",
+      "digit": "P"
+    },
+    {
+      "code": "000000000000000000001",
+      "digit": "R"
+    },
+    {
+      "code": "0000000000000000000001",
+      "digit": "U"
+    },
+    {
+      "code": "00000000000000000000001",
+      "digit": "W"
+    },
+    {
+      "code": "000000000000000000000001",
+      "digit": "Y"
+    },
+    {
+      "code": "0000000000000000000000001",
+      "digit": "0"
     }
   ],
   "verify": [
@@ -58,6 +217,77 @@
     {
       "input": "ACDF0G7HJ2KMNP3R0",
       "valid": false
+    },
+    {
+      "input": "1-1",
+      "valid": true
+    },
+    {
+      "input": "1-2",
+      "valid": false
+    }
+  ],
+  "single_substitution_checks": [
+    {
+      "code": "ACDF0G7HJ2KMNP3R",
+      "check_digit": "W",
+      "caught": 372,
+      "total": 384
+    },
+    {
+      "code": "0123456789",
+      "check_digit": "5",
+      "caught": 232,
+      "total": 240
+    },
+    {
+      "code": "123456789ACDF",
+      "check_digit": "N",
+      "caught": 304,
+      "total": 312
+    },
+    {
+      "code": "ACDFGHJKMNPRUWY",
+      "check_digit": "P",
+      "caught": 348,
+      "total": 360
+    }
+  ],
+  "adjacent_transposition_checks": [
+    {
+      "code": "ACDF0G7HJ2KMNP3R",
+      "check_digit": "W",
+      "caught": 15,
+      "total": 15
+    },
+    {
+      "code": "123456789ACDF",
+      "check_digit": "N",
+      "caught": 12,
+      "total": 12
+    },
+    {
+      "code": "ACDFGHJKMNPRUWY",
+      "check_digit": "P",
+      "caught": 14,
+      "total": 14
+    }
+  ],
+  "deterministic_generation": [
+    {
+      "bytes_hex": "00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18",
+      "length": 16,
+      "output": "0123456789ACDFGH"
+    },
+    {
+      "bytes_hex": "e1 e2 e3 ff 19 1a 1b 1c 1d 1e 1f 20 21 22 23 24 25",
+      "length": 13,
+      "output": "0123456789ACD"
+    },
+    {
+      "bytes_hex": "6a 9f 12 88 58 31 d2 44 9b 07 6c 48 2f 5e e1 b3 20 19 1a",
+      "length": 16,
+      "output": "69MCFYAM578UUN47"
     }
   ]
 }

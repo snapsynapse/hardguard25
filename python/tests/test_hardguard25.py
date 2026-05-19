@@ -17,6 +17,43 @@ CONFORMANCE = json.loads(
 )
 
 
+def deterministic_generate(bytes_hex, length):
+    result = []
+    for byte in bytes.fromhex(bytes_hex):
+        if byte < 225:
+            result.append(hardguard25.ALPHABET[byte % 25])
+        if len(result) == length:
+            return "".join(result)
+    raise ValueError("not enough accepted bytes in deterministic vector")
+
+
+def count_caught_single_substitutions(code, digit):
+    caught = 0
+    total = 0
+    for idx, original in enumerate(code):
+        for char in hardguard25.ALPHABET:
+            if char == original:
+                continue
+            total += 1
+            mutated = code[:idx] + char + code[idx + 1:] + digit
+            if not hardguard25.verify_check_digit(mutated):
+                caught += 1
+    return {"caught": caught, "total": total}
+
+
+def count_caught_adjacent_transpositions(code, digit):
+    caught = 0
+    total = 0
+    for idx in range(len(code) - 1):
+        if code[idx] == code[idx + 1]:
+            continue
+        total += 1
+        mutated = code[:idx] + code[idx + 1] + code[idx] + code[idx + 2:] + digit
+        if not hardguard25.verify_check_digit(mutated):
+            caught += 1
+    return {"caught": caught, "total": total}
+
+
 class TestAlphabet:
 
     def test_alphabet_length(self):
@@ -156,6 +193,10 @@ class TestNormalization:
         for vector in CONFORMANCE["normalize"]:
             assert hardguard25.normalize(vector["input"]) == vector["output"]
 
+    def test_normalize_matches_separator_vectors(self):
+        for vector in CONFORMANCE["separators"]:
+            assert hardguard25.normalize(vector["input"]) == vector["output"]
+
 
 class TestCheckDigit:
 
@@ -268,3 +309,27 @@ class TestConformanceValidation:
     def test_validate_matches_shared_vectors(self):
         for vector in CONFORMANCE["validate"]:
             assert hardguard25.validate(vector["input"]) is vector["valid"]
+
+    def test_rejects_every_excluded_character(self):
+        for char in CONFORMANCE["excluded_characters"]:
+            assert not hardguard25.validate(f"ACD{char}123")
+            with pytest.raises(ValueError):
+                hardguard25.normalize(f"ACD{char}123")
+
+    def test_single_substitution_profiles_match_shared_vectors(self):
+        for vector in CONFORMANCE["single_substitution_checks"]:
+            assert hardguard25.check_digit(vector["code"]) == vector["check_digit"]
+            assert count_caught_single_substitutions(
+                vector["code"], vector["check_digit"]
+            ) == {"caught": vector["caught"], "total": vector["total"]}
+
+    def test_adjacent_transposition_profiles_match_shared_vectors(self):
+        for vector in CONFORMANCE["adjacent_transposition_checks"]:
+            assert hardguard25.check_digit(vector["code"]) == vector["check_digit"]
+            assert count_caught_adjacent_transpositions(
+                vector["code"], vector["check_digit"]
+            ) == {"caught": vector["caught"], "total": vector["total"]}
+
+    def test_deterministic_generation_vectors(self):
+        for vector in CONFORMANCE["deterministic_generation"]:
+            assert deterministic_generate(vector["bytes_hex"], vector["length"]) == vector["output"]

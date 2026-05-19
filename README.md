@@ -4,12 +4,12 @@
 # HardGuard25
 
 <p align="center">
-  <img src="/.github/assets/social-preview.jpg" alt="HardGuard25 — 25 characters. Zero confusion." width="100%">
+  <img src="/.github/assets/social-preview.jpg" alt="HardGuard25 — 25 characters. Less confusion." width="100%">
 </p>
 
 **An open standard for human-safe identifiers.**
 
-HardGuard25 is a 25-character alphabet designed so that every symbol is visually distinct in any typeface, at any size, for any reader — including those with dyslexia. Use it anywhere humans read, type, print, or say an identifier out loud.
+HardGuard25 is a 25-character alphabet designed so that every symbol is visually distinct in common identifier contexts, including dyslexia-sensitive workflows. Use it anywhere humans read, type, print, or say an identifier out loud.
 
 ```
 0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y
@@ -84,8 +84,9 @@ import "github.com/snapsynapse/hardguard25/go"
 id, _ := hardguard25.Generate(8)             // "AC3H7PUW"
 id, _ = hardguard25.GenerateWithCheck(8)     // "AC3H7PUW" + check char
 ok := hardguard25.Validate("AC3H-7PUW")      // true
-s := hardguard25.Normalize("ac3h-7puw")      // "AC3H7PUW"
+s, _ := hardguard25.Normalize("ac3h-7puw")   // "AC3H7PUW"
 ch, _ := hardguard25.CheckDigit("AC3H7PUW")  // 'R' (example)
+ok, _ = hardguard25.VerifyCheckDigit("AC3H7PUWR")
 ```
 
 ### No Library Needed
@@ -122,7 +123,7 @@ Recommended defaults:
 
 ## Check Digit
 
-All three libraries include an optional Mod-25 weighted check digit (ISO 7064 style) that catches every single-character substitution error and most transpositions. Enable it when IDs are manually entered.
+All three libraries include an optional Mod-25 weighted check digit, adapted from ISO 7064-style weighted checksums, that catches many single-character substitution errors and most adjacent transpositions. Enable it when IDs are manually entered.
 
 API contract across JavaScript, Python, and Go:
 
@@ -166,18 +167,21 @@ The full specification is in [SPEC.md](SPEC.md), covering:
 - Shared conformance vectors for cross-language implementations
 - Formatting and accessibility guidelines
 
+The current conformance status is summarized in [CONFORMANCE.md](CONFORMANCE.md).
+The human-factors rationale and limits are documented in [HUMAN_FACTORS.md](HUMAN_FACTORS.md).
+
 The spec is licensed [CC BY 4.0](LICENSE-SPEC) — reference it freely.
 
 ## Live Demo
 
-Try the interactive generator: **[hardguard25 generator](https://snapsynapse.github.io/hardguard25/)**
+Try the interactive generator: **[hardguard25 generator](https://hardguard25.com/generator/)**
 
 ## Development
 
 ```bash
 cd js && npm test
 cd python && ../.venv/bin/python -m pytest
-cd go && GOCACHE=../.gocache go test ./...
+cd go && GOCACHE="$(pwd)/../.gocache" go test ./...
 ```
 
 ## Sponsor
@@ -194,7 +198,7 @@ HardGuard25 is free and open. If you use this encoding, consider [sponsoring its
 HardGuard25 started as a simple question: why do we keep using characters that look the same in IDs?
 
 - [An unambiguous ID code character set that makes your life less confusing](https://sam-rogers.com/blog/best-unique-ids/) (canonical)
-- [Original LinkedIn article](https://www.linkedin.com/pulse/unambigious-id-code-character-set-makes-your-life-less-sam-rogers/)
+- [Original LinkedIn article](https://linkedin.com/pulse/unambigious-id-code-character-set-makes-your-life-less-sam-rogers/)
 
 ## Credits
 

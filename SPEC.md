@@ -128,9 +128,9 @@ To verify, normalize the full input, strip the last character, recompute the che
 
 ### Properties
 
-- Catches all single-character substitution errors
+- Catches many single-character substitution errors
 - Catches most adjacent transpositions
-- Adapted from ISO 7064 principles
+- Adapted from ISO 7064-style weighted checksum principles
 
 ## Human Formatting
 
@@ -161,7 +161,7 @@ To verify, normalize the full input, strip the last character, recompute the che
 - Generator never emits excluded characters (B, E, I, L, O, Q, S, T, V, X, Z)
 - Distribution across symbols is uniform within statistical tolerance
 - Normalizer is idempotent
-- Check digit catches all single-character substitutions
+- Check digit behavior is profiled against substitution and transposition vectors
 
 ## Test Vectors
 

@@ -3,8 +3,6 @@
  * 25 unambiguous characters for easy reading and transcription
  */
 
-import crypto from 'crypto';
-
 const ALPHABET = '0123456789ACDFGHJKMNPRUWY';
 
 /**
@@ -20,6 +18,15 @@ const ALPHABET_SET = new Set(ALPHABET);
 const CHAR_TO_INDEX = new Map();
 for (let i = 0; i < ALPHABET.length; i++) {
   CHAR_TO_INDEX.set(ALPHABET[i], i);
+}
+
+function fillRandomBytes(bytes) {
+  if (typeof globalThis !== 'undefined' && globalThis.crypto?.getRandomValues) {
+    globalThis.crypto.getRandomValues(bytes);
+    return;
+  }
+
+  throw new Error('HardGuard25: crypto.getRandomValues is required for secure ID generation');
 }
 
 /**
@@ -53,13 +60,7 @@ export function generate(length, options = {}) {
     const needed = Math.ceil((targetLength - result.length) * 1.2);
     const bytes = new Uint8Array(needed);
 
-    if (typeof globalThis !== 'undefined' && globalThis.crypto?.getRandomValues) {
-      // Browser environment
-      globalThis.crypto.getRandomValues(bytes);
-    } else {
-      // Node.js environment
-      crypto.randomFillSync(bytes);
-    }
+    fillRandomBytes(bytes);
 
     // Process bytes with rejection sampling
     for (const byte of bytes) {

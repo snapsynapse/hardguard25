@@ -2,6 +2,7 @@ package hardguard25
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -25,6 +26,28 @@ type conformanceFixture struct {
 		Input string `json:"input"`
 		Valid bool   `json:"valid"`
 	} `json:"verify"`
+	ExcludedCharacters []string `json:"excluded_characters"`
+	Separators         []struct {
+		Input  string `json:"input"`
+		Output string `json:"output"`
+	} `json:"separators"`
+	SingleSubstitutionChecks []struct {
+		Code       string `json:"code"`
+		CheckDigit string `json:"check_digit"`
+		Caught     int    `json:"caught"`
+		Total      int    `json:"total"`
+	} `json:"single_substitution_checks"`
+	AdjacentTranspositionChecks []struct {
+		Code       string `json:"code"`
+		CheckDigit string `json:"check_digit"`
+		Caught     int    `json:"caught"`
+		Total      int    `json:"total"`
+	} `json:"adjacent_transposition_checks"`
+	DeterministicGeneration []struct {
+		BytesHex string `json:"bytes_hex"`
+		Length   int    `json:"length"`
+		Output   string `json:"output"`
+	} `json:"deterministic_generation"`
 }
 
 func loadConformanceFixture(t *testing.T) conformanceFixture {
@@ -41,6 +64,70 @@ func loadConformanceFixture(t *testing.T) conformanceFixture {
 	}
 
 	return fixture
+}
+
+func deterministicGenerate(t *testing.T, bytesHex string, length int) string {
+	t.Helper()
+
+	fields := strings.Fields(bytesHex)
+	result := make([]byte, 0, length)
+	for _, field := range fields {
+		var b byte
+		if _, err := fmt.Sscanf(field, "%02x", &b); err != nil {
+			t.Fatalf("failed to parse byte %q: %v", field, err)
+		}
+		if b < 225 {
+			result = append(result, Alphabet[b%25])
+		}
+		if len(result) == length {
+			return string(result)
+		}
+	}
+
+	t.Fatalf("not enough accepted bytes in deterministic vector")
+	return ""
+}
+
+func countCaughtSingleSubstitutions(t *testing.T, code string, digit byte) (int, int) {
+	t.Helper()
+
+	caught := 0
+	total := 0
+	for i := 0; i < len(code); i++ {
+		for j := 0; j < len(Alphabet); j++ {
+			if Alphabet[j] == code[i] {
+				continue
+			}
+			total++
+			mutated := code[:i] + string(Alphabet[j]) + code[i+1:] + string(digit)
+			valid, _ := VerifyCheckDigit(mutated)
+			if !valid {
+				caught++
+			}
+		}
+	}
+
+	return caught, total
+}
+
+func countCaughtAdjacentTranspositions(t *testing.T, code string, digit byte) (int, int) {
+	t.Helper()
+
+	caught := 0
+	total := 0
+	for i := 0; i < len(code)-1; i++ {
+		if code[i] == code[i+1] {
+			continue
+		}
+		total++
+		mutated := code[:i] + string(code[i+1]) + string(code[i]) + code[i+2:] + string(digit)
+		valid, _ := VerifyCheckDigit(mutated)
+		if !valid {
+			caught++
+		}
+	}
+
+	return caught, total
 }
 
 // TestAlphabetLength verifies the alphabet has exactly 25 characters.
@@ -216,6 +303,18 @@ func TestNormalize(t *testing.T) {
 	if normalized1 != normalized2 {
 		t.Errorf("Normalize is not idempotent: %q -> %q -> %q", original, normalized1, normalized2)
 	}
+
+	for _, vector := range fixture.Separators {
+		t.Run("Separator "+vector.Input, func(t *testing.T) {
+			got, err := Normalize(vector.Input)
+			if err != nil {
+				t.Fatalf("Normalize(%q) returned error: %v", vector.Input, err)
+			}
+			if got != vector.Output {
+				t.Errorf("Normalize(%q) = %q, want %q", vector.Input, got, vector.Output)
+			}
+		})
+	}
 }
 
 // TestCheckDigit verifies check digit computation.
@@ -378,4 +477,61 @@ func TestDistribution(t *testing.T) {
 			}
 		}
 	}
+}
+
+func TestExpandedConformance(t *testing.T) {
+	fixture := loadConformanceFixture(t)
+
+	t.Run("ExcludedCharacters", func(t *testing.T) {
+		for _, char := range fixture.ExcludedCharacters {
+			input := "ACD" + char + "123"
+			if Validate(input) {
+				t.Errorf("Validate(%q) should reject excluded character", input)
+			}
+			if _, err := Normalize(input); err == nil {
+				t.Errorf("Normalize(%q) should error on excluded character", input)
+			}
+		}
+	})
+
+	t.Run("SingleSubstitutionProfiles", func(t *testing.T) {
+		for _, vector := range fixture.SingleSubstitutionChecks {
+			digit, err := CheckDigit(vector.Code)
+			if err != nil {
+				t.Fatalf("CheckDigit(%q) returned error: %v", vector.Code, err)
+			}
+			if string(digit) != vector.CheckDigit {
+				t.Fatalf("CheckDigit(%q) = %q, want %q", vector.Code, string(digit), vector.CheckDigit)
+			}
+			caught, total := countCaughtSingleSubstitutions(t, vector.Code, digit)
+			if caught != vector.Caught || total != vector.Total {
+				t.Errorf("single substitutions for %q caught/total = %d/%d, want %d/%d", vector.Code, caught, total, vector.Caught, vector.Total)
+			}
+		}
+	})
+
+	t.Run("AdjacentTranspositionProfiles", func(t *testing.T) {
+		for _, vector := range fixture.AdjacentTranspositionChecks {
+			digit, err := CheckDigit(vector.Code)
+			if err != nil {
+				t.Fatalf("CheckDigit(%q) returned error: %v", vector.Code, err)
+			}
+			if string(digit) != vector.CheckDigit {
+				t.Fatalf("CheckDigit(%q) = %q, want %q", vector.Code, string(digit), vector.CheckDigit)
+			}
+			caught, total := countCaughtAdjacentTranspositions(t, vector.Code, digit)
+			if caught != vector.Caught || total != vector.Total {
+				t.Errorf("adjacent transpositions for %q caught/total = %d/%d, want %d/%d", vector.Code, caught, total, vector.Caught, vector.Total)
+			}
+		}
+	})
+
+	t.Run("DeterministicGeneration", func(t *testing.T) {
+		for _, vector := range fixture.DeterministicGeneration {
+			got := deterministicGenerate(t, vector.BytesHex, vector.Length)
+			if got != vector.Output {
+				t.Errorf("deterministicGenerate(%q, %d) = %q, want %q", vector.BytesHex, vector.Length, got, vector.Output)
+			}
+		}
+	})
 }
