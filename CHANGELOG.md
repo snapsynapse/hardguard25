@@ -7,6 +7,7 @@
 - Expanded shared conformance vectors for separators, excluded characters, checksum behavior profiles, and deterministic rejection sampling
 - Static docs generator conformance check and URL convention check
 - Conformance report, human-factors evidence notes, security policy, contribution guide, and release checklist
+- Human implementation guide and plain-text AI-assisted implementation guide with approval gates and prompt-injection mitigations
 
 ### Changed
 - Removed JavaScript's unconditional Node `crypto` import so the module loads cleanly in browser-oriented environments
