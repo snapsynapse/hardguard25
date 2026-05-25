@@ -133,3 +133,13 @@ For ChatGPT, Claude, Codex, or another local coding assistant, use the plain-tex
 https://hardguard25.com/ai-assisted-implementation.txt
 ```
 That file includes a copy-paste prompt, approval checklist, and safety guidance for adding HardGuard25 to an existing project.
+The guide is published as human-verifiable plain text. Its SHA-256 sidecar is:
+```text
+https://hardguard25.com/ai-assisted-implementation.txt.sha256
+```
+To verify a downloaded copy:
+```bash
+curl -sSLO https://hardguard25.com/ai-assisted-implementation.txt
+curl -sSLO https://hardguard25.com/ai-assisted-implementation.txt.sha256
+shasum -a 256 -c ai-assisted-implementation.txt.sha256
+```

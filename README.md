@@ -107,6 +107,12 @@ For project integration guidance, see [docs/IMPLEMENTATION.md](docs/IMPLEMENTATI
 
 If you want ChatGPT, Claude, Codex, or another coding assistant to help add HardGuard25 to a project, use the plain-text guide at https://hardguard25.com/ai-assisted-implementation.txt.
 
+The guide is published as human-verifiable plain text and has a SHA-256 sidecar at https://hardguard25.com/ai-assisted-implementation.txt.sha256. To verify a downloaded copy:
+```bash
+curl -sSLO https://hardguard25.com/ai-assisted-implementation.txt
+curl -sSLO https://hardguard25.com/ai-assisted-implementation.txt.sha256
+shasum -a 256 -c ai-assisted-implementation.txt.sha256
+```
 Copy this into your assistant:
 ```text
 You are helping me implement HardGuard25 identifiers from https://github.com/snapsynapse/hardguard25.
