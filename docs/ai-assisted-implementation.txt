@@ -2,6 +2,8 @@
 
 Canonical source: https://hardguard25.com/ai-assisted-implementation.txt
 Repository: https://github.com/snapsynapse/hardguard25
+Source file: https://github.com/snapsynapse/hardguard25/blob/main/docs/ai-assisted-implementation.txt
+SHA-256 file: https://hardguard25.com/ai-assisted-implementation.txt.sha256
 Specification: https://hardguard25.com/
 
 This plain-text file is intended for ChatGPT, Claude, Codex, or another coding assistant helping a user add HardGuard25 identifiers to an existing project. It avoids styled HTML so hidden CSS, white-on-white text, offscreen text, and similar presentation tricks cannot change what the assistant sees.
