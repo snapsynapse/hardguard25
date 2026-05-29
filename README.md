@@ -17,6 +17,18 @@ HardGuard25 is a 25-character alphabet designed so that every symbol is visually
 
 It removes 11 letters that cause real-world errors (O/0, I/1, L/1, S/5, Z/2, B/8, E/3, Q/P, V/U, T/+, X/\*). When a letter and a digit compete for the same visual slot, the digit always wins.
 
+## Who this is for
+
+Anyone designing identifiers that humans read, type, print, or say aloud — including dyslexia-sensitive and high-error-cost contexts.
+
+## What problem it solves
+
+Common identifier alphabets confuse visually similar characters (0/O, 1/l/I), causing misreads when humans handle IDs. HardGuard25 is a 25-character alphabet where every symbol is visually distinct.
+
+## Canonical URL
+
+https://hardguard25.com/
+
 ## Use Cases
 
 HardGuard25 is not just for tokens. It's for any identifier a human will touch.
