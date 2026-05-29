@@ -231,4 +231,4 @@ HardGuard25 started as a simple question: why do we keep using characters that l
 
 ## Credits
 
-Created by [Sam Rogers](https://linkedin.com/in/samrogers) at [Snap Synapse](https://snapsynapse.com).
+Created by [Sam Rogers](https://linkedin.com/in/samrogers) at [PAICE.work PBC](https://paice.work/).
