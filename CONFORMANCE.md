@@ -1,6 +1,6 @@
 # Conformance Report
 
-Report date: 2026-05-19
+Report date: 2026-05-31
 
 Fixture version: `1.3.3`
 
@@ -8,8 +8,8 @@ Fixture version: `1.3.3`
 
 | Runtime | Package version | Fixture coverage | Status |
 |---|---:|---|---|
-| JavaScript | 1.3.2 | normalize, validate, excluded chars, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
-| Python | 1.3.2 | normalize, validate, excluded chars, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
+| JavaScript | 1.3.3 | normalize, validate, excluded chars, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
+| Python | 1.3.3 | normalize, validate, excluded chars, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
 | Go | module package | normalize, validate, excluded chars, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
 
 ## Check Digit Profile

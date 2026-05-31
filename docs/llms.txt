@@ -16,17 +16,17 @@ When a letter and a digit compete for the same visual slot, the digit always win
 
 ## Excluded characters
 
-- O → confusable with 0
-- I → confusable with 1 and lowercase L
-- L → confusable with 1 and uppercase I
-- B → confusable with 8; dyslexia mirror pair with D
-- S → confusable with 5
-- Z → confusable with 2
-- E → confusable with 3 for dyslexic readers
-- Q → confusable with O; dyslexia mirror pair with P
-- V → confusable with U
-- T → resembles + in some contexts
-- X → collides with multiplication operator
+- O -> confusable with 0
+- I -> confusable with 1 and lowercase L
+- L -> confusable with 1 and uppercase I
+- B -> confusable with 8; dyslexia mirror pair with D
+- S -> confusable with 5
+- Z -> confusable with 2
+- E -> confusable with 3 for dyslexic readers
+- Q -> confusable with O; dyslexia mirror pair with P
+- V -> confusable with U
+- T -> resembles + in some contexts
+- X -> collides with multiplication operator
 
 ## Entropy
 
@@ -36,8 +36,8 @@ Each character provides 4.64 bits of entropy (log2 25).
 - 6 chars: 244 million (medium businesses)
 - 8 chars: 152 billion (large systems)
 - 12 chars: 59.6 trillion (internal tokens)
-- 16 chars: 3.55 × 10^22 (cross-system identifiers)
-- 20 chars: 2.11 × 10^27 (public tokens)
+- 16 chars: 3.55 x 10^22 (cross-system identifiers)
+- 20 chars: 2.11 x 10^27 (public tokens)
 
 ## Normalization
 
@@ -48,9 +48,9 @@ Each character provides 4.64 bits of entropy (log2 25).
 
 ## Check digit (optional)
 
-Mod-25 weighted checksum adapted from ISO 7064-style weighted checksums. Catches many single-character substitution errors and most adjacent transpositions.
+Mod-25 weighted checksum adapted from ISO 7064-style weighted checksums. Catches many single-character substitution errors and most adjacent transpositions in current conformance profiles.
 
-Algorithm: sum = Σ(index[i] × (i+1)), check = alphabet[sum % 25]
+Algorithm: sum = sum(index[i] * (i+1)), check = alphabet[sum % 25]
 
 ## Install
 

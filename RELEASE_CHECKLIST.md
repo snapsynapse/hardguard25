@@ -6,6 +6,7 @@ Use this checklist for npm, PyPI, Go module, docs, and skill updates.
 
 - Update version strings in JavaScript, Python, conformance vectors, skill metadata, and changelog when applicable.
 - Run all test suites locally.
+- Run `node scripts/check-agent-surfaces.mjs` for assistant-facing ASCII and hash checks.
 - Confirm CI passes on `main`.
 - Review README, SPEC, Python README, docs site, and skill examples for API drift.
 - Update `CONFORMANCE.md` when fixture coverage or results change.

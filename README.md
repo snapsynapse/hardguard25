@@ -164,7 +164,7 @@ Recommended defaults:
 
 ## Check Digit
 
-All three libraries include an optional Mod-25 weighted check digit, adapted from ISO 7064-style weighted checksums, that catches many single-character substitution errors and most adjacent transpositions. Enable it when IDs are manually entered.
+All three libraries include an optional Mod-25 weighted check digit, adapted from ISO 7064-style weighted checksums, that catches many single-character substitution errors and most adjacent transpositions in current conformance profiles. Enable it when IDs are manually entered.
 
 API contract across JavaScript, Python, and Go:
 

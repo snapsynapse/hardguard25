@@ -1,11 +1,11 @@
 # Changelog
 
-## Unreleased
+## 1.3.3 -- 2026-05-31
 
 ### Added
 - GitHub Actions test workflow for JavaScript, Python, and Go
 - Expanded shared conformance vectors for separators, excluded characters, checksum behavior profiles, and deterministic rejection sampling
-- Static docs generator conformance check and URL convention check
+- Static docs generator conformance check, URL convention check, and agent-surface integrity check
 - Conformance report, human-factors evidence notes, security policy, contribution guide, and release checklist
 - Human implementation guide and plain-text AI-assisted implementation guide with approval gates, prompt-injection mitigations, SHA-256 verification instructions, and a provenance sidecar
 

@@ -1,7 +1,7 @@
 # HardGuard25 Specification
 
-**Version:** 1.3.2
-**Date:** April 2026
+**Version:** 1.3.3
+**Date:** May 2026
 **Author:** Sam Rogers -- Snap Synapse
 **Spec License:** Creative Commons Attribution 4.0 International (CC BY 4.0)
 
@@ -129,7 +129,7 @@ To verify, normalize the full input, strip the last character, recompute the che
 ### Properties
 
 - Catches many single-character substitution errors
-- Catches most adjacent transpositions
+- Catches most adjacent transpositions in current conformance profiles
 - Adapted from ISO 7064-style weighted checksum principles
 
 ## Human Formatting

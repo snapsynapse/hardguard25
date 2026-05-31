@@ -6,13 +6,12 @@ metadata:
   source: https://github.com/snapsynapse/hardguard25
   skill_bundle: hardguard25
   file_role: skill
-  version: 1
-  version_date: 2026-03-09
-  previous_version: null
+  version: 2
+  version_date: 2026-05-31
+  previous_version: 1
   change_summary: >
-    Initial skill definition. Covers alphabet, exclusion rationale,
-    length selection, code examples (JS, Python, Go), normalization,
-    check digit, formatting, and comparison to alternatives.
+    Refresh release metadata, align checksum claims with measured
+    conformance profiles, and keep agent-facing guidance current.
 ---
 
 # HardGuard25
@@ -98,7 +97,7 @@ ch, _ := hardguard25.CheckDigit("AC3H7PUW")
 ok, _ = hardguard25.VerifyCheckDigit("AC3H7PUWR")
 ```
 
-### No Library — Just Use the Alphabet
+### No Library - Just Use the Alphabet
 
 If the user doesn't need a library, they can use the character set directly in any language:
 
@@ -126,7 +125,7 @@ Mod-25 weighted checksum, appended as the last character.
 2. `sum = sum of (index[i] * (i + 1))` for each position i
 3. Check digit = alphabet character at `sum % 25`
 
-Catches many single-character substitution errors and most adjacent transpositions.
+Catches many single-character substitution errors and most adjacent transpositions in current conformance profiles.
 
 ## Human Formatting
 
@@ -137,9 +136,9 @@ Catches many single-character substitution errors and most adjacent transpositio
 
 ## When NOT to Use HardGuard25
 
-- Cryptographic keys — use proper key derivation
-- Blockchain consensus — use domain-specific formats
-- Global UUID guarantees — use UUIDv7 or ULID
+- Cryptographic keys - use proper key derivation
+- Blockchain consensus - use domain-specific formats
+- Global UUID guarantees - use UUIDv7 or ULID
 - Machine-only contexts where no human sees the ID
 
 ## Comparison to Alternatives

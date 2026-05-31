@@ -1,6 +1,6 @@
 bundle: hardguard25
-bundle_version: 1.0.0
-bundle_date: 2026-03-09
+bundle_version: 1.3.3
+bundle_date: 2026-05-31
 description: >
   Skill for working with HardGuard25, an open standard for human-safe
   identifiers. Provides the alphabet reference, exclusion rationale,
@@ -21,8 +21,8 @@ compatibility:
       model: Claude Opus 4.6
       surface: Code
       status: pass
-      date: 2026-03-09
-      notes: Initial skill creation and bootstrap
+      date: 2026-05-31
+      notes: Refreshed release metadata, measured check-digit claims, and agent-facing guidance
   spec_version: agentskills.io/1.0
   frontmatter_mode: metadata
 
@@ -31,6 +31,6 @@ dependencies: []
 files:
   - path: SKILL.md
     role: skill
-    version: 1
-    hash: sha256:503983f8869aaeb654e5fe0da940ed77c979f69c7748666df0cad9b5facc8551
+    version: 2
+    hash: sha256:675265727942fbcb202d681f7de38caef316964e864906e113da60c148c900b0
     note: Canonical skill definition with alphabet reference, code examples, and comparison matrix
