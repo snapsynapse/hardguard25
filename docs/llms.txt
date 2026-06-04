@@ -82,4 +82,4 @@ If helping a user implement HardGuard25, inspect the existing project language, 
 
 ## Author
 
-Sam Rogers, PAICE.work PBC (paice.work)
+Sam Rogers, Snap Synapse LLC (snapsynapse.com). Used by PAICE.work for human-readable identifiers in agent and person handoffs.

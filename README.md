@@ -243,4 +243,4 @@ HardGuard25 started as a simple question: why do we keep using characters that l
 
 ## Credits
 
-Created by [Sam Rogers](https://linkedin.com/in/samrogers) at [PAICE.work PBC](https://paice.work/).
+Created by [Sam Rogers](https://linkedin.com/in/samrogers), [Snap Synapse LLC](https://snapsynapse.com/). Used by [PAICE.work](https://paice.work/) for human-readable identifiers in agent and person handoffs.
