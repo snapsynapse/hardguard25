@@ -1,6 +1,6 @@
 bundle: hardguard25
-bundle_version: 1.3.3
-bundle_date: 2026-05-31
+bundle_version: 1.3.4
+bundle_date: 2026-06-03
 description: >
   Skill for working with HardGuard25, an open standard for human-safe
   identifiers. Provides the alphabet reference, exclusion rationale,

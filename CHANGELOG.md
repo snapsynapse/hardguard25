@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.3.4 -- 2026-06-03
+
+### Changed
+- Renamed agent guide from `ai-assisted-implementation.txt` to `assistant-guide.txt` to conform to the GuideCheck canonical filename. The previous URLs (`https://hardguard25.com/ai-assisted-implementation.txt` and `.sha256`) no longer resolve. The guide is now served at the canonical well-known path: `https://hardguard25.com/.well-known/assistant-guide.txt`, with a sibling sidecar at `assistant-guide.txt.sha256`. A convenience copy at `https://hardguard25.com/assistant-guide.txt` is byte-identical to the well-known copy. A repository-root copy at `/assistant-guide.txt` is now committed per the GuideCheck recommendation; integrators cloning the repo see the guide next to the README.
+- Recomputed and propagated the SHA-256 sidecar to all three locations (repo root, `docs/`, `docs/.well-known/`) after the internal canonical URLs inside the guide were updated.
+- Updated README, `python/README.md`, `docs/IMPLEMENTATION.md`, `docs/index.html`, and `docs/llms.txt` to reference the new filename and canonical URL.
+
+### Added
+- `INTENT.md` at repository root, per LocalBrain `0_Across/Repo Standards.md` v0.3 layout matrix. Records design invariants, scope, conformance philosophy, admission criteria, relationships to other PAICE standards (GuideCheck, Skill Provenance, Graceful Boundaries), and exceptions (skills/hardguard25/ tracked as canonical skill home; `docs/llms.txt` is comprehensive standalone).
+- `docs/.well-known/` directory hosting the canonical assistant-guide.txt + sidecar.
+
+### Hygiene
+- Tightened `.gitignore`: replaced partial-match `.claude/settings.local.json` with full-directory `.claude/`; added `handoffs/`, `working/`, `venv/`, `.vercel`, `!.env.example`. Reorganized by category.
+
 ## 1.3.3 -- 2026-05-31
 
 ### Added

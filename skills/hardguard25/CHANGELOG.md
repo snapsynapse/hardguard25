@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.4 -- 2026-06-03
+- Version coupling bump to track parent spec release 1.3.4. SKILL.md content
+  unchanged; hash unchanged.
+- MANIFEST.yaml: bundle_version + bundle_date refreshed.
+
 ## 1.3.3 -- 2026-05-31
 - SKILL.md: Aligned check-digit wording with measured conformance
   profiles and refreshed skill metadata for the current repo release.
