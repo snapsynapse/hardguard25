@@ -127,19 +127,19 @@ Algorithm:
 - Check digit generation and verification match `conformance/vectors.json`.
 - Storage keeps canonical uppercase IDs without separators.
 - UI, email, PDF, label, and support views display grouped IDs when helpful.
-## AI-assisted implementation
-For ChatGPT, Claude, Codex, or another local coding assistant, use the plain-text implementation guide:
+## Assistant guide
+For ChatGPT, Claude, Codex, or another local coding assistant, use the plain-text assistant guide:
 ```text
-https://hardguard25.com/ai-assisted-implementation.txt
+https://hardguard25.com/.well-known/assistant-guide.txt
 ```
 That file includes a copy-paste prompt, approval checklist, and safety guidance for adding HardGuard25 to an existing project.
 The guide is published as human-verifiable plain text. Its SHA-256 sidecar is:
 ```text
-https://hardguard25.com/ai-assisted-implementation.txt.sha256
+https://hardguard25.com/.well-known/assistant-guide.txt.sha256
 ```
 To verify a downloaded copy:
 ```bash
-curl -sSLO https://hardguard25.com/ai-assisted-implementation.txt
-curl -sSLO https://hardguard25.com/ai-assisted-implementation.txt.sha256
-shasum -a 256 -c ai-assisted-implementation.txt.sha256
+curl -sSLO https://hardguard25.com/.well-known/assistant-guide.txt
+curl -sSLO https://hardguard25.com/.well-known/assistant-guide.txt.sha256
+shasum -a 256 -c assistant-guide.txt.sha256
 ```

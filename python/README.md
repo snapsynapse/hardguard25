@@ -72,8 +72,8 @@ See the [spec](https://github.com/snapsynapse/hardguard25/blob/main/SPEC.md) for
 
 For project integration guidance, see:
 - Human implementation guide: https://github.com/snapsynapse/hardguard25/blob/main/docs/IMPLEMENTATION.md
-- AI-assisted implementation guide: https://hardguard25.com/ai-assisted-implementation.txt
-- AI-assisted guide SHA-256: https://hardguard25.com/ai-assisted-implementation.txt.sha256
+- Assistant guide: https://hardguard25.com/.well-known/assistant-guide.txt
+- Assistant guide SHA-256: https://hardguard25.com/.well-known/assistant-guide.txt.sha256
 
 ## When NOT to Use HardGuard25
 

@@ -1,17 +1,28 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+.claude/
+.vercel
+node_modules/
+dist/
+build/
+
+# Python
 __pycache__/
 *.pyc
 .pytest_cache/
-.venv/
-node_modules/
 *.egg-info/
-dist/
-build/
-.gocache/
-.DS_Store
-.claude/settings.local.json
+.venv/
+venv/
 
-# --- baseline additions (automated audit 2026-04-21) ---
-.env
-.env.*
+# Go
+.gocache/
+
+# Editors
 .vscode/
 .idea/
+
+# Local working state
+handoffs/
+working/
