@@ -56,10 +56,8 @@ jobs:
   publish-pypi:
     needs: verify
     runs-on: ubuntu-latest
-    environment: pypi
     permissions:
       contents: read
-      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -76,6 +74,7 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: python/dist
+          password: ${{ secrets.PYPI_API_TOKEN }}
 
   tag-go:
     needs: verify
