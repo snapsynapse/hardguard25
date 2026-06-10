@@ -21,7 +21,7 @@ cd go && GOCACHE="$(pwd)/../.gocache" go test ./...
 
 ## Publication
 
-Pushing a `vX.Y.Z` tag triggers `.github/workflows/release.yml`, which verifies version strings match the tag, then publishes to npm (`NPM_TOKEN` repo secret) and PyPI (`PYPI_API_TOKEN` repo secret), and pushes the `go/vX.Y.Z` tag for Go consumers.
+Pushing a `vX.Y.Z` tag triggers `.github/workflows/release.yml`, which verifies version strings match the tag, then publishes to npm (trusted publishing via OIDC, configured on the npm package settings page; no token) and PyPI (`PYPI_API_TOKEN` repo secret), and pushes the `go/vX.Y.Z` tag for Go consumers.
 
 - Push the `vX.Y.Z` git tag and confirm the Release workflow passes.
 - Confirm GitHub Pages deploy completed.
