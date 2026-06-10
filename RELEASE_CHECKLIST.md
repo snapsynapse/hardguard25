@@ -21,9 +21,9 @@ cd go && GOCACHE="$(pwd)/../.gocache" go test ./...
 
 ## Publication
 
-- Publish npm package if JavaScript changed.
-- Publish PyPI package if Python changed.
-- Push git tag for Go consumers.
+Pushing a `vX.Y.Z` tag triggers `.github/workflows/release.yml`, which verifies version strings match the tag, then publishes to npm (requires `NPM_TOKEN` repo secret) and PyPI (trusted publishing, `pypi` environment), and pushes the `go/vX.Y.Z` tag for Go consumers.
+
+- Push the `vX.Y.Z` git tag and confirm the Release workflow passes.
 - Confirm GitHub Pages deploy completed.
 - Confirm `https://hardguard25.com/` and `https://hardguard25.com/generator/` load after deploy.
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Release automation workflow (`.github/workflows/release.yml`): pushing a `vX.Y.Z` tag verifies version strings, publishes to npm and PyPI, and pushes the matching `go/vX.Y.Z` tag for Go module versioning.
+
+### Fixed
+- `conformance/vectors.json` version string updated from 1.3.3 to 1.3.4 to match the release (vectors themselves unchanged).
+- `scripts/check-agent-surfaces.mjs` still referenced the pre-1.3.4 `ai-assisted-implementation.txt` filename and failed; it now verifies all three `assistant-guide.txt` copies are byte-identical with matching SHA-256 sidecars, and runs in CI.
+
 ## 1.3.4 -- 2026-06-03
 
 ### Changed

@@ -2,8 +2,14 @@ import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 
+const guideCopies = [
+  'assistant-guide.txt',
+  'docs/assistant-guide.txt',
+  'docs/.well-known/assistant-guide.txt',
+];
+
 const asciiProfileFiles = [
-  'docs/ai-assisted-implementation.txt',
+  ...guideCopies,
   'docs/llms.txt',
   'skills/hardguard25/SKILL.md',
   'skills/hardguard25/CHANGELOG.md',
@@ -23,13 +29,20 @@ for (const file of asciiProfileFiles) {
   }
 }
 
-const guideBytes = fs.readFileSync('docs/ai-assisted-implementation.txt');
-const guideSidecar = fs.readFileSync('docs/ai-assisted-implementation.txt.sha256', 'utf8').trim();
-assert.equal(
-  guideSidecar,
-  `${sha256Hex(guideBytes)}  ai-assisted-implementation.txt`,
-  'AI-assisted guide SHA-256 sidecar must match guide bytes'
-);
+const canonicalGuideHash = sha256Hex(fs.readFileSync(guideCopies[0]));
+for (const copy of guideCopies) {
+  assert.equal(
+    sha256Hex(fs.readFileSync(copy)),
+    canonicalGuideHash,
+    `${copy}: all assistant-guide.txt copies must be byte-identical`
+  );
+  const sidecar = fs.readFileSync(`${copy}.sha256`, 'utf8').trim();
+  assert.equal(
+    sidecar,
+    `${canonicalGuideHash}  assistant-guide.txt`,
+    `${copy}.sha256: sidecar must match guide bytes`
+  );
+}
 
 const skillBytes = fs.readFileSync('skills/hardguard25/SKILL.md');
 const manifest = fs.readFileSync('skills/hardguard25/MANIFEST.yaml', 'utf8');

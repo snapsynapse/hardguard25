@@ -34,6 +34,8 @@ jobs:
         run: node scripts/check-docs-generator.mjs
       - name: Check URL conventions
         run: node scripts/check-url-conventions.mjs
+      - name: Check agent surface integrity
+        run: node scripts/check-agent-surfaces.mjs
 
   python:
     runs-on: ubuntu-latest

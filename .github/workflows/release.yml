@@ -1,0 +1,95 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v[0-9]*"
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify version strings match tag
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          echo "Tag version: $TAG_VERSION"
+          node -e "
+            const fs = require('fs');
+            const tag = '$TAG_VERSION';
+            const js = JSON.parse(fs.readFileSync('js/package.json', 'utf8')).version;
+            const py = fs.readFileSync('python/pyproject.toml', 'utf8').match(/^version = \"(.+)\"/m)[1];
+            const vectors = JSON.parse(fs.readFileSync('conformance/vectors.json', 'utf8')).version;
+            const mismatches = Object.entries({ js, py, vectors })
+              .filter(([, v]) => v !== tag);
+            if (mismatches.length) {
+              console.error('Version mismatch vs tag ' + tag + ':', Object.fromEntries(mismatches));
+              process.exit(1);
+            }
+            console.log('All version strings match', tag);
+          "
+
+  publish-npm:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+      - name: Test
+        working-directory: js
+        run: npm test
+      - name: Publish to npm
+        working-directory: js
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-pypi:
+    needs: verify
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test
+        run: |
+          python -m pip install pytest build
+          cd python && python -m pytest
+      - name: Build
+        working-directory: python
+        run: python -m build
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: python/dist
+
+  tag-go:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tag Go submodule
+        run: |
+          GO_TAG="go/${GITHUB_REF_NAME}"
+          if git rev-parse "$GO_TAG" >/dev/null 2>&1; then
+            echo "$GO_TAG already exists, skipping"
+            exit 0
+          fi
+          git tag "$GO_TAG" "$GITHUB_SHA"
+          git push origin "$GO_TAG"
