@@ -65,7 +65,7 @@ Start by checking my project language, package manager, test command, and curren
 
 The assistant may need to adapt commands for the user's project, but the normal installation commands are:
 ```text
-npm install @snapsynapse/hardguard25
+npm install hardguard25
 ```
 ```text
 pip install hardguard25

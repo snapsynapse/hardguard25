@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+- SKILL.md: npm package renamed from `@snapsynapse/hardguard25` to unscoped
+  `hardguard25`, matching the PyPI package name. Install and import examples
+  updated. File version 3; hash refreshed.
+
 ## 1.3.4 -- 2026-06-03
 - Version coupling bump to track parent spec release 1.3.4. SKILL.md content
   unchanged; hash unchanged.

@@ -53,11 +53,11 @@ If it gets printed on a label, read over the phone, entered by hand, or scanned 
 ### JavaScript
 
 ```bash
-npm install @snapsynapse/hardguard25
+npm install hardguard25
 ```
 
 ```js
-import { generate, validate, normalize, checkDigit } from '@snapsynapse/hardguard25';
+import { generate, validate, normalize, checkDigit } from 'hardguard25';
 
 generate(8);                          // "AC3H7PUW"
 generate(8, { checkDigit: true });    // "AC3H7PUW" + check char

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Changed
+- npm package renamed from `@snapsynapse/hardguard25` (never published) to unscoped `hardguard25`, matching the PyPI package name. Updated README, implementation guide, assistant guide (all three copies plus SHA-256 sidecars), docs site, llms.txt, and agent skill.
+
 ### Added
 - Release automation workflow (`.github/workflows/release.yml`): pushing a `vX.Y.Z` tag verifies version strings, publishes to npm and PyPI, and pushes the matching `go/vX.Y.Z` tag for Go module versioning.
 

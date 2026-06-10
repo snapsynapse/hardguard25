@@ -61,11 +61,11 @@ The normalizer must be idempotent: `normalize(normalize(x)) === normalize(x)`.
 ## JavaScript
 Install:
 ```bash
-npm install @snapsynapse/hardguard25
+npm install hardguard25
 ```
 Use:
 ```js
-import { generate, validate, normalize, checkDigit, verifyCheckDigit } from '@snapsynapse/hardguard25';
+import { generate, validate, normalize, checkDigit, verifyCheckDigit } from 'hardguard25';
 
 const id = generate(16);
 const manualEntryId = generate(8, { checkDigit: true });

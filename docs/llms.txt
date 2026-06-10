@@ -54,7 +54,7 @@ Algorithm: sum = sum(index[i] * (i+1)), check = alphabet[sum % 25]
 
 ## Install
 
-- JavaScript: npm install @snapsynapse/hardguard25
+- JavaScript: npm install hardguard25
 - Python: pip install hardguard25
 - Go: import "github.com/snapsynapse/hardguard25/go"
 
@@ -72,7 +72,7 @@ If helping a user implement HardGuard25, inspect the existing project language, 
 - GitHub: https://github.com/snapsynapse/hardguard25
 - Full spec (SPEC.md): https://github.com/snapsynapse/hardguard25/blob/main/SPEC.md
 - Interactive generator: https://hardguard25.com/generator/
-- npm: https://npmjs.com/package/@snapsynapse/hardguard25
+- npm: https://npmjs.com/package/hardguard25
 - PyPI: https://pypi.org/project/hardguard25/
 
 ## License

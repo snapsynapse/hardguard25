@@ -63,7 +63,7 @@ Each character = 4.64 bits of entropy (log2 25).
 
 ### JavaScript
 ```js
-import { generate, validate, normalize, checkDigit, verifyCheckDigit } from '@snapsynapse/hardguard25';
+import { generate, validate, normalize, checkDigit, verifyCheckDigit } from 'hardguard25';
 
 generate(8);                          // e.g. "AC3H7PUW"
 generate(8, { checkDigit: true });    // appends check character
