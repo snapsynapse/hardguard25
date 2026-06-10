@@ -32,8 +32,46 @@ jobs:
             console.log('All version strings match', tag);
           "
 
-  publish-npm:
+  preflight:
     needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.14.0"
+      - name: Check docs generator conformance
+        run: node scripts/check-docs-generator.mjs
+      - name: Check URL conventions
+        run: node scripts/check-url-conventions.mjs
+      - name: Check agent surface integrity
+        run: node scripts/check-agent-surfaces.mjs
+      - name: Test JavaScript package
+        working-directory: js
+        run: npm test
+      - name: Check JavaScript package metadata
+        working-directory: js
+        run: npm pack --dry-run
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Python build dependencies
+        run: python -m pip install pytest build
+      - name: Test Python package
+        working-directory: python
+        run: python -m pytest
+      - name: Check Python package build
+        working-directory: python
+        run: python -m build
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+      - name: Test Go package
+        working-directory: go
+        run: GOCACHE="${{ github.workspace }}/.gocache" go test ./...
+
+  publish-npm:
+    needs: preflight
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -42,19 +80,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: "22.14.0"
           registry-url: "https://registry.npmjs.org"
-      - name: Test
-        working-directory: js
-        run: npm test
-      - name: Update npm for OIDC trusted publishing
-        run: npm install -g npm@latest
+      - name: Install npm for OIDC trusted publishing
+        run: npm install -g npm@11.5.1
       - name: Publish to npm (trusted publishing, no token)
         working-directory: js
         run: npm publish
 
   publish-pypi:
-    needs: verify
+    needs: preflight
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -77,7 +112,7 @@ jobs:
           password: ${{ secrets.PYPI_API_TOKEN }}
 
   tag-go:
-    needs: verify
+    needs: [publish-npm, publish-pypi]
     runs-on: ubuntu-latest
     permissions:
       contents: write
