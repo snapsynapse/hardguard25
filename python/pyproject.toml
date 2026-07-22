@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hardguard25"
-version = "1.3.4"
-description = "HardGuard25: A human-friendly unique ID alphabet. 25 unambiguous characters."
+version = "1.3.5"
+description = "HardGuard25: A 25-character low-confusion alphabet for human-readable identifiers."
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -31,9 +31,14 @@ include = ["hardguard25*"]
 exclude = ["tests*"]
 
 [project.urls]
-Homepage = "https://github.com/snapsynapse/hardguard25"
-Documentation = "https://github.com/snapsynapse/hardguard25/blob/main/SPEC.md"
+Homepage = "https://hardguard25.com/"
+Documentation = "https://hardguard25.com/"
+Specification = "https://github.com/snapsynapse/hardguard25/blob/main/SPEC.md"
 Repository = "https://github.com/snapsynapse/hardguard25"
+Changelog = "https://github.com/snapsynapse/hardguard25/blob/main/CHANGELOG.md"
+Issues = "https://github.com/snapsynapse/hardguard25/issues"
+Security = "https://github.com/snapsynapse/hardguard25/security/policy"
+Funding = "https://github.com/sponsors/snapsynapse"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

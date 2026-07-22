@@ -37,7 +37,6 @@ docs/                             static docs/landing site (deployed to GitHub P
 docs/generator/                   interactive ID generator on the site
 scripts/                          Node-based CI conformance checkers (docs generator, URL conventions, agent-surface integrity)
 skills/hardguard25/               canonical agent skill bundle for this standard
-skills/skill-provenance/          related skill bundle
 conformance/                      shared conformance vectors
 ```
 
@@ -64,13 +63,12 @@ cd go && GOCACHE="$(pwd)/../.gocache" go test ./...
 
 CI (`.github/workflows/`) additionally runs:
 - `test.yml` (push to main + PRs): JS test + `npm pack --dry-run`, docs-generator/URL-convention/agent-surface checks, Python test + `python -m build`, Go test.
-- `release.yml` (on `vX.Y.Z` tag push): verifies `js/package.json`, `python/pyproject.toml`, and `conformance/vectors.json` versions match the tag, re-runs the full preflight suite, then publishes to npm (OIDC trusted publishing) and PyPI (`PYPI_API_TOKEN` secret), and tags the Go submodule.
+- `release.yml` (on `vX.Y.Z` tag push): verifies package, runtime, spec, conformance, docs, and skill versions match the tag, re-runs the full preflight suite, then publishes to npm (OIDC trusted publishing) and PyPI (`PYPI_API_TOKEN` secret), and tags the Go submodule. Publication steps are rerun-safe.
 - `pages.yml` (push to main): deploys `docs/` to GitHub Pages.
 
-## Current state (as of 2026-07-12)
+## Current state (as of 2026-07-21)
 
-- Branch `main`, working tree clean, up to date with `origin/main` (no ahead/behind).
-- Latest release line: 1.3.4 (June 2026); `CHANGELOG.md` has an active `Unreleased` section (npm package rename to unscoped `hardguard25`, new release automation workflow).
-- Most recent commits hardened the release pipeline itself (OIDC npm publishing, PyPI token secret, preflight checks, package rename) — the standard/spec content is stable; recent activity is release-engineering, not spec churn.
+- Latest release line: 1.3.5 (July 2026). The standard/spec content is stable.
+- The 1.3.5 stabilization pass fixed Go non-ASCII lookup truncation, aligned Python length validation and runtime version metadata, added shared Unicode rejection vectors, and hardened release-version and rerun checks.
 - No TODO/FIXME markers found in tracked source or docs.
-- `ROADMAP.md` lists forward-looking, non-blocking follow-ups (statistical RNG distribution eval, a11y smoke test for the generator, snippet-parseability checks, several documentation additions, CI/npm/PyPI badges). None of these represent broken or unfinished core functionality.
+- `ROADMAP.md` lists only evidence-driven, adoption-driven, and maintenance follow-ups. None represents broken or unfinished core functionality.

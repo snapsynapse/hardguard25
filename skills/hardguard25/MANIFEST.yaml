@@ -1,6 +1,6 @@
 bundle: hardguard25
-bundle_version: 1.3.4
-bundle_date: 2026-06-03
+bundle_version: 1.3.5
+bundle_date: 2026-07-21
 description: >
   Skill for working with HardGuard25, an open standard for human-safe
   identifiers. Provides the alphabet reference, exclusion rationale,
@@ -31,6 +31,6 @@ dependencies: []
 files:
   - path: SKILL.md
     role: skill
-    version: 3
-    hash: sha256:c8c0765461e36223cc1073aabe4515ba2ddf04fd596b3ab80f70e04ddf691bcf
+    version: 4
+    hash: sha256:120f9cfaa412f4272c5173a302a53f74bc732ac075ed50ce976b914ddea2cc9e
     note: Canonical skill definition with alphabet reference, code examples, and comparison matrix

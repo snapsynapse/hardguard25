@@ -1,16 +1,16 @@
 # Conformance Report
 
-Report date: 2026-06-03
+Report date: 2026-07-21
 
-Fixture version: `1.3.3` (unchanged — no normative conformance vector changes in v1.3.4)
+Fixture version: `1.3.5`
 
 ## Implementations
 
 | Runtime | Package version | Fixture coverage | Status |
 |---|---:|---|---|
-| JavaScript | 1.3.4 | normalize, validate, excluded chars, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
-| Python | 1.3.4 | normalize, validate, excluded chars, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
-| Go | module package | normalize, validate, excluded chars, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
+| JavaScript | 1.3.5 | normalize, validate, excluded chars, non-ASCII rejection, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
+| Python | 1.3.5 | normalize, validate, excluded chars, non-ASCII rejection, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
+| Go | module package | normalize, validate, excluded chars, non-ASCII rejection, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
 
 ## Check Digit Profile
 

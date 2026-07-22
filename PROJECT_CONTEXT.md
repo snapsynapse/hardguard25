@@ -29,4 +29,4 @@ Precise, standards-document register: short declarative sentences, explicit scop
 
 ## Current status
 
-Actively maintained; the standard itself (spec version 1.3.4, June 2026) is stable, and recent commit activity has focused on hardening the release pipeline (OIDC npm publishing, PyPI token-based publishing, release preflight checks) rather than changing the spec. `main` is clean and in sync with `origin/main`. `ROADMAP.md` tracks non-blocking follow-up work (statistical RNG eval script, generator accessibility smoke test, README/docs additions, CI/npm/PyPI badges) — none of it blocking or indicating instability.
+Actively maintained; the standard itself (spec version 1.3.5, July 2026) is stable. The 1.3.5 stabilization pass fixed non-ASCII handling in Go, aligned Python length validation and release metadata, expanded shared conformance vectors, and hardened rerun-safe release automation. `ROADMAP.md` now limits non-blocking follow-up work to evidence-driven evaluation, adoption documentation, and maintenance.

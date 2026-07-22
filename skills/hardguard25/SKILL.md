@@ -6,12 +6,12 @@ metadata:
   source: https://github.com/snapsynapse/hardguard25
   skill_bundle: hardguard25
   file_role: skill
-  version: 2
-  version_date: 2026-05-31
-  previous_version: 1
+  version: 4
+  version_date: 2026-07-21
+  previous_version: 3
   change_summary: >
-    Refresh release metadata, align checksum claims with measured
-    conformance profiles, and keep agent-facing guidance current.
+    Rename the npm package to unscoped hardguard25 and correct the
+    AC3H7PUW verification examples to use conformance check digit N.
 ---
 
 # HardGuard25
@@ -70,7 +70,7 @@ generate(8, { checkDigit: true });    // appends check character
 validate("AC3H-7PUW");               // true
 normalize("ac3h-7puw");              // "AC3H7PUW"
 checkDigit("AC3H7PUW");              // compute check char
-verifyCheckDigit("AC3H7PUWR");       // true/false
+verifyCheckDigit("AC3H7PUWN");       // true
 ```
 
 ### Python
@@ -82,7 +82,7 @@ generate(8, check_digit=True)         # appends check character
 validate("AC3H-7PUW")                # True
 normalize("ac3h-7puw")               # "AC3H7PUW"
 check_digit("AC3H7PUW")              # compute check char
-verify_check_digit("AC3H7PUWR")      # True/False
+verify_check_digit("AC3H7PUWN")      # True
 ```
 
 ### Go
@@ -94,7 +94,7 @@ id, _ = hardguard25.GenerateWithCheck(8)
 ok := hardguard25.Validate("AC3H-7PUW")
 s, _ := hardguard25.Normalize("ac3h-7puw")
 ch, _ := hardguard25.CheckDigit("AC3H7PUW")
-ok, _ = hardguard25.VerifyCheckDigit("AC3H7PUWR")
+ok, _ = hardguard25.VerifyCheckDigit("AC3H7PUWN")
 ```
 
 ### No Library - Just Use the Alphabet

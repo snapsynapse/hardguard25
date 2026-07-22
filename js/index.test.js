@@ -499,6 +499,14 @@ test('Expanded conformance vectors', async (t) => {
     }
   });
 
+  await t.test('rejects non-ASCII lookalikes in every parser', () => {
+    for (const input of conformance.non_ascii_rejection) {
+      assert.strictEqual(validate(input), false, `validate should reject ${JSON.stringify(input)}`);
+      assert.throws(() => normalize(input), /Invalid character/);
+      assert.throws(() => checkDigit(input), /Invalid character/);
+    }
+  });
+
   await t.test('matches single substitution detection profiles', () => {
     for (const vector of conformance.single_substitution_checks) {
       assert.strictEqual(checkDigit(vector.code), vector.check_digit);

@@ -22,13 +22,13 @@ Requires Python 3.9+.
 from hardguard25 import generate, validate, normalize, check_digit, verify_check_digit
 
 generate(8)                       # e.g. "AC3H7PUW"
-generate(8, check_digit=True)     # e.g. "AC3H7PUWR"  (length+1)
+generate(8, check_digit=True)     # e.g. "AC3H7PUWN"  (length+1)
 
 validate("ac3h-7puw")             # True  (case and separators tolerated)
 normalize("ac3h-7puw")            # "AC3H7PUW"
 
-check_digit("AC3H7PUW")           # "R"
-verify_check_digit("AC3H7PUWR")   # True
+check_digit("AC3H7PUW")           # "N"
+verify_check_digit("AC3H7PUWN")   # True
 ```
 
 ## API

@@ -1,10 +1,9 @@
-// Package hardguard25 provides a 25-character alphabet for human-friendly unique IDs.
+// Package hardguard25 provides a 25-character low-confusion alphabet for human-readable identifiers.
 package hardguard25
 
 import (
 	"crypto/rand"
 	"fmt"
-	"regexp"
 	"strings"
 	"unicode"
 )
@@ -18,9 +17,6 @@ var (
 
 	// charToIndex maps each alphabet character to its index.
 	charToIndex map[byte]int
-
-	// pattern is the compiled regex for HardGuard25 validation.
-	pattern *regexp.Regexp
 )
 
 func init() {
@@ -35,9 +31,6 @@ func init() {
 	for i := 0; i < len(Alphabet); i++ {
 		charToIndex[Alphabet[i]] = i
 	}
-
-	// Compile the regex pattern
-	pattern = regexp.MustCompile(`^[0-9ACDFGHJKMNPRUWY]+$`)
 }
 
 // Generate creates a random HardGuard25 ID of the specified length using CSPRNG.
@@ -87,13 +80,13 @@ func GenerateWithCheck(length int) (string, error) {
 }
 
 // Validate checks if the input string is a valid HardGuard25 ID.
-// It normalizes the input first, then checks against the regex pattern.
+// It normalizes the input first and rejects an empty canonical value.
 func Validate(input string) bool {
 	normalized, err := Normalize(input)
 	if err != nil {
 		return false
 	}
-	return pattern.MatchString(normalized)
+	return normalized != ""
 }
 
 // Normalize processes a HardGuard25 ID by:
@@ -123,7 +116,7 @@ func Normalize(input string) (string, error) {
 
 	// Validate characters
 	for _, ch := range normalized {
-		if !AlphabetSet[byte(ch)] {
+		if ch > unicode.MaxASCII || !AlphabetSet[byte(ch)] {
 			return "", fmt.Errorf("invalid character in input: %c", ch)
 		}
 	}
@@ -139,6 +132,9 @@ func CheckDigit(code string) (byte, error) {
 
 	sum := 0
 	for i, ch := range code {
+		if ch > unicode.MaxASCII {
+			return 0, fmt.Errorf("invalid character in code: %c", ch)
+		}
 		idx, ok := charToIndex[byte(ch)]
 		if !ok {
 			return 0, fmt.Errorf("invalid character in code: %c", ch)

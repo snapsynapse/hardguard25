@@ -91,6 +91,9 @@ class TestGeneration:
             hardguard25.generate(0)
         with pytest.raises(ValueError):
             hardguard25.generate(-1)
+        for invalid in (1.5, "8", None, True):
+            with pytest.raises(ValueError):
+                hardguard25.generate(invalid)
 
     def test_generate_only_valid_chars(self):
         for _ in range(1000):
@@ -315,6 +318,14 @@ class TestConformanceValidation:
             assert not hardguard25.validate(f"ACD{char}123")
             with pytest.raises(ValueError):
                 hardguard25.normalize(f"ACD{char}123")
+
+    def test_rejects_non_ascii_lookalikes_in_every_parser(self):
+        for input_str in CONFORMANCE["non_ascii_rejection"]:
+            assert not hardguard25.validate(input_str)
+            with pytest.raises(ValueError):
+                hardguard25.normalize(input_str)
+            with pytest.raises(ValueError):
+                hardguard25.check_digit(input_str)
 
     def test_single_substitution_profiles_match_shared_vectors(self):
         for vector in CONFORMANCE["single_substitution_checks"]:

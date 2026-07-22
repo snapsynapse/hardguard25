@@ -1,9 +1,13 @@
 # Changelog
 
-## Unreleased
-- SKILL.md: npm package renamed from `@snapsynapse/hardguard25` to unscoped
-  `hardguard25`, matching the PyPI package name. Install and import examples
-  updated. File version 3; hash refreshed.
+## 1.3.5 -- 2026-07-21
+- SKILL.md: Renamed the npm package from `@snapsynapse/hardguard25` to
+  unscoped `hardguard25` and corrected the `AC3H7PUW` verification examples
+  to use the conformance check digit `N`. File version advanced from 3 to 4
+  and the hash was refreshed.
+- MANIFEST.yaml: Parent-release-coupled bundle version and date advanced to
+  1.3.5 and 2026-07-21. This repository preserves its established SemVer
+  coupling rather than converting the bundle field to an unrelated integer.
 
 ## 1.3.4 -- 2026-06-03
 - Version coupling bump to track parent spec release 1.3.4. SKILL.md content

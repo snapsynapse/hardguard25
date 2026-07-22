@@ -1,28 +1,31 @@
 # Roadmap
 
-This roadmap tracks follow-up work that would further strengthen HardGuard25 after the trust and shareability hardening pass.
+The HardGuard25 core standard is stable after the 1.3.5 stabilization pass. Future changes should be driven by interoperability defects, security or correctness findings, or adoption evidence rather than feature expansion.
 
 ## Completed Follow-Ups
 
 - Added shared conformance checks for the static docs generator.
 - Added a URL convention checker for stale GitHub Pages URLs, `http`, and non-canonical `www` forms.
+- Added cross-runtime conformance vectors, agent-surface integrity checks, and release-version alignment checks.
+- Added conformance-backed checks for the public check-digit examples.
+- Added clean-environment smoke tests for published JavaScript and Python artifacts.
+- Removed redundant runtime validation paths and non-portable repository-local links while preserving public APIs.
+- Added automated npm, PyPI, and Go releases with rerun-safe publication behavior.
+- Added CI, npm, PyPI, release, and license badges.
+- Documented collision guidance, check-digit limitations, security boundaries, and human-factors claim limits.
 
-## Next Evaluation Work
+## Evidence-Driven Candidates
 
-- Add a non-flaky statistical distribution eval script for larger RNG samples. Keep it outside ordinary unit tests or run it as a scheduled/manual check.
+- Run a reproducible OCR, font, or transcription comparison against Crockford Base32 if broader standards adoption requires stronger public human-factors claims.
 - Add an accessibility smoke test for the generator covering keyboard flow, label associations, contrast-sensitive states, and copy-status announcements.
-- Add snippet checks for README, skill, and docs examples so Go, JavaScript, and Python examples stay parseable as APIs evolve.
 
-## Documentation Follow-Ups
+## Adoption-Driven Documentation
 
-- Add a plain-language length-selection guide that explains collision risk without requiring users to read the birthday-bound formula first.
-- Add a README check-digit limits section near the quickstart and link it to the conformance report.
 - Add an adoption guide for teams migrating from Crockford Base32, UUIDs, ULIDs, or ad hoc order codes.
-- Add a short threat-model note that clarifies HardGuard25 improves human handling, not authorization, secrecy, or anti-enumeration by itself.
-- Add CI, npm, PyPI, and license badges after the GitHub Actions workflow is active on the default branch.
+- Expand the plain-language length-selection examples only when adopter questions show that the existing table and implementation guide are insufficient.
 
 ## Release Hygiene
 
 - Keep `CONFORMANCE.md` updated whenever shared vectors or detection profiles change.
 - Keep `HUMAN_FACTORS.md` aligned with any stronger public claims made in the README or docs site.
-- Consider adding a lightweight release automation script only after the manual checklist has been used successfully at least once.
+- Preserve the fixed alphabet and current scope boundaries unless field evidence meets the admission criteria in `INTENT.md`.

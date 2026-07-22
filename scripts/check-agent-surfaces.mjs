@@ -44,6 +44,18 @@ for (const copy of guideCopies) {
   );
 }
 
+assert.equal(
+  sha256Hex(fs.readFileSync('imgs/og.png')),
+  sha256Hex(fs.readFileSync('docs/imgs/og.png')),
+  'root and deployed OG images must be byte-identical'
+);
+
+assert.equal(
+  sha256Hex(fs.readFileSync('LICENSE')),
+  sha256Hex(fs.readFileSync('js/LICENSE')),
+  'root and npm package license files must be byte-identical'
+);
+
 const skillBytes = fs.readFileSync('skills/hardguard25/SKILL.md');
 const manifest = fs.readFileSync('skills/hardguard25/MANIFEST.yaml', 'utf8');
 assert.match(

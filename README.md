@@ -1,3 +1,7 @@
+[![CI](https://github.com/snapsynapse/hardguard25/actions/workflows/test.yml/badge.svg)](https://github.com/snapsynapse/hardguard25/actions/workflows/test.yml)
+[![npm](https://img.shields.io/npm/v/hardguard25.svg)](https://npmjs.com/package/hardguard25)
+[![PyPI](https://img.shields.io/pypi/v/hardguard25.svg)](https://pypi.org/project/hardguard25/)
+[![Go Reference](https://pkg.go.dev/badge/github.com/snapsynapse/hardguard25/go.svg)](https://pkg.go.dev/github.com/snapsynapse/hardguard25/go)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/snapsynapse/hardguard25/blob/main/LICENSE)
 [![Latest release](https://img.shields.io/github/v/release/snapsynapse/hardguard25)](https://github.com/snapsynapse/hardguard25/releases/latest)
 
@@ -63,7 +67,7 @@ generate(8);                          // "AC3H7PUW"
 generate(8, { checkDigit: true });    // "AC3H7PUW" + check char
 validate("AC3H-7PUW");               // true
 normalize("ac3h-7puw");              // "AC3H7PUW"
-checkDigit("AC3H7PUW");              // "R" (example)
+checkDigit("AC3H7PUW");              // "N"
 ```
 
 ### Python
@@ -85,10 +89,14 @@ generate(8)                           # "AC3H7PUW"
 generate(8, check_digit=True)         # "AC3H7PUW" + check char
 validate("AC3H-7PUW")                # True
 normalize("ac3h-7puw")               # "AC3H7PUW"
-check_digit("AC3H7PUW")              # "R" (example)
+check_digit("AC3H7PUW")              # "N"
 ```
 
 ### Go
+
+```bash
+go get github.com/snapsynapse/hardguard25/go
+```
 
 ```go
 import "github.com/snapsynapse/hardguard25/go"
@@ -97,8 +105,8 @@ id, _ := hardguard25.Generate(8)             // "AC3H7PUW"
 id, _ = hardguard25.GenerateWithCheck(8)     // "AC3H7PUW" + check char
 ok := hardguard25.Validate("AC3H-7PUW")      // true
 s, _ := hardguard25.Normalize("ac3h-7puw")   // "AC3H7PUW"
-ch, _ := hardguard25.CheckDigit("AC3H7PUW")  // 'R' (example)
-ok, _ = hardguard25.VerifyCheckDigit("AC3H7PUWR")
+ch, _ := hardguard25.CheckDigit("AC3H7PUW")  // 'N'
+ok, _ = hardguard25.VerifyCheckDigit("AC3H7PUWN")
 ```
 
 ### No Library Needed

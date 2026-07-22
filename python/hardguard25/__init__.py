@@ -1,5 +1,5 @@
 """
-HardGuard25: A 25-character alphabet for human-friendly unique IDs.
+HardGuard25: A 25-character low-confusion alphabet for human-readable identifiers.
 
 This module provides functions for generating, validating, and managing
 HardGuard25 identifiers. The alphabet excludes visually ambiguous characters
@@ -12,7 +12,7 @@ import re
 import secrets
 from typing import Dict
 
-__version__ = "1.3.3"
+__version__ = "1.3.5"
 
 # The 25-character HardGuard25 alphabet
 ALPHABET = "0123456789ACDFGHJKMNPRUWY"
@@ -43,10 +43,10 @@ def generate(length: int, *, check_digit: bool = False) -> str:
         A random HardGuard25 string of the specified length (plus 1 if check_digit=True).
 
     Raises:
-        ValueError: If length <= 0.
+        ValueError: If length is not a positive integer.
     """
-    if length <= 0:
-        raise ValueError("length must be greater than 0")
+    if isinstance(length, bool) or not isinstance(length, int) or length <= 0:
+        raise ValueError("length must be a positive integer")
 
     result = []
     alphabet_len = 25

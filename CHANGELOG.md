@@ -1,16 +1,34 @@
 # Changelog
 
-## Unreleased
+## 1.3.5 -- 2026-07-21
 
 ### Changed
 - npm package renamed from `@snapsynapse/hardguard25` (never published) to unscoped `hardguard25`, matching the PyPI package name. Updated README, implementation guide, assistant guide (all three copies plus SHA-256 sidecars), docs site, llms.txt, and agent skill.
+- Declared the core standard stable and narrowed future roadmap work to evidence-driven evaluation, adoption documentation, and maintenance.
+- Synchronized specification, runtime, conformance, docs-site, and skill-bundle release metadata at 1.3.5.
+- Added canonical homepage, issue, changelog, security, and funding metadata to the npm and PyPI packages; limited the npm tarball to runtime files.
+- Added an npm-package README and license plus a Go package-reference badge and install command.
+- Aligned package descriptions with the specification boundary: HardGuard25 is an identifier alphabet, not a global uniqueness protocol.
+- Simplified JavaScript and Go validation by removing redundant post-normalization regex checks and removed JavaScript's private checksum wrapper.
 
 ### Added
 - Release automation workflow (`.github/workflows/release.yml`): pushing a `vX.Y.Z` tag verifies version strings, publishes to npm and PyPI, and pushes the matching `go/vX.Y.Z` tag for Go module versioning.
+- Shared non-ASCII rejection vectors covering Unicode lookalikes and low-byte collisions across JavaScript, Python, and Go.
+- Release-version alignment check covering both package manifests, Python runtime metadata, conformance fixtures and report, specification, skill bundle, and docs site.
+- Conformance-backed check for public check-digit examples in the README, Python package README, and bundled skill.
+- CI, npm, and PyPI status badges in the README.
+- OG-image integrity coverage for the root source and deployed docs copy.
+- Clean-environment smoke tests for the packed npm tarball and built Python wheel.
 
 ### Fixed
 - `conformance/vectors.json` version string updated from 1.3.3 to 1.3.4 to match the release (vectors themselves unchanged).
 - `scripts/check-agent-surfaces.mjs` still referenced the pre-1.3.4 `ai-assisted-implementation.txt` filename and failed; it now verifies all three `assistant-guide.txt` copies are byte-identical with matching SHA-256 sidecars, and runs in CI.
+- Go normalization and check-digit helpers now reject non-ASCII runes before byte lookup, preventing Unicode code points such as `U+0141` from being treated as ASCII characters with the same low byte.
+- Python generation now rejects booleans and non-integer lengths instead of silently producing an unexpected length or raising an incidental type error.
+- Python `__version__` and the conformance report fixture version now match release metadata.
+- npm, PyPI, and Go publication steps are rerun-safe after a partial release.
+- Corrected the public `AC3H7PUW` quickstart check digit from `R` to `N` across JavaScript, Python, Go, and skill examples.
+- Removed the non-portable `skills/skill-provenance` sibling-repository symlink; Skill Provenance remains referenced by its canonical public project.
 
 ## 1.3.4 -- 2026-06-03
 

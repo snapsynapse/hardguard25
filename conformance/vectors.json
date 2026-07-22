@@ -1,5 +1,5 @@
 {
-  "version": "1.3.4",
+  "version": "1.3.5",
   "normalize": [
     {
       "input": "acdf-0g7h-j2km-np3r",
@@ -61,6 +61,12 @@
     "X",
     "Z"
   ],
+  "non_ascii_rejection": [
+    "Ł",
+    "AŁ1",
+    "Ａ",
+    "А"
+  ],
   "separators": [
     {
       "input": "ACDF-0G7H",
@@ -88,6 +94,10 @@
     }
   ],
   "check_digit": [
+    {
+      "code": "AC3H7PUW",
+      "digit": "N"
+    },
     {
       "code": "ACDF0G7HJ2KMNP3R",
       "digit": "W"

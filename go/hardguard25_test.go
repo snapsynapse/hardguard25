@@ -27,6 +27,7 @@ type conformanceFixture struct {
 		Valid bool   `json:"valid"`
 	} `json:"verify"`
 	ExcludedCharacters []string `json:"excluded_characters"`
+	NonASCIIRejection  []string `json:"non_ascii_rejection"`
 	Separators         []struct {
 		Input  string `json:"input"`
 		Output string `json:"output"`
@@ -490,6 +491,30 @@ func TestExpandedConformance(t *testing.T) {
 			}
 			if _, err := Normalize(input); err == nil {
 				t.Errorf("Normalize(%q) should error on excluded character", input)
+			}
+		}
+	})
+
+	t.Run("NonASCIIRejection", func(t *testing.T) {
+		for _, input := range fixture.NonASCIIRejection {
+			if Validate(input) {
+				t.Errorf("Validate(%q) should reject non-ASCII input", input)
+			}
+			if _, err := Normalize(input); err == nil {
+				t.Errorf("Normalize(%q) should reject non-ASCII input", input)
+			}
+			if _, err := CheckDigit(input); err == nil {
+				t.Errorf("CheckDigit(%q) should reject non-ASCII input", input)
+			}
+		}
+
+		for i := 0; i < len(Alphabet); i++ {
+			input := string(rune(0x100) + rune(Alphabet[i]))
+			if _, err := Normalize(input); err == nil {
+				t.Errorf("Normalize(%q) should reject a non-ASCII low-byte collision", input)
+			}
+			if _, err := CheckDigit(input); err == nil {
+				t.Errorf("CheckDigit(%q) should reject a non-ASCII low-byte collision", input)
 			}
 		}
 	})

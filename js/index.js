@@ -50,7 +50,7 @@ export function generate(length, options = {}) {
     throw new Error('HardGuard25: length must be a positive integer');
   }
 
-  const { checkDigit = false } = options;
+  const { checkDigit: withCheckDigit = false } = options;
   const targetLength = length;
   let result = '';
 
@@ -72,8 +72,8 @@ export function generate(length, options = {}) {
     }
   }
 
-  if (checkDigit) {
-    result += computeCheckDigit(result);
+  if (withCheckDigit) {
+    result += checkDigit(result);
   }
 
   return result;
@@ -98,8 +98,7 @@ export function validate(input) {
 
   try {
     const normalized = normalize(input);
-    const regex = /^[0-9ACDFGHJKMNPRUWY]+$/;
-    return regex.test(normalized);
+    return normalized.length > 0;
   } catch {
     return false;
   }
@@ -160,14 +159,6 @@ export function checkDigit(code) {
   }
 
   return ALPHABET[sum % 25];
-}
-
-/**
- * Alias for checkDigit() for backward compatibility and clarity
- * @private
- */
-function computeCheckDigit(code) {
-  return checkDigit(code);
 }
 
 /**

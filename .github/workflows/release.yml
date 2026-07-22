@@ -17,20 +17,7 @@ jobs:
         run: |
           TAG_VERSION="${GITHUB_REF_NAME#v}"
           echo "Tag version: $TAG_VERSION"
-          node -e "
-            const fs = require('fs');
-            const tag = '$TAG_VERSION';
-            const js = JSON.parse(fs.readFileSync('js/package.json', 'utf8')).version;
-            const py = fs.readFileSync('python/pyproject.toml', 'utf8').match(/^version = \"(.+)\"/m)[1];
-            const vectors = JSON.parse(fs.readFileSync('conformance/vectors.json', 'utf8')).version;
-            const mismatches = Object.entries({ js, py, vectors })
-              .filter(([, v]) => v !== tag);
-            if (mismatches.length) {
-              console.error('Version mismatch vs tag ' + tag + ':', Object.fromEntries(mismatches));
-              process.exit(1);
-            }
-            console.log('All version strings match', tag);
-          "
+          node scripts/check-release-versions.mjs "$TAG_VERSION"
 
   preflight:
     needs: verify
@@ -42,6 +29,8 @@ jobs:
           node-version: "22.14.0"
       - name: Check docs generator conformance
         run: node scripts/check-docs-generator.mjs
+      - name: Check documentation examples
+        run: node scripts/check-doc-examples.mjs
       - name: Check URL conventions
         run: node scripts/check-url-conventions.mjs
       - name: Check agent surface integrity
@@ -52,6 +41,15 @@ jobs:
       - name: Check JavaScript package metadata
         working-directory: js
         run: npm pack --dry-run
+      - name: Smoke test packed JavaScript package
+        working-directory: js
+        run: |
+          PACKAGE_FILE="$(npm pack --silent --pack-destination "$RUNNER_TEMP")"
+          mkdir "$RUNNER_TEMP/hardguard25-npm-smoke"
+          cd "$RUNNER_TEMP/hardguard25-npm-smoke"
+          npm init -y >/dev/null
+          npm install --ignore-scripts "$RUNNER_TEMP/$PACKAGE_FILE" >/dev/null
+          node --input-type=module -e "import('hardguard25').then((m) => { if (m.checkDigit('AC3H7PUW') !== 'N') process.exit(1); })"
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -63,6 +61,13 @@ jobs:
       - name: Check Python package build
         working-directory: python
         run: python -m build
+      - name: Smoke test built Python wheel
+        working-directory: python
+        run: |
+          python -m venv "$RUNNER_TEMP/hardguard25-wheel-smoke"
+          "$RUNNER_TEMP/hardguard25-wheel-smoke/bin/python" -m pip install --no-deps dist/*.whl
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/hardguard25-wheel-smoke/bin/python" -c "import importlib.metadata, hardguard25; assert importlib.metadata.version('hardguard25') == hardguard25.__version__; assert hardguard25.check_digit('AC3H7PUW') == 'N'"
       - uses: actions/setup-go@v5
         with:
           go-version: "1.22"
@@ -86,7 +91,13 @@ jobs:
         run: npm install -g npm@11.5.1
       - name: Publish to npm (trusted publishing, no token)
         working-directory: js
-        run: npm publish
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          if npm view "hardguard25@$VERSION" version >/dev/null 2>&1; then
+            echo "hardguard25@$VERSION already exists; skipping"
+          else
+            npm publish
+          fi
 
   publish-pypi:
     needs: preflight
@@ -110,6 +121,7 @@ jobs:
         with:
           packages-dir: python/dist
           password: ${{ secrets.PYPI_API_TOKEN }}
+          skip-existing: true
 
   tag-go:
     needs: [publish-npm, publish-pypi]
@@ -121,7 +133,7 @@ jobs:
       - name: Tag Go submodule
         run: |
           GO_TAG="go/${GITHUB_REF_NAME}"
-          if git rev-parse "$GO_TAG" >/dev/null 2>&1; then
+          if git ls-remote --exit-code --tags origin "refs/tags/$GO_TAG" >/dev/null 2>&1; then
             echo "$GO_TAG already exists, skipping"
             exit 0
           fi

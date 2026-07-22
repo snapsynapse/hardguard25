@@ -4,11 +4,14 @@ Use this checklist for npm, PyPI, Go module, docs, and skill updates.
 
 ## Before Tagging
 
-- Update version strings in JavaScript, Python, conformance vectors, skill metadata, and changelog when applicable.
+- Update version strings in JavaScript, Python package and runtime metadata, the specification, conformance vectors and report, docs site, skill metadata, and changelogs when applicable.
 - Run all test suites locally.
 - Run `node scripts/check-agent-surfaces.mjs` for assistant-facing ASCII and hash checks.
+- Run `node scripts/check-doc-examples.mjs` for conformance-backed public examples.
+- Run `node scripts/check-release-versions.mjs` for cross-surface version alignment.
 - Confirm CI passes on `main`.
 - Review README, SPEC, Python README, docs site, and skill examples for API drift.
+- Install and import the packed npm tarball and built Python wheel in clean temporary environments.
 - Update `CONFORMANCE.md` when fixture coverage or results change.
 
 ## Package Checks

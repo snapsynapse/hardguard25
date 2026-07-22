@@ -22,6 +22,15 @@ jobs:
       - name: Check JavaScript package metadata
         working-directory: js
         run: npm pack --dry-run
+      - name: Smoke test packed JavaScript package
+        working-directory: js
+        run: |
+          PACKAGE_FILE="$(npm pack --silent --pack-destination "$RUNNER_TEMP")"
+          mkdir "$RUNNER_TEMP/hardguard25-npm-smoke"
+          cd "$RUNNER_TEMP/hardguard25-npm-smoke"
+          npm init -y >/dev/null
+          npm install --ignore-scripts "$RUNNER_TEMP/$PACKAGE_FILE" >/dev/null
+          node --input-type=module -e "import('hardguard25').then((m) => { if (m.checkDigit('AC3H7PUW') !== 'N') process.exit(1); })"
 
   docs:
     runs-on: ubuntu-latest
@@ -32,10 +41,14 @@ jobs:
           node-version: "22"
       - name: Check docs generator conformance
         run: node scripts/check-docs-generator.mjs
+      - name: Check documentation examples
+        run: node scripts/check-doc-examples.mjs
       - name: Check URL conventions
         run: node scripts/check-url-conventions.mjs
       - name: Check agent surface integrity
         run: node scripts/check-agent-surfaces.mjs
+      - name: Check release version alignment
+        run: node scripts/check-release-versions.mjs
 
   python:
     runs-on: ubuntu-latest
@@ -52,6 +65,13 @@ jobs:
       - name: Check Python package build
         working-directory: python
         run: python -m build
+      - name: Smoke test built Python wheel
+        working-directory: python
+        run: |
+          python -m venv "$RUNNER_TEMP/hardguard25-wheel-smoke"
+          "$RUNNER_TEMP/hardguard25-wheel-smoke/bin/python" -m pip install --no-deps dist/*.whl
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/hardguard25-wheel-smoke/bin/python" -c "import importlib.metadata, hardguard25; assert importlib.metadata.version('hardguard25') == hardguard25.__version__; assert hardguard25.check_digit('AC3H7PUW') == 'N'"
 
   go:
     runs-on: ubuntu-latest
