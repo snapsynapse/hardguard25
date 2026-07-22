@@ -2,6 +2,8 @@
 
 The HardGuard25 core standard is stable after the 1.3.5 stabilization pass. Future changes should be driven by interoperability defects, security or correctness findings, or adoption evidence rather than feature expansion.
 
+Detailed prerequisites and acceptance direction for optional work are recorded in [handoffs/2026-07-21-post-1.3.5-opportunities.md](handoffs/2026-07-21-post-1.3.5-opportunities.md).
+
 ## Completed Follow-Ups
 
 - Added shared conformance checks for the static docs generator.

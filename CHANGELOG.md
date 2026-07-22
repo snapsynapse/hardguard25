@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Documentation
+- Added a tracked post-1.3.5 opportunities handoff with prerequisites, preservation constraints, and a no-change rule when no adopter or evidence plan exists.
+- Removed the fully actioned June 3 stewardship-return handoff.
+
 ## 1.3.5 -- 2026-07-21
 
 ### Changed

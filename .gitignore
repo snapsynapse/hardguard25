@@ -24,5 +24,8 @@ venv/
 .idea/
 
 # Local working state
-handoffs/
+# Local handoffs are ignored except the current repository handoff.
+!handoffs/
+handoffs/*
+!handoffs/2026-07-21-post-1.3.5-opportunities.md
 working/

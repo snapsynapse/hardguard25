@@ -38,6 +38,7 @@ docs/generator/                   interactive ID generator on the site
 scripts/                          Node-based CI conformance checkers (docs generator, URL conventions, agent-surface integrity)
 skills/hardguard25/               canonical agent skill bundle for this standard
 conformance/                      shared conformance vectors
+handoffs/                         current tracked post-release handoff; other local handoffs ignored
 ```
 
 ## Conventions
