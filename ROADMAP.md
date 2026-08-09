@@ -1,8 +1,8 @@
 # Roadmap
 
-The HardGuard25 core standard is stable after the 1.3.5 stabilization pass. Future changes should be driven by interoperability defects, security or correctness findings, or adoption evidence rather than feature expansion.
+The HardGuard25 core standard is stable after the 1.3.6 maintenance-hardening release. Future changes should be driven by interoperability defects, security or correctness findings, or adoption evidence rather than feature expansion.
 
-Detailed prerequisites and acceptance direction for optional work are recorded in [handoffs/2026-07-21-post-1.3.5-opportunities.md](handoffs/2026-07-21-post-1.3.5-opportunities.md).
+Detailed prerequisites and acceptance direction for optional work are recorded in [handoffs/2026-08-09-post-1.3.6-opportunities.md](handoffs/2026-08-09-post-1.3.6-opportunities.md).
 
 ## Completed Follow-Ups
 
