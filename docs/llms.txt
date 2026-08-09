@@ -2,7 +2,7 @@
 
 > An open standard for human-safe identifiers.
 
-HardGuard25 is a 25-character alphabet designed so every symbol is visually distinct in common identifier contexts, including dyslexia-sensitive workflows. Use it anywhere humans read, type, print, or say an identifier out loud.
+HardGuard25 is a 25-character alphabet designed to exclude common visual confusables, including patterns relevant to dyslexia-sensitive workflows. Use it where humans read, type, print, or say an identifier out loud. Comparative OCR and transcription error rates have not yet been established empirically.
 
 ## Alphabet
 

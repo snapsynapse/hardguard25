@@ -13,13 +13,13 @@
 
 **An open standard for human-safe identifiers.**
 
-HardGuard25 is a 25-character alphabet designed so that every symbol is visually distinct in common identifier contexts, including dyslexia-sensitive workflows. Use it anywhere humans read, type, print, or say an identifier out loud.
+HardGuard25 is a 25-character alphabet designed to exclude common visual confusables, including patterns relevant to dyslexia-sensitive workflows. Use it where humans read, type, print, or say an identifier out loud.
 
 ```
 0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y
 ```
 
-It removes 11 letters that cause real-world errors (O/0, I/1, L/1, S/5, Z/2, B/8, E/3, Q/P, V/U, T/+, X/\*). When a letter and a digit compete for the same visual slot, the digit always wins.
+It removes 11 letters associated with predictable confusion (O/0, I/1, L/1, S/5, Z/2, B/8, E/3, Q/P, V/U, T/+, X/\*). When a letter and a digit compete for the same visual slot, the digit always wins.
 
 ## Who this is for
 
@@ -27,7 +27,7 @@ Anyone designing identifiers that humans read, type, print, or say aloud — inc
 
 ## What problem it solves
 
-Common identifier alphabets confuse visually similar characters (0/O, 1/l/I), causing misreads when humans handle IDs. HardGuard25 is a 25-character alphabet where every symbol is visually distinct.
+Common identifier alphabets contain visually similar characters such as 0/O and 1/l/I. HardGuard25 excludes common confusable pairs by design.
 
 ## Canonical URL
 
@@ -50,7 +50,7 @@ HardGuard25 is not just for tokens. It's for any identifier a human will touch.
 | **IoT & Hardware** | Device IDs, firmware version tags, sensor labels |
 | **Short Links & Codes** | URL shorteners, QR payloads, one-time passcodes |
 
-If it gets printed on a label, read over the phone, entered by hand, or scanned by OCR — it should be HardGuard25.
+If it gets printed on a label, read over the phone, entered by hand, or scanned by OCR, HardGuard25 is a candidate alphabet.
 
 ## Install
 
@@ -183,7 +183,7 @@ API contract across JavaScript, Python, and Go:
 
 ## Why Not Crockford Base32?
 
-Crockford Base32 removes 4 characters. HardGuard25 removes 11. The tradeoff: HardGuard25 codes are 1-2 characters longer for the same entropy, but significantly harder to misread. If your IDs are printed on labels, read over the phone, or entered by hand, that tradeoff pays for itself.
+Crockford Base32 removes 4 characters. HardGuard25 removes 11. HardGuard25 codes are 1-2 characters longer for the same entropy and exclude more common visual confusables. Comparative OCR and transcription error rates have not yet been established empirically; see [HUMAN_FACTORS.md](HUMAN_FACTORS.md) for the evidence limits.
 
 See the full [comparison matrix in the spec](SPEC.md#comparison-matrix).
 
@@ -227,10 +227,20 @@ Try the interactive generator: **[hardguard25 generator](https://hardguard25.com
 
 ## Development
 
+Literal
 ```bash
 cd js && npm test
 cd python && ../.venv/bin/python -m pytest
 cd go && GOCACHE="$(pwd)/../.gocache" go test ./...
+```
+
+Generator accessibility changes also require the root browser suite.
+
+Literal
+```bash
+npm ci
+npx playwright install chromium
+npm run test:accessibility
 ```
 
 ## Sponsor

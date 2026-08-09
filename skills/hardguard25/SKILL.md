@@ -6,12 +6,12 @@ metadata:
   source: https://github.com/snapsynapse/hardguard25
   skill_bundle: hardguard25
   file_role: skill
-  version: 4
-  version_date: 2026-07-21
-  previous_version: 3
+  version: 5
+  version_date: 2026-08-09
+  previous_version: 4
   change_summary: >
-    Rename the npm package to unscoped hardguard25 and correct the
-    AC3H7PUW verification examples to use conformance check digit N.
+    Reconcile human-factors language with the current evidence limits.
+    Preserve the alphabet rationale without claiming measured comparative error rates.
 ---
 
 # HardGuard25
@@ -24,7 +24,7 @@ An open standard for human-safe identifiers.
 0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y
 ```
 
-25 characters. 10 digits + 15 letters. Every symbol is visually distinct in common identifier contexts, including dyslexia-sensitive workflows.
+25 characters. 10 digits + 15 letters. The alphabet excludes common visual confusables, including patterns relevant to dyslexia-sensitive workflows.
 
 **Regex:** `^[0-9ACDFGHJKMNPRUWY]+$`
 
@@ -151,7 +151,7 @@ Catches many single-character substitution errors and most adjacent transpositio
 | Canadian Postal | 30 | 4.91 | 6 removed |
 | Nintendo Base-31 | 31 | 4.95 | 5 removed |
 
-HardGuard25 trades 1-2 extra characters per ID for significantly lower error rates when humans handle the ID.
+HardGuard25 trades 1-2 extra characters per ID for excluding more common visual confusables. Comparative OCR and transcription error rates have not yet been established empirically.
 
 ## Full Specification
 

@@ -5,7 +5,7 @@ Scope: Standards-level strategy for this component. Portfolio-level strategy liv
 
 ## What this standard is
 
-HardGuard25 defines a 25-character alphabet optimized for human readability and low error rates: `0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y`. It specifies the character set, normalization rules, recommended lengths by risk profile, an optional check digit, and formatting guidelines. It does not define a global ID format or a distributed generation protocol. It does not assert collision-resistance guarantees beyond what the alphabet and recommended lengths support.
+HardGuard25 defines a 25-character alphabet designed for human readability by excluding common confusable characters: `0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y`. It specifies the character set, normalization rules, recommended lengths by risk profile, an optional check digit, and formatting guidelines. It does not define a global ID format or a distributed generation protocol. It does not assert collision-resistance guarantees beyond what the alphabet and recommended lengths support, or comparative human-error rates without empirical evidence.
 
 The standard solves one problem: identifiers that humans read, type, print, or say aloud get misread when the alphabet contains visually confusable characters. HardGuard25 removes the 11 letters that compete with digits (O/0, I/1, L/1, S/5, Z/2, B/8, E/3, Q/P, V/U, T/+, X/*) and prefers digits when a letter and a digit would occupy the same visual slot.
 
@@ -57,7 +57,6 @@ These are non-binding integrations; each downstream standard decides whether to 
 
 Per `0_Across/Repo Standards.md`, the following deviations are recorded:
 
-- `skills/hardguard25/` ships the full skill bundle in-repo. Reason: hardguard25 is the canonical home for the HardGuard25 skill. Per the skill-bundle-in-repo exception, full bundle tracking is correct here.
 - `skills/hardguard25/` ships the full skill bundle in-repo. Reason: hardguard25 is the canonical home for the HardGuard25 skill. Per the skill-bundle-in-repo exception in the standards doc, full bundle tracking is correct here.
 - `docs/llms-full.txt` not present. Reason: `docs/llms.txt` is comprehensive standalone per the v0.3 criterion (inlines all referenced content); no separate `llms-full.txt` needed. Re-evaluate if `llms.txt` later becomes link-only.
 - Assistant guide is served at three paths (per file-location principle, trust-anchored category): `/assistant-guide.txt` at repo root, `docs/assistant-guide.txt` (served at https://hardguard25.com/assistant-guide.txt), and `docs/.well-known/assistant-guide.txt` (canonical served path per GuideCheck spec). All three byte-identical. SHA-256 sidecar mirrored in same locations.

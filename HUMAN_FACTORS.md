@@ -1,4 +1,4 @@
-# Human Factors Evidence
+# Human Factors Rationale and Evidence Limits
 
 HardGuard25 is a conservative identifier alphabet for codes that humans read, type, print, dictate, or inspect in support workflows. It reduces avoidable transcription risk by removing characters with common visual, phonetic, OCR, or dyslexia-relevant ambiguity.
 
@@ -35,7 +35,7 @@ HardGuard25 is a conservative identifier alphabet for codes that humans read, ty
 
 ## Limits
 
-HardGuard25 reduces predictable confusion; it does not prove zero-error transcription. The check digit is a lightweight weighted checksum that catches many substitutions and most adjacent transpositions, but it is not a cryptographic integrity check and does not catch every possible edit. For security-sensitive tokens, use cryptographic randomness and appropriate authentication controls in addition to the alphabet.
+HardGuard25 is designed to reduce predictable confusion; it does not prove lower comparative error rates or zero-error transcription. No controlled comparison against Crockford Base32 or another alphabet has yet established OCR, dyslexia-sensitive, or manual-transcription performance. The check digit is a lightweight weighted checksum that catches many substitutions and most adjacent transpositions, but it is not a cryptographic integrity check and does not catch every possible edit. For security-sensitive tokens, use cryptographic randomness and appropriate authentication controls in addition to the alphabet.
 
 ## Evaluation Artifacts
 

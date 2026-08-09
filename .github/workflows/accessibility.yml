@@ -1,0 +1,54 @@
+name: Accessibility
+
+on:
+  pull_request:
+    paths:
+      - "docs/generator/**"
+      - "tests/accessibility/**"
+      - "package.json"
+      - "package-lock.json"
+      - "playwright.config.mjs"
+      - ".github/workflows/accessibility.yml"
+  push:
+    branches: [main]
+    tags:
+      - "v[0-9]*"
+    paths:
+      - "docs/generator/**"
+      - "tests/accessibility/**"
+      - "package.json"
+      - "package-lock.json"
+      - "playwright.config.mjs"
+      - ".github/workflows/accessibility.yml"
+  schedule:
+    - cron: "17 7 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: accessibility-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  generator:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install browser test dependencies
+        run: npm ci
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run checked-in generator accessibility smoke test
+        if: github.event_name != 'schedule'
+        run: npm run test:accessibility
+      - name: Run deployed generator accessibility smoke test
+        if: github.event_name == 'schedule'
+        env:
+          PLAYWRIGHT_BASE_URL: https://hardguard25.com
+        run: npm run test:accessibility

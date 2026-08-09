@@ -62,14 +62,18 @@ cd python && ../.venv/bin/python -m pytest   # adjust venv path as needed
 cd go && GOCACHE="$(pwd)/../.gocache" go test ./...
 ```
 
+Generator accessibility changes also require `npm ci`, a local Chromium installation through Playwright, and `npm run test:accessibility` from the repository root.
+
 CI (`.github/workflows/`) additionally runs:
 - `test.yml` (push to main + PRs): JS test + `npm pack --dry-run`, docs-generator/URL-convention/agent-surface checks, Python test + `python -m build`, Go test.
 - `release.yml` (on `vX.Y.Z` tag push): verifies package, runtime, spec, conformance, docs, and skill versions match the tag, re-runs the full preflight suite, then publishes to npm (OIDC trusted publishing) and PyPI (`PYPI_API_TOKEN` secret), and tags the Go submodule. Publication steps are rerun-safe.
 - `pages.yml` (push to main): deploys `docs/` to GitHub Pages.
+- `accessibility.yml` (relevant PRs and main pushes, release tags, weekly production schedule, and manual runs): executes Playwright/axe checks against the static generator without adding dependencies to the reference libraries.
 
-## Current state (as of 2026-07-21)
+## Current state (as of 2026-08-09)
 
 - Latest release line: 1.3.5 (July 2026). The standard/spec content is stable.
 - The 1.3.5 stabilization pass fixed Go non-ASCII lookup truncation, aligned Python length validation and runtime version metadata, added shared Unicode rejection vectors, and hardened release-version and rerun checks.
+- Post-release maintenance upgraded GitHub Actions, repaired generator accessibility semantics, added browser accessibility coverage, and aligned public human-factors claims with current evidence limits.
 - No TODO/FIXME markers found in tracked source or docs.
 - `ROADMAP.md` lists only evidence-driven, adoption-driven, and maintenance follow-ups. None represents broken or unfinished core functionality.

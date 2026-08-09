@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+- SKILL.md: Replaced absolute visual-distinctness and comparative error-rate
+  language with the supported design rationale and explicit evidence limits.
+  File version advanced from 4 to 5 and the hash was refreshed.
+- MANIFEST.yaml: Bundle date, SKILL.md file version, and hash refreshed. The
+  parent-release-coupled bundle version remains 1.3.5 until the next release.
+
 ## 1.3.5 -- 2026-07-21
 - SKILL.md: Renamed the npm package from `@snapsynapse/hardguard25` to
   unscoped `hardguard25` and corrected the `AC3H7PUW` verification examples

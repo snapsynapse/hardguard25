@@ -15,11 +15,13 @@ Detailed prerequisites and acceptance direction for optional work are recorded i
 - Added automated npm, PyPI, and Go releases with rerun-safe publication behavior.
 - Added CI, npm, PyPI, release, and license badges.
 - Documented collision guidance, check-digit limitations, security boundaries, and human-factors claim limits.
+- Upgraded official GitHub Actions to Node.js 24-compatible majors and disabled dependency caching for the dependency-free Go module.
+- Reconciled public human-factors language with the documented evidence limits.
+- Added keyboard-operable generator controls, accessible status and disclosure semantics, reduced-motion handling, and a Playwright/axe browser smoke test.
 
 ## Evidence-Driven Candidates
 
 - Run a reproducible OCR, font, or transcription comparison against Crockford Base32 if broader standards adoption requires stronger public human-factors claims.
-- Add an accessibility smoke test for the generator covering keyboard flow, label associations, contrast-sensitive states, and copy-status announcements.
 
 ## Adoption-Driven Documentation
 
@@ -30,4 +32,5 @@ Detailed prerequisites and acceptance direction for optional work are recorded i
 
 - Keep `CONFORMANCE.md` updated whenever shared vectors or detection profiles change.
 - Keep `HUMAN_FACTORS.md` aligned with any stronger public claims made in the README or docs site.
+- Keep the accessibility workflow current with supported Playwright, axe, and GitHub Actions releases.
 - Preserve the fixed alphabet and current scope boundaries unless field evidence meets the admission criteria in `INTENT.md`.

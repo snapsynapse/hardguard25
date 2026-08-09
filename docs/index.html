@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <title>HardGuard25 &mdash; An open standard for human-safe identifiers</title>
-  <meta name="description" content="A 25-character ID alphabet with visually distinct symbols for codes humans read, type, print, or say out loud with less confusion.">
-  <meta name="keywords" content="hardguard25, unambiguous IDs, human-readable identifiers, confusable characters, dyslexia-friendly IDs, base-25 alphabet, check digit, mod-25, Crockford Base32 alternative, id generator, ticket codes, order numbers">
+  <meta name="description" content="A 25-character ID alphabet that excludes common visual confusables in codes humans read, type, print, or say out loud.">
+  <meta name="keywords" content="hardguard25, unambiguous IDs, human-readable identifiers, confusable characters, dyslexia-sensitive IDs, base-25 alphabet, check digit, mod-25, Crockford Base32 alternative, id generator, ticket codes, order numbers">
   <meta name="author" content="Sam Rogers">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
   <meta name="theme-color" content="#6c8cff">
@@ -32,7 +32,7 @@
   <meta property="og:url" content="https://hardguard25.com/">
   <meta property="og:locale" content="en_US">
   <meta property="article:published_time" content="2019-11-14T00:00:00Z">
-  <meta property="article:modified_time" content="2026-05-24T00:00:00Z">
+  <meta property="article:modified_time" content="2026-08-09T00:00:00Z">
   <meta property="article:author" content="Sam Rogers">
   <meta property="article:publisher" content="https://snapsynapse.com/">
   <meta property="article:section" content="Open Patterns">
@@ -57,12 +57,12 @@
     "@type": "TechArticle",
     "headline": "HardGuard25",
     "alternativeHeadline": "An open standard for human-safe identifiers",
-    "description": "HardGuard25 defines a 25-character alphabet optimized for human readability and low error rates. It removes 11 letters that cause real-world errors (O/0, I/1, L/1, S/5, Z/2, B/8, E/3, Q/P, V/U, T/+, X/*) so identifiers can be printed, dictated, transcribed, and OCR'd with less confusion.",
+    "description": "HardGuard25 defines a 25-character alphabet designed for human readability by excluding common confusables. It removes 11 letters associated with predictable visual, transcription, or OCR confusion while retaining all ten digits.",
     "inLanguage": "en",
     "url": "https://hardguard25.com/",
     "mainEntityOfPage": { "@type": "WebPage", "@id": "https://hardguard25.com/" },
     "datePublished": "2019-11-14",
-    "dateModified": "2026-07-21",
+    "dateModified": "2026-08-09",
     "author": {
       "@type": "Person",
       "name": "Sam Rogers",
@@ -76,7 +76,7 @@
       "logo": { "@type": "ImageObject", "url": "https://snapsynapse.com/logo.png" }
     },
     "image": "https://hardguard25.com/imgs/og.png",
-    "keywords": ["hardguard25", "unambiguous IDs", "human-readable identifiers", "confusable characters", "base-25", "check digit", "mod-25", "dyslexia-friendly"],
+    "keywords": ["hardguard25", "unambiguous IDs", "human-readable identifiers", "confusable characters", "base-25", "check digit", "mod-25", "dyslexia-sensitive"],
     "isPartOf": { "@type": "CreativeWork", "name": "Snap Synapse Open Standards" },
     "license": "https://creativecommons.org/licenses/by/4.0/",
     "copyrightHolder": { "@type": "Organization", "name": "Snap Synapse LLC" },
@@ -97,7 +97,7 @@
     "@type": "DefinedTerm",
     "name": "HardGuard25",
     "alternateName": ["hardguard25", "HG25", "HardGuard-25"],
-    "description": "A 25-character alphabet (0-9 plus A C D F G H J K M N P R U W Y) designed so every symbol is visually distinct in common identifier contexts. When a letter and a digit compete for the same visual slot, the digit always wins.",
+    "description": "A 25-character alphabet (0-9 plus A C D F G H J K M N P R U W Y) designed to exclude common visual confusables. When a letter and a digit compete for the same visual slot, the digit always wins.",
     "url": "https://hardguard25.com/",
     "inDefinedTermSet": {
       "@type": "DefinedTermSet",
@@ -477,19 +477,19 @@
 <section class="hero">
   <div class="container">
     <h1>25 characters. Less confusion.</h1>
-    <p class="subtitle">An open standard for human-safe identifiers. Visually distinct in common identifier contexts, including dyslexia-sensitive workflows.</p>
+    <p class="subtitle">An open standard for human-safe identifiers, designed to exclude common visual confusables in dyslexia-sensitive and other human workflows.</p>
     <p class="byline">
       By <a href="https://linkedin.com/in/samrogers" target="_blank" rel="noopener author">Sam Rogers</a>, <a href="https://snapsynapse.com/" target="_blank" rel="noopener">Snap Synapse LLC</a>
       <span class="sep">&middot;</span>
       Published <time datetime="2019-11-14">November 14, 2019</time>
       <span class="sep">&middot;</span>
-      Updated <time datetime="2026-07-21">July 21, 2026</time>
+      Updated <time datetime="2026-08-09">August 9, 2026</time>
       <span class="sep">&middot;</span>
       <span class="version">v1.3.5</span>
       <span class="sep">&middot;</span>
       <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank">CC&nbsp;BY&nbsp;4.0</a>
     </p>
-    <p class="hook">Every ambiguous character in an ID is a future support ticket. HardGuard25 removes the 11 letters that get misread, mis-dictated, and OCR'd wrong &mdash; and keeps all ten digits so versioning stays natural.</p>
+    <p class="hook">Ambiguous characters can become support problems. HardGuard25 removes 11 letters associated with predictable visual, dictation, and OCR confusion while keeping all ten digits so versioning stays natural.</p>
 
     <div class="charset" role="img" tabindex="0" aria-label="HardGuard25 alphabet: 0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y">0123456789ACDFGHJKMNPRUWY</div>
 
@@ -507,16 +507,16 @@
 
     <div class="pillars">
       <div class="pillar">
-        <h3>Visually distinct</h3>
-        <p>No confusable pairs &mdash; no more O vs 0, I vs 1, S vs 5, or B vs 8 in printed or dictated identifiers.</p>
+        <h3>Reduced confusables</h3>
+        <p>Common digit-letter pairs such as O vs 0, I vs 1, S vs 5, and B vs 8 are excluded from printed or dictated identifiers.</p>
       </div>
       <div class="pillar">
         <h3>Dyslexia-aware</h3>
         <p>Ambiguous shapes and mirror-prone pairs, including Q/P and E/3, are removed to reduce transcription risk for dyslexic readers.</p>
       </div>
       <div class="pillar">
-        <h3>OCR-friendly</h3>
-        <p>Works reliably with OCR-A, Menlo, and other monospace typefaces on receipts, labels, and printed materials.</p>
+        <h3>OCR-conscious</h3>
+        <p>Designed for use with OCR-A, Menlo, and other monospace typefaces on receipts, labels, and printed materials. Comparative OCR performance has not yet been benchmarked.</p>
       </div>
     </div>
 
@@ -635,7 +635,7 @@ s, _ := hardguard25.Normalize("ac3h-7puw")</pre>
       <a href="https://sam-rogers.com/blog/best-unique-ids/" target="_blank" rel="noopener">sam-rogers.com</a>,
       or other platforms are derived from this source and should cite
       <a href="https://hardguard25.com/">hardguard25.com</a> as canonical.
-      Last substantive revision: <time datetime="2026-05-24">2026-05-24</time>.
+      Last substantive revision: <time datetime="2026-08-09">2026-08-09</time>.
       <a href="https://github.com/snapsynapse/hardguard25/commits/main/SPEC.md" target="_blank" rel="noopener">Revision history &rarr;</a>
     </aside>
   </div>

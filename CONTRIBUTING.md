@@ -12,6 +12,8 @@ cd python && ../.venv/bin/python -m pytest
 cd go && GOCACHE="$(pwd)/../.gocache" go test ./...
 ```
 
+For generator accessibility changes, install the root development dependencies and Playwright Chromium, then run `npm run test:accessibility`.
+
 ## Change Rules
 
 - Keep the alphabet stable unless the specification version and migration notes change together.
@@ -26,3 +28,4 @@ cd go && GOCACHE="$(pwd)/../.gocache" go test ./...
 - Public docs and examples match actual API behavior.
 - Conformance report is updated when fixture behavior changes.
 - Changelog entry is added for release-facing changes.
+- Generator accessibility changes pass the Playwright/axe browser smoke test.

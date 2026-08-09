@@ -7,7 +7,7 @@
 
 ## Abstract
 
-Identifiers used by humans and machines fail for predictable reasons. Most collisions and transcription errors trace back to ambiguous characters, inconsistent casing, and context-insensitive formatting. HardGuard25 defines a 25-character alphabet optimized for human readability and low error rates while retaining the full 0-9 digit set for natural versioning. This document specifies the character set, normalization rules, recommended lengths by risk profile, an optional check digit, and formatting guidelines. It does not define a global ID format or distributed generation protocol.
+Identifiers used by humans and machines fail for predictable reasons. Ambiguous characters, inconsistent casing, and context-insensitive formatting can contribute to collisions and transcription errors. HardGuard25 defines a 25-character alphabet designed for human readability by excluding common confusables while retaining the full 0-9 digit set for natural versioning. This document specifies the character set, normalization rules, recommended lengths by risk profile, an optional check digit, and formatting guidelines. It does not define a global ID format or distributed generation protocol, and it does not claim empirically established comparative error rates.
 
 ## Alphabet
 
@@ -183,7 +183,7 @@ Additional conformance vectors for normalization, validation, checksum calculati
 ## Accessibility Notes
 
 - Designed for dyslexia-sensitive contexts by avoiding common confusable pairs
-- Works well in OCR contexts with OCR-A and similar monospaced fonts
+- Intended for OCR contexts when paired with OCR-A or similar monospaced fonts; comparative OCR performance has not yet been benchmarked
 - Avoid thin, condensed, or highly stylized typefaces for printed IDs
 - Provide chunking and high contrast when displayed
 

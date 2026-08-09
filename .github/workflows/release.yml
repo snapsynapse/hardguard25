@@ -12,7 +12,7 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Verify version strings match tag
         run: |
           TAG_VERSION="${GITHUB_REF_NAME#v}"
@@ -23,8 +23,8 @@ jobs:
     needs: verify
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: "22.14.0"
       - name: Check docs generator conformance
@@ -50,7 +50,7 @@ jobs:
           npm init -y >/dev/null
           npm install --ignore-scripts "$RUNNER_TEMP/$PACKAGE_FILE" >/dev/null
           node --input-type=module -e "import('hardguard25').then((m) => { if (m.checkDigit('AC3H7PUW') !== 'N') process.exit(1); })"
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Install Python build dependencies
@@ -68,9 +68,10 @@ jobs:
           "$RUNNER_TEMP/hardguard25-wheel-smoke/bin/python" -m pip install --no-deps dist/*.whl
           cd "$RUNNER_TEMP"
           "$RUNNER_TEMP/hardguard25-wheel-smoke/bin/python" -c "import importlib.metadata, hardguard25; assert importlib.metadata.version('hardguard25') == hardguard25.__version__; assert hardguard25.check_digit('AC3H7PUW') == 'N'"
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version: "1.22"
+          cache: false
       - name: Test Go package
         working-directory: go
         run: GOCACHE="${{ github.workspace }}/.gocache" go test ./...
@@ -82,8 +83,8 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: "22.14.0"
           registry-url: "https://registry.npmjs.org"
@@ -105,8 +106,8 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Test
@@ -129,7 +130,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Tag Go submodule
         run: |
           GO_TAG="go/${GITHUB_REF_NAME}"

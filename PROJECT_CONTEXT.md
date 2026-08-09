@@ -4,7 +4,7 @@ Context for content/docs skills (blog posts, dev.to posts, landing-page work, et
 
 ## What this project is
 
-HardGuard25 is an open standard: a 25-character alphabet (`0123456789ACDFGHJKMNPRUWY`) for human-safe identifiers — designed so every symbol is visually distinct when read, typed, printed, spoken, or OCR'd, including dyslexia-sensitive contexts. It removes 11 characters that commonly get confused (O/0, I/1, L/1, S/5, Z/2, B/8, E/3, Q/P, V/U, T/+, X/*), with digits winning any visual tie against a letter. The repo ships the normative spec plus small reference implementations (JavaScript, Python, Go), a conformance test suite, a static docs/landing site, and an agent-facing implementation skill.
+HardGuard25 is an open standard: a 25-character alphabet (`0123456789ACDFGHJKMNPRUWY`) for human-safe identifiers. It is designed to exclude common visual confusables, including patterns relevant to dyslexia-sensitive and OCR workflows. It removes 11 commonly confused characters (O/0, I/1, L/1, S/5, Z/2, B/8, E/3, Q/P, V/U, T/+, X/*), with digits winning any visual tie against a letter. The repo ships the normative spec plus small reference implementations (JavaScript, Python, Go), a conformance test suite, a static docs/landing site, and an agent-facing implementation skill. Comparative OCR and transcription error rates have not yet been established empirically.
 
 It is one standard within a broader PAICE portfolio of open standards (see also GuideCheck and Skill Provenance, which HardGuard25 optionally integrates with).
 

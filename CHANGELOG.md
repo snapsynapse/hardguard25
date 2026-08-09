@@ -5,6 +5,20 @@
 ### Documentation
 - Added a tracked post-1.3.5 opportunities handoff with prerequisites, preservation constraints, and a no-change rule when no adopter or evidence plan exists.
 - Removed the fully actioned June 3 stewardship-return handoff.
+- Reconciled README, specification, package, docs-site, project-context, and agent-skill human-factors language with the lack of comparative OCR or transcription evidence.
+- Removed a duplicated repository-standards exception from `INTENT.md`.
+
+### Added
+- Added a Playwright/axe generator accessibility smoke test for relevant pull requests and main pushes, release tags, weekly production schedules, and manual runs.
+- Extended browser coverage across generated, focused, copied, expanded, copy-all, and cleared interaction states.
+
+### Changed
+- Upgraded official GitHub Actions to their Node.js 24-compatible majors and disabled setup-go caching for the dependency-free Go module.
+- Updated the versioned HardGuard25 skill to file version 5 with evidence-limited comparison language.
+
+### Fixed
+- Replaced non-semantic generator case controls, copy targets, and rationale disclosure with keyboard-operable controls and exposed state.
+- Added visible focus indicators, generated-result announcements, copy announcements, and reduced-motion handling to the generator.
 
 ## 1.3.5 -- 2026-07-21
 

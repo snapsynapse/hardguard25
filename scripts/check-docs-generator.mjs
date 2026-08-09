@@ -18,8 +18,10 @@ function element(id) {
     elements.set(id, {
       value: id === 'codeLength' ? '8' : '',
       textContent: '',
+      hidden: false,
       classList: { add() {}, remove() {}, toggle() {} },
       addEventListener() {},
+      setAttribute() {},
       querySelectorAll() { return []; },
       style: {},
     });
@@ -73,6 +75,7 @@ for (const vector of conformance.check_digit) {
 
 context.setCase('lower', {
   classList: { add() {} },
+  setAttribute() {},
 });
 
 for (const vector of conformance.deterministic_generation) {

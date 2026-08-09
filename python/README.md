@@ -6,7 +6,7 @@ Python reference implementation of **HardGuard25** — an open standard for huma
 0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y
 ```
 
-HardGuard25 is a 25-character alphabet designed so every symbol is visually distinct in common identifier contexts, including dyslexia-sensitive workflows. It removes 11 letters that cause real-world errors (`I L O B S Z E T V X Q`) so IDs survive handwriting, phone calls, OCR, and support tickets with fewer corrections. When a letter and a digit compete for the same visual slot, the digit always wins.
+HardGuard25 is a 25-character alphabet designed to exclude common visual confusables, including patterns relevant to dyslexia-sensitive workflows. It removes 11 letters associated with predictable confusion (`I L O B S Z E T V X Q`). When a letter and a digit compete for the same visual slot, the digit always wins. Comparative OCR and transcription error rates have not yet been established empirically.
 
 ## Install
 
