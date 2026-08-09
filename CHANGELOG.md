@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.3.6 -- 2026-08-09
 
 ### Documentation
 - Added a tracked post-1.3.5 opportunities handoff with prerequisites, preservation constraints, and a no-change rule when no adopter or evidence plan exists.

@@ -72,8 +72,8 @@ CI (`.github/workflows/`) additionally runs:
 
 ## Current state (as of 2026-08-09)
 
-- Latest release line: 1.3.5 (July 2026). The standard/spec content is stable.
+- Latest release line: 1.3.6 (August 2026). The standard/spec content is stable.
 - The 1.3.5 stabilization pass fixed Go non-ASCII lookup truncation, aligned Python length validation and runtime version metadata, added shared Unicode rejection vectors, and hardened release-version and rerun checks.
-- Post-release maintenance upgraded GitHub Actions, repaired generator accessibility semantics, added browser accessibility coverage, and aligned public human-factors claims with current evidence limits.
+- The 1.3.6 maintenance release upgraded GitHub Actions, repaired generator accessibility semantics, added browser accessibility coverage, and aligned public human-factors claims with current evidence limits.
 - No TODO/FIXME markers found in tracked source or docs.
 - `ROADMAP.md` lists only evidence-driven, adoption-driven, and maintenance follow-ups. None represents broken or unfinished core functionality.

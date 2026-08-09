@@ -29,4 +29,4 @@ Precise, standards-document register: short declarative sentences, explicit scop
 
 ## Current status
 
-Actively maintained; the standard itself (spec version 1.3.5, July 2026) is stable. The 1.3.5 stabilization pass fixed non-ASCII handling in Go, aligned Python length validation and release metadata, expanded shared conformance vectors, and hardened rerun-safe release automation. `ROADMAP.md` now limits non-blocking follow-up work to evidence-driven evaluation, adoption documentation, and maintenance.
+Actively maintained; the standard itself (spec version 1.3.6, August 2026) is stable. The 1.3.6 maintenance release updates GitHub Actions, hardens generator accessibility, adds browser evaluation, and aligns public human-factors claims with current evidence limits without changing runtime behavior. `ROADMAP.md` limits non-blocking follow-up work to evidence-driven evaluation, adoption documentation, and maintenance.

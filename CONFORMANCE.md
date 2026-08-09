@@ -2,14 +2,14 @@
 
 Report date: 2026-08-09
 
-Fixture version: `1.3.5`
+Fixture version: `1.3.6`
 
 ## Implementations
 
 | Runtime | Package version | Fixture coverage | Status |
 |---|---:|---|---|
-| JavaScript | 1.3.5 | normalize, validate, excluded chars, non-ASCII rejection, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
-| Python | 1.3.5 | normalize, validate, excluded chars, non-ASCII rejection, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
+| JavaScript | 1.3.6 | normalize, validate, excluded chars, non-ASCII rejection, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
+| Python | 1.3.6 | normalize, validate, excluded chars, non-ASCII rejection, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
 | Go | module package | normalize, validate, excluded chars, non-ASCII rejection, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
 
 ## Check Digit Profile
