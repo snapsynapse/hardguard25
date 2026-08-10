@@ -31,7 +31,7 @@ Generated output: `docs`
 - Offline: `node scripts/check-search.mjs`
 - Production after deployment: `node scripts/check-production-search.mjs`
 - Machine-readable output: add `--json`
-- Local HTTP test: add `--base=http://127.0.0.1:PORT/`
+- Local HTTP test: add `--base=http://127.0.0.1:8765/` after starting the static server on port 8765
 
 Exit code `0` is pass, `1` is a site defect, and `2` is configuration or infrastructure failure.
 

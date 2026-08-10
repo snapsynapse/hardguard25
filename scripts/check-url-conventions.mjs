@@ -9,6 +9,12 @@ const allowedWwwHosts = new Set([
 ]);
 const allowedExactUrls = new Set([
   'http://www.sitemaps.org/schemas/sitemap/0.9',
+  // Search-contract redirect sources intentionally verify host and protocol normalization.
+  'http://hardguard25.com/',
+  'https://www.hardguard25.com/',
+  'http://www.hardguard25.com/',
+  // Local HTTP is intentional for the generated-output server check.
+  'http://127.0.0.1:8765/',
 ]);
 
 const trackedFiles = execFileSync('git', ['ls-files'], { encoding: 'utf8' })
@@ -26,7 +32,7 @@ for (const file of trackedFiles) {
   const urls = text.match(/https?:\/\/[^\s"'<>)]*/g) || [];
 
   for (const rawUrl of urls) {
-    const url = rawUrl.replace(/[.,;]+$/, '');
+    const url = rawUrl.replace(/[.,;`]+$/, '');
 
     if (allowedExactUrls.has(url)) {
       continue;
