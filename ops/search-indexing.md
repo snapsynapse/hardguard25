@@ -5,9 +5,7 @@ purpose: "Property-specific index policy, validation commands, deployment gate, 
 status: active
 updated: 2026-08-09
 owner: "Snap Synapse LLC"
-open_tasks:
-  - "Deploy the hidden-file Pages fix and verify the canonical assistant guide returns HTTP 200."
-  - "Reconcile the two canonical HTML URLs and sitemap in Google Search Console."
+open_tasks: []
 ---
 # Search indexing
 
@@ -58,4 +56,4 @@ Exit code `0` is pass, `1` is a site defect, and `2` is configuration or infrast
 
 On 2026-08-09, repository and direct HTTP reconciliation found two canonical HTML index targets. Both returned HTTP 200 with matching canonicals. The deployed sitemap exactly matched the four-entry repository sitemap at the start of the audit, but two entries were non-HTML machine surfaces. Both canonical `/.well-known/` files returned the custom HTTP 404 because the Pages artifact omitted hidden directories. The source files were present and linked from the homepage. The repair removes machine surfaces from the sitemap, enables hidden files in the Pages artifact, and adds deterministic offline and post-deployment production validation.
 
-Authenticated GSC evidence is pending a shared Comet property tab. No console export has been captured yet.
+Authenticated GSC reconciliation is archived at [`ops/search/GoogleSearchConsole/2026-08-09/observations.md`](search/GoogleSearchConsole/2026-08-09/observations.md). Both canonical HTML pages were already indexed. The only exclusion group contained the three intentional host and protocol redirects, so no validation was started. The repaired sitemap was resubmitted once and immediately reported `Success`, 2 discovered pages, and a current submitted and last-read date. No console export was captured.
