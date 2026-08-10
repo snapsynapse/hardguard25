@@ -25,5 +25,24 @@ jobs:
       - uses: actions/upload-pages-artifact@v5
         with:
           path: docs
+          include-hidden-files: true
       - id: deployment
         uses: actions/deploy-pages@v5
+
+  verify-search:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - name: Verify deployed search surfaces
+        run: |
+          for attempt in {1..15}; do
+            if node scripts/check-production-search.mjs; then
+              exit 0
+            fi
+            sleep 20
+          done
+          exit 1

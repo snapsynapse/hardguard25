@@ -1,0 +1,135 @@
+{
+  "$schema": "portfolio-search-indexing-audit/v3",
+  "contractVersion": 3,
+  "canonicalOrigin": "https://hardguard25.com/",
+  "outputDir": "docs",
+  "sitemaps": [
+    "sitemap.xml"
+  ],
+  "minimumWords": 120,
+  "thinPageExemptions": [],
+  "expectedNoindex": [
+    "/404.html"
+  ],
+  "requireJsonLd": false,
+  "jsonLdRequiredPaths": [
+    "/"
+  ],
+  "compareRepositorySitemaps": true,
+  "internalSourceRules": [
+    {
+      "pathPattern": "^/generator/$",
+      "minimum": 1
+    }
+  ],
+  "requiredFiles": [
+    {
+      "path": "robots.txt",
+      "contentTypes": [
+        "text/plain"
+      ],
+      "contains": [
+        "Sitemap: https://hardguard25.com/sitemap.xml"
+      ]
+    },
+    {
+      "path": "sitemap.xml",
+      "contentTypes": [
+        "xml"
+      ],
+      "contains": []
+    },
+    {
+      "path": "favicon.svg",
+      "contentTypes": [
+        "image/svg+xml",
+        "svg"
+      ],
+      "contains": []
+    },
+    {
+      "path": ".well-known/assistant-guide.txt",
+      "contentTypes": [
+        "text/plain"
+      ],
+      "contains": [
+        "Canonical source: https://hardguard25.com/.well-known/assistant-guide.txt"
+      ]
+    },
+    {
+      "path": ".well-known/assistant-guide.txt.sha256",
+      "contentTypes": [
+        "text/plain",
+        "application/octet-stream"
+      ],
+      "contains": [
+        "assistant-guide.txt"
+      ]
+    },
+    {
+      "path": "assistant-guide.txt",
+      "contentTypes": [
+        "text/plain"
+      ],
+      "contains": [
+        "Canonical source: https://hardguard25.com/.well-known/assistant-guide.txt"
+      ]
+    },
+    {
+      "path": "assistant-guide.txt.sha256",
+      "contentTypes": [
+        "text/plain",
+        "application/octet-stream"
+      ],
+      "contains": [
+        "assistant-guide.txt"
+      ]
+    },
+    {
+      "path": "llms.txt",
+      "contentTypes": [
+        "text/plain"
+      ],
+      "contains": [
+        "HardGuard25"
+      ]
+    },
+    {
+      "path": "site.webmanifest",
+      "contentTypes": [
+        "application/manifest+json",
+        "application/json"
+      ],
+      "contains": [
+        "HardGuard25"
+      ]
+    },
+    {
+      "path": "imgs/og.png",
+      "contentTypes": [
+        "image/png"
+      ],
+      "contains": []
+    }
+  ],
+  "redirects": [
+    {
+      "from": "http://hardguard25.com/",
+      "to": "https://hardguard25.com/"
+    },
+    {
+      "from": "https://www.hardguard25.com/",
+      "to": "https://hardguard25.com/"
+    },
+    {
+      "from": "http://www.hardguard25.com/",
+      "to": "https://hardguard25.com/"
+    }
+  ],
+  "hosted404Patterns": [
+    "There isn't a GitHub Pages site here",
+    "<title>Page not found",
+    "404 File not found",
+    "<title>404 &mdash; HardGuard25</title>"
+  ]
+}

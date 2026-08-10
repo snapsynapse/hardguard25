@@ -2,6 +2,9 @@
   "name": "hardguard25-repository-checks",
   "private": true,
   "scripts": {
+    "test": "npm run test:search",
+    "test:search": "node scripts/check-search.mjs",
+    "test:search:production": "node scripts/check-production-search.mjs",
     "test:accessibility": "playwright test"
   },
   "devDependencies": {

@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- Added a property-specific search-indexing policy plus deterministic offline and post-deployment production validators for canonical pages, sitemap parity, required machine surfaces, redirects, noindex behavior, internal discovery, and JSON-LD.
+
+### Fixed
+- Included the tracked `.well-known` directory in the GitHub Pages artifact so the canonical assistant guide and SHA-256 sidecar deploy instead of returning the custom 404 page.
+- Removed non-HTML assistant-guide files from the sitemap while preserving them as crawlable, validated machine surfaces.
+
 ## 1.3.6 -- 2026-08-09
 
 ### Documentation

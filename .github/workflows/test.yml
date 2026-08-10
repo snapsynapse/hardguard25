@@ -45,6 +45,8 @@ jobs:
         run: node scripts/check-doc-examples.mjs
       - name: Check URL conventions
         run: node scripts/check-url-conventions.mjs
+      - name: Check search indexing contract
+        run: node scripts/check-search.mjs
       - name: Check agent surface integrity
         run: node scripts/check-agent-surfaces.mjs
       - name: Check release version alignment

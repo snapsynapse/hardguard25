@@ -35,7 +35,7 @@ go/                               Go reference implementation + tests
 conformance/vectors.json          shared cross-language test vectors
 docs/                             static docs/landing site (deployed to GitHub Pages)
 docs/generator/                   interactive ID generator on the site
-scripts/                          Node-based CI conformance checkers (docs generator, URL conventions, agent-surface integrity)
+scripts/                          Node-based CI conformance and search-indexing checkers
 skills/hardguard25/               canonical agent skill bundle for this standard
 conformance/                      shared conformance vectors
 handoffs/                         current tracked post-release handoff; other local handoffs ignored
@@ -65,9 +65,9 @@ cd go && GOCACHE="$(pwd)/../.gocache" go test ./...
 Generator accessibility changes also require `npm ci`, a local Chromium installation through Playwright, and `npm run test:accessibility` from the repository root.
 
 CI (`.github/workflows/`) additionally runs:
-- `test.yml` (push to main + PRs): JS test + `npm pack --dry-run`, docs-generator/URL-convention/agent-surface checks, Python test + `python -m build`, Go test.
+- `test.yml` (push to main + PRs): JS test + `npm pack --dry-run`, docs-generator/URL-convention/agent-surface/search-indexing checks, Python test + `python -m build`, Go test.
 - `release.yml` (on `vX.Y.Z` tag push): verifies package, runtime, spec, conformance, docs, and skill versions match the tag, re-runs the full preflight suite, then publishes to npm (OIDC trusted publishing) and PyPI (`PYPI_API_TOKEN` secret), and tags the Go submodule. Publication steps are rerun-safe.
-- `pages.yml` (push to main): deploys `docs/` to GitHub Pages.
+- `pages.yml` (push to main): deploys `docs/` to GitHub Pages, includes the tracked `.well-known` directory, then retries the production search-indexing contract until the deployment is live.
 - `accessibility.yml` (relevant PRs and main pushes, release tags, weekly production schedule, and manual runs): executes Playwright/axe checks against the static generator without adding dependencies to the reference libraries.
 
 ## Current state (as of 2026-08-09)

@@ -7,18 +7,6 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://hardguard25.com/.well-known/assistant-guide.txt</loc>
-    <lastmod>2026-06-10</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://hardguard25.com/.well-known/assistant-guide.txt.sha256</loc>
-    <lastmod>2026-06-10</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  <url>
     <loc>https://hardguard25.com/generator/</loc>
     <lastmod>2026-08-09</lastmod>
     <changefreq>yearly</changefreq>
