@@ -9,6 +9,8 @@ dist/
 build/
 test-results/
 playwright-report/
+.playwright-mcp/
+.search-evidence-private/
 
 # Python
 __pycache__/
