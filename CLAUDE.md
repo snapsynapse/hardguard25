@@ -38,7 +38,7 @@ docs/generator/                   interactive ID generator on the site
 scripts/                          Node-based CI conformance and search-indexing checkers
 skills/hardguard25/               canonical agent skill bundle for this standard
 conformance/                      shared conformance vectors
-handoffs/                         current tracked post-release handoff; other local handoffs ignored
+handoffs/                         temporary session-continuity queues; empty when fully processed
 ```
 
 ## Conventions
@@ -54,26 +54,25 @@ handoffs/                         current tracked post-release handoff; other lo
 
 ## Build / test (from docs only — do not execute without asking)
 
-Per `CONTRIBUTING.md`, all three suites should pass before a PR:
+Per `CONTRIBUTING.md`, the canonical verifier should pass before a PR:
 
+Literal
 ```bash
-cd js && npm test
-cd python && ../.venv/bin/python -m pytest   # adjust venv path as needed
-cd go && GOCACHE="$(pwd)/../.gocache" go test ./...
+npm run verify
 ```
 
-Generator accessibility changes also require `npm ci`, a local Chromium installation through Playwright, and `npm run test:accessibility` from the repository root.
+Generator accessibility changes also require `npm ci`, a local Chromium installation through Playwright, and `npm run verify:browser` from the repository root.
 
 CI (`.github/workflows/`) additionally runs:
-- `test.yml` (push to main + PRs): JS test + `npm pack --dry-run`, docs-generator/URL-convention/agent-surface/search-indexing checks, Python test + `python -m build`, Go test.
+- `test.yml` (push to main + PRs): installs the pinned development and build tools, then runs the canonical repository verifier across runtime, documentation, metadata, benchmark-protocol, and installed-artifact checks.
 - `release.yml` (on `vX.Y.Z` tag push): verifies package, runtime, spec, conformance, docs, and skill versions match the tag, re-runs the full preflight suite, then publishes to npm (OIDC trusted publishing) and PyPI (`PYPI_API_TOKEN` secret), and tags the Go submodule. Publication steps are rerun-safe.
 - `pages.yml` (push to main): deploys `docs/` to GitHub Pages, includes the tracked `.well-known` directory, then retries the production search-indexing contract until the deployment is live.
 - `accessibility.yml` (relevant PRs and main pushes, release tags, weekly production schedule, and manual runs): executes Playwright/axe checks against the static generator without adding dependencies to the reference libraries.
 
-## Current state (as of 2026-08-09)
+## Current state (as of 2026-09-05)
 
-- Latest release line: 1.3.6 (August 2026). The standard/spec content is stable.
+- Prepared release line: 1.3.7 (September 2026). The alphabet and checksum algorithm remain stable.
 - The 1.3.5 stabilization pass fixed Go non-ASCII lookup truncation, aligned Python length validation and runtime version metadata, added shared Unicode rejection vectors, and hardened release-version and rerun checks.
-- The 1.3.6 maintenance release upgraded GitHub Actions, repaired generator accessibility semantics, added browser accessibility coverage, and aligned public human-factors claims with current evidence limits.
+- The 1.3.7 patch aligns rejection boundaries across runtimes, adds TypeScript declarations and installed-artifact checks, and documents future benchmark and PyPI migration work without claiming either has executed.
 - No TODO/FIXME markers found in tracked source or docs.
 - `ROADMAP.md` lists only evidence-driven, adoption-driven, and maintenance follow-ups. None represents broken or unfinished core functionality.

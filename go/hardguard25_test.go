@@ -14,6 +14,7 @@ type conformanceFixture struct {
 		Input  string `json:"input"`
 		Output string `json:"output"`
 	} `json:"normalize"`
+	NormalizeRejection []string `json:"normalize_rejection"`
 	Validate []struct {
 		Input string `json:"input"`
 		Valid bool   `json:"valid"`
@@ -22,6 +23,7 @@ type conformanceFixture struct {
 		Code  string `json:"code"`
 		Digit string `json:"digit"`
 	} `json:"check_digit"`
+	CheckDigitRejection []string `json:"check_digit_rejection"`
 	Verify []struct {
 		Input string `json:"input"`
 		Valid bool   `json:"valid"`
@@ -316,6 +318,14 @@ func TestNormalize(t *testing.T) {
 			}
 		})
 	}
+
+	for _, input := range fixture.NormalizeRejection {
+		t.Run("Reject "+fmt.Sprintf("%q", input), func(t *testing.T) {
+			if _, err := Normalize(input); err == nil {
+				t.Errorf("Normalize(%q) should return an error", input)
+			}
+		})
+	}
 }
 
 // TestCheckDigit verifies check digit computation.
@@ -367,6 +377,12 @@ func TestCheckDigit(t *testing.T) {
 	_, err = CheckDigit("0123B456")
 	if err == nil {
 		t.Error("CheckDigit should error on invalid character")
+	}
+
+	for _, input := range fixture.CheckDigitRejection {
+		if _, err := CheckDigit(input); err == nil {
+			t.Errorf("CheckDigit(%q) should return an error", input)
+		}
 	}
 }
 

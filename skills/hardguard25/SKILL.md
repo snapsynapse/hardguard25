@@ -6,12 +6,12 @@ metadata:
   source: https://github.com/snapsynapse/hardguard25
   skill_bundle: hardguard25
   file_role: skill
-  version: 5
-  version_date: 2026-08-09
-  previous_version: 4
+  version: 6
+  version_date: 2026-09-05
+  previous_version: 5
   change_summary: >
-    Reconcile human-factors language with the current evidence limits.
-    Preserve the alphabet rationale without claiming measured comparative error rates.
+    Define non-empty normalization and checksum inputs consistently across runtimes.
+    Preserve the existing alphabet, checksum algorithm, and evidence limits.
 ---
 
 # HardGuard25
@@ -72,6 +72,7 @@ normalize("ac3h-7puw");              // "AC3H7PUW"
 checkDigit("AC3H7PUW");              // compute check char
 verifyCheckDigit("AC3H7PUWN");       // true
 ```
+The npm package includes TypeScript declarations for named and default imports.
 
 ### Python
 ```python
@@ -113,8 +114,10 @@ Generate by picking random indices (0-24) from a CSPRNG. Use rejection sampling:
 2. Remove separators (hyphens, spaces, underscores, dots)
 3. Uppercase all letters
 4. Reject characters outside the alphabet
+5. Reject empty and separator-only input
 
 Normalizer must be idempotent: `normalize(normalize(x)) === normalize(x)`.
+Validation returns false for empty and separator-only input. Check digit calculation rejects an empty payload.
 
 ## Check Digit (Optional)
 

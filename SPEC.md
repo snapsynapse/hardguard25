@@ -1,7 +1,7 @@
 # HardGuard25 Specification
 
-**Version:** 1.3.6
-**Date:** August 2026
+**Version:** 1.3.7
+**Date:** September 2026
 **Author:** Sam Rogers -- Snap Synapse
 **Spec License:** Creative Commons Attribution 4.0 International (CC BY 4.0)
 
@@ -110,6 +110,8 @@ Reference implementations in JavaScript, Python, and Go must expose the same beh
 - `validate(x)` applies normalization first and returns a boolean
 - `checkDigit(x)` accepts canonical or lowercase input and computes the checksum after uppercase folding
 - verification helpers accept canonical, lowercase, and grouped forms, normalize first, then compare the trailing check character
+
+Empty and separator-only inputs do not have a canonical form. `normalize(x)` must reject them, `validate(x)` must return false for them, and `checkDigit(x)` must reject an empty payload. Verification requires at least one payload character plus the trailing check character after normalization.
 
 ## Optional Check Digit
 

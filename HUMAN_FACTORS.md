@@ -2,6 +2,8 @@
 
 HardGuard25 is a conservative identifier alphabet for codes that humans read, type, print, dictate, or inspect in support workflows. It reduces avoidable transcription risk by removing characters with common visual, phonetic, OCR, or dyslexia-relevant ambiguity.
 
+A reproducible comparison is specified in [docs/HUMAN_FACTORS_BENCHMARK_PROTOCOL.md](docs/HUMAN_FACTORS_BENCHMARK_PROTOCOL.md). The protocol has not been piloted or executed and provides no comparative evidence by itself.
+
 ## Design Basis
 
 - Digits remain available because users expect numeric ordering, versions, quantities, and dates to stay recognizable.

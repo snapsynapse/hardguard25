@@ -123,6 +123,8 @@ Regex: `^[0-9ACDFGHJKMNPRUWY]+$`
 
 For project integration guidance, see [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md). It covers length selection, check-digit decisions, storage versus display formatting, no-library implementation, and test expectations.
 
+The JavaScript package includes TypeScript declarations for its named and default exports.
+
 ### AI-assisted implementation
 
 If you want ChatGPT, Claude, Codex, or another coding assistant to help add HardGuard25 to a project, use the plain-text guide at https://hardguard25.com/.well-known/assistant-guide.txt.
@@ -180,6 +182,7 @@ API contract across JavaScript, Python, and Go:
 - `validate(...)` applies normalization first, then checks the canonical regex
 - `checkDigit(...)` accepts canonical or lowercase input and computes the checksum on the normalized uppercase characters
 - verify helpers accept canonical, lowercase, and grouped input, normalize it, then compare the trailing check character
+- Empty and separator-only inputs are not canonical: normalization and check-digit calculation reject them, while validation returns `false`
 
 ## Why Not Crockford Base32?
 
@@ -217,7 +220,7 @@ The full specification is in [SPEC.md](SPEC.md), covering:
 - Formatting and accessibility guidelines
 
 The current conformance status is summarized in [CONFORMANCE.md](CONFORMANCE.md).
-The human-factors rationale and limits are documented in [HUMAN_FACTORS.md](HUMAN_FACTORS.md).
+The human-factors rationale and limits are documented in [HUMAN_FACTORS.md](HUMAN_FACTORS.md). A future comparison is defined, but not yet executed, in [docs/HUMAN_FACTORS_BENCHMARK_PROTOCOL.md](docs/HUMAN_FACTORS_BENCHMARK_PROTOCOL.md).
 
 The spec is licensed [CC BY 4.0](LICENSE-SPEC) — reference it freely.
 
@@ -229,9 +232,7 @@ Try the interactive generator: **[hardguard25 generator](https://hardguard25.com
 
 Literal
 ```bash
-cd js && npm test
-cd python && ../.venv/bin/python -m pytest
-cd go && GOCACHE="$(pwd)/../.gocache" go test ./...
+npm run verify
 ```
 
 Generator accessibility changes also require the root browser suite.
@@ -240,7 +241,7 @@ Literal
 ```bash
 npm ci
 npx playwright install chromium
-npm run test:accessibility
+npm run verify:browser
 ```
 
 ## Sponsor

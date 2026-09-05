@@ -22,7 +22,7 @@ const versions = {
   changelog: capture('CHANGELOG.md', /^## ([^\s]+) --/m, 'current changelog'),
   skillChangelog: capture('skills/hardguard25/CHANGELOG.md', /^## ([^\s]+) --/m, 'skill changelog'),
   projectContext: capture('PROJECT_CONTEXT.md', /spec version ([^,]+),/m, 'project context'),
-  agentContext: capture('CLAUDE.md', /Latest release line: ([^\s]+) \(/m, 'agent context'),
+  agentContext: capture('CLAUDE.md', /(?:Latest|Prepared) release line: ([^\s]+) \(/m, 'agent context'),
 };
 
 const expected = process.argv[2] ?? versions.javascript;

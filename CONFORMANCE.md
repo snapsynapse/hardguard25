@@ -1,16 +1,16 @@
 # Conformance Report
 
-Report date: 2026-08-09
+Report date: 2026-09-05
 
-Fixture version: `1.3.6`
+Fixture version: `1.3.7`
 
 ## Implementations
 
 | Runtime | Package version | Fixture coverage | Status |
 |---|---:|---|---|
-| JavaScript | 1.3.6 | normalize, validate, excluded chars, non-ASCII rejection, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
-| Python | 1.3.6 | normalize, validate, excluded chars, non-ASCII rejection, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
-| Go | module package | normalize, validate, excluded chars, non-ASCII rejection, separators, check digit, verify, substitution profile, transposition profile, deterministic generation | Passing locally |
+| JavaScript | 1.3.7 | normalize, validation, rejection boundaries, excluded chars, non-ASCII rejection, separators, check digit, verification, substitution profile, transposition profile, deterministic generation, packed TypeScript consumer | Passing locally |
+| Python | 1.3.7 | normalize, validation, rejection boundaries, excluded chars, non-ASCII rejection, separators, check digit, verification, substitution profile, transposition profile, deterministic generation, wheel consumer | Passing locally |
+| Go | module package | normalize, validation, rejection boundaries, excluded chars, non-ASCII rejection, separators, check digit, verification, substitution profile, transposition profile, deterministic generation | Passing locally |
 
 ## Check Digit Profile
 
@@ -25,10 +25,16 @@ The Mod-25 weighted check digit is a lightweight human-entry aid. Current vector
 
 ## Local Verification Commands
 
+Literal
 ```bash
-cd js && npm test
-cd python && ../.venv/bin/python -m pytest
-cd go && GOCACHE="$(pwd)/../.gocache" go test ./...
+npm run verify
+```
+
+Browser accessibility checks require installed Playwright Chromium.
+
+Literal
+```bash
+npm run verify:browser
 ```
 
 CI runs equivalent checks on GitHub Actions for pull requests and pushes to `main`.

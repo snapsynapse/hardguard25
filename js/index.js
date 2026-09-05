@@ -1,5 +1,5 @@
 /**
- * HardGuard25 - A human-friendly unique ID alphabet
+ * HardGuard25 - A low-confusion alphabet for human-readable identifiers
  * 25 unambiguous characters for easy reading and transcription
  */
 
@@ -122,6 +122,10 @@ export function normalize(input) {
 
   // Trim and remove separators
   let normalized = input.trim().replace(/[-\s_\.]/g, '').toUpperCase();
+
+  if (normalized.length === 0) {
+    throw new Error('HardGuard25: Input must contain at least one identifier character');
+  }
 
   // Check for invalid characters
   for (const char of normalized) {

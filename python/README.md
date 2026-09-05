@@ -31,6 +31,8 @@ check_digit("AC3H7PUW")           # "N"
 verify_check_digit("AC3H7PUWN")   # True
 ```
 
+Normalization rejects empty and separator-only input. Validation returns `False` for it, and check-digit calculation rejects an empty payload.
+
 ## API
 
 | Function | Purpose |

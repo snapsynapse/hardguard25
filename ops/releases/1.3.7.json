@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "repository": "https://github.com/snapsynapse/hardguard25",
+  "profile": "other",
+  "authority": "R1",
+  "start_head": "e6d5b52729e54a0c8989f756ddc885d8e7163504",
+  "candidate_head": null,
+  "candidate_version": "1.3.7",
+  "updated_at": "2026-09-05T16:46:00Z",
+  "steps": [
+    {
+      "id": "local-release-preparation",
+      "status": "ready",
+      "evidence": "Working-tree fingerprint excluding this state record: sha256:de98b0d21939a45ee543485725b532af6137991b80a5382e14bfa4f34f86f7b8",
+      "head": null,
+      "completed_at": "2026-09-05T16:46:00Z"
+    },
+    {
+      "id": "deterministic-preflight",
+      "status": "ready",
+      "evidence": "npm run verify passed for 1.3.7; JavaScript 73, Python 46, Go, docs, metadata, agent surfaces, npm TypeScript consumer, and Python wheel consumer passed",
+      "head": null,
+      "completed_at": "2026-09-05T16:45:00Z"
+    },
+    {
+      "id": "browser-accessibility",
+      "status": "ready",
+      "evidence": "npm run verify:browser passed 3 Playwright and axe checks",
+      "head": null,
+      "completed_at": "2026-09-05T16:45:00Z"
+    },
+    {
+      "id": "workflow-validation",
+      "status": "ready",
+      "evidence": "actionlint v1.7.7 passed",
+      "head": null,
+      "completed_at": "2026-09-05T16:45:00Z"
+    },
+    {
+      "id": "stage-and-commit",
+      "status": "not_started",
+      "evidence": "Requires separate authority",
+      "head": null,
+      "completed_at": null
+    },
+    {
+      "id": "push-main-and-exact-head-ci",
+      "status": "not_started",
+      "evidence": "Requires separate authority",
+      "head": null,
+      "completed_at": null
+    },
+    {
+      "id": "tag-v1.3.7",
+      "status": "not_started",
+      "evidence": "No Git tag, GitHub Release, npm version, or PyPI version 1.3.7 existed at preflight",
+      "head": null,
+      "completed_at": null
+    },
+    {
+      "id": "publish-and-verify",
+      "status": "not_started",
+      "evidence": "Release workflow will publish npm and PyPI, create go/v1.3.7, and Pages will deploy from main after explicit authorization",
+      "head": null,
+      "completed_at": null
+    },
+    {
+      "id": "pypi-trusted-publishing-migration",
+      "status": "not_started",
+      "evidence": "Maintainer must configure and confirm the PyPI trusted publisher before the token path changes; not required for 1.3.7",
+      "head": null,
+      "completed_at": null
+    }
+  ]
+}

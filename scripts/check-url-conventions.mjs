@@ -20,7 +20,7 @@ const allowedExactUrls = new Set([
 const trackedFiles = execFileSync('git', ['ls-files'], { encoding: 'utf8' })
   .trim()
   .split('\n')
-  .filter(Boolean);
+  .filter((file) => file && fs.existsSync(file));
 
 const findings = [];
 

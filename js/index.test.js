@@ -326,8 +326,10 @@ test('normalize()', async (t) => {
     assert.throws(() => normalize('hello world'), /Invalid character/);
   });
 
-  await t.test('returns empty string for empty input', () => {
-    assert.strictEqual(normalize(''), '');
+  await t.test('rejects shared empty and invalid inputs', () => {
+    for (const input of conformance.normalize_rejection) {
+      assert.throws(() => normalize(input));
+    }
   });
 
   await t.test('throws on non-string input', () => {
@@ -409,6 +411,12 @@ test('checkDigit()', async (t) => {
   await t.test('matches shared conformance vectors', () => {
     for (const vector of conformance.check_digit) {
       assert.strictEqual(checkDigit(vector.code), vector.digit);
+    }
+  });
+
+  await t.test('rejects shared invalid inputs', () => {
+    for (const input of conformance.check_digit_rejection) {
+      assert.throws(() => checkDigit(input));
     }
   });
 });

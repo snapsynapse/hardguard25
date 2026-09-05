@@ -113,6 +113,9 @@ func Normalize(input string) (string, error) {
 
 	// Convert to uppercase
 	normalized = strings.ToUpper(normalized)
+	if normalized == "" {
+		return "", fmt.Errorf("input must contain at least one identifier character")
+	}
 
 	// Validate characters
 	for _, ch := range normalized {
@@ -128,6 +131,9 @@ func Normalize(input string) (string, error) {
 // The checksum is: sum of (charIndex[i] * (i+1)) % 25
 // Returns the alphabet character at the resulting index.
 func CheckDigit(code string) (byte, error) {
+	if code == "" {
+		return 0, fmt.Errorf("code must not be empty")
+	}
 	code = strings.ToUpper(code)
 
 	sum := 0
@@ -157,7 +163,7 @@ func VerifyCheckDigit(codeWithCheck string) (bool, error) {
 	}
 
 	if len(normalized) < 2 {
-		return false, fmt.Errorf("code with check digit must be at least 2 characters, got %d", len(codeWithCheck))
+		return false, fmt.Errorf("code with check digit must be at least 2 characters after normalization, got %d", len(normalized))
 	}
 
 	code := normalized[:len(normalized)-1]

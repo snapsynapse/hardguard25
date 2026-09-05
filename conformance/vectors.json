@@ -1,5 +1,5 @@
 {
-  "version": "1.3.6",
+  "version": "1.3.7",
   "normalize": [
     {
       "input": "acdf-0g7h-j2km-np3r",
@@ -21,6 +21,13 @@
       "input": "0-1_2.3 4\t5\n6\r7",
       "output": "01234567"
     }
+  ],
+  "normalize_rejection": [
+    "",
+    "   ",
+    "-_ .\t\n",
+    "ACD!",
+    "A\u0000C"
   ],
   "validate": [
     {
@@ -210,6 +217,12 @@
       "code": "0000000000000000000000001",
       "digit": "0"
     }
+  ],
+  "check_digit_rejection": [
+    "",
+    "ACD-B",
+    "A\u0000C",
+    "\u0141"
   ],
   "verify": [
     {

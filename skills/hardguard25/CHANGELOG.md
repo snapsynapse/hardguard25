@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.7 -- 2026-09-05
+- SKILL.md: Defined empty and separator-only normalization behavior and empty checksum-payload rejection consistently with the parent specification. File version advanced from 5 to 6 and the hash was refreshed.
+- MANIFEST.yaml: Advanced the parent-release-coupled bundle version and date to 1.3.7 and 2026-09-05.
+
 ## 1.3.6 -- 2026-08-09
 - SKILL.md: Replaced absolute visual-distinctness and comparative error-rate
   language with the supported design rationale and explicit evidence limits.

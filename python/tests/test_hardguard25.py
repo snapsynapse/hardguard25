@@ -186,6 +186,11 @@ class TestNormalization:
             with pytest.raises(ValueError):
                 hardguard25.normalize(test_input)
 
+    def test_normalize_rejects_shared_invalid_inputs(self):
+        for test_input in CONFORMANCE["normalize_rejection"]:
+            with pytest.raises(ValueError):
+                hardguard25.normalize(test_input)
+
     def test_normalize_non_string_input_raises(self):
         with pytest.raises(ValueError):
             hardguard25.normalize(123)
@@ -229,6 +234,11 @@ class TestCheckDigit:
             hardguard25.check_digit("")
         with pytest.raises(ValueError):
             hardguard25.check_digit("ACD!@#")
+
+    def test_check_digit_rejects_shared_invalid_inputs(self):
+        for test_input in CONFORMANCE["check_digit_rejection"]:
+            with pytest.raises(ValueError):
+                hardguard25.check_digit(test_input)
 
     def test_check_digit_backward_compatible_alias(self):
         code = "ACD123"

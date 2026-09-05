@@ -1,13 +1,20 @@
 # Changelog
 
-## Unreleased
+## 1.3.7 -- 2026-09-05
 
 ### Added
 - Added a property-specific search-indexing policy plus deterministic offline and post-deployment production validators for canonical pages, sitemap parity, required machine surfaces, redirects, noindex behavior, internal discovery, and JSON-LD.
+- Added shared rejection vectors for empty, separator-only, invalid ASCII, and non-ASCII normalization and checksum inputs.
+- Added a canonical root verifier, package-metadata parity checks, and clean installed-artifact checks for npm and Python.
+- Added TypeScript declarations plus a packed-package compile test covering named and default exports.
+- Added a reproducible human-factors benchmark protocol and deterministic protocol validation without running a pilot or making comparative claims.
+- Added a maintainer-gated PyPI Trusted Publishing migration procedure.
 
 ### Fixed
 - Included the tracked `.well-known` directory in the GitHub Pages artifact so the canonical assistant guide and SHA-256 sidecar deploy instead of returning the custom 404 page.
 - Removed non-HTML assistant-guide files from the sitemap while preserving them as crawlable, validated machine surfaces.
+- Aligned empty-input normalization and checksum behavior across JavaScript, Python, and Go.
+- Replaced cumulative working-directory verification examples with canonical root commands.
 
 ## 1.3.6 -- 2026-08-09
 

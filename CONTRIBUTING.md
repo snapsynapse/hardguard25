@@ -6,13 +6,17 @@ HardGuard25 is an open standard plus small reference implementations. Contributi
 
 Run all suites before opening a pull request:
 
+Literal
 ```bash
-cd js && npm test
-cd python && ../.venv/bin/python -m pytest
-cd go && GOCACHE="$(pwd)/../.gocache" go test ./...
+npm run verify
 ```
 
-For generator accessibility changes, install the root development dependencies and Playwright Chromium, then run `npm run test:accessibility`.
+For generator accessibility changes, install the root development dependencies and Playwright Chromium, then run the browser verifier.
+
+Literal
+```bash
+npm run verify:browser
+```
 
 ## Change Rules
 

@@ -25,6 +25,8 @@ checkDigit("AC3H7PUW");              // "N"
 verifyCheckDigit("AC3H7PUWN");       // true
 ```
 
+Normalization rejects empty and separator-only input. Validation returns `false` for it, and check-digit calculation rejects an empty payload.
+
 Generation uses `crypto.getRandomValues` and unbiased rejection sampling. HardGuard25 is an identifier alphabet, not an authentication, authorization, encryption, or global uniqueness protocol.
 
 ## Documentation

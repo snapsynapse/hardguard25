@@ -29,4 +29,4 @@ Precise, standards-document register: short declarative sentences, explicit scop
 
 ## Current status
 
-Actively maintained; the standard itself (spec version 1.3.6, August 2026) is stable. The 1.3.6 maintenance release updates GitHub Actions, hardens generator accessibility, adds browser evaluation, and aligns public human-factors claims with current evidence limits without changing runtime behavior. `ROADMAP.md` limits non-blocking follow-up work to evidence-driven evaluation, adoption documentation, and maintenance.
+Actively maintained; the standard itself (spec version 1.3.7, September 2026) is stable. The 1.3.7 patch aligns invalid-input behavior across runtimes, adds TypeScript declarations and installed-artifact verification, documents the future human-factors benchmark, and prepares but does not activate PyPI Trusted Publishing. The alphabet and checksum algorithm are unchanged. `ROADMAP.md` limits non-blocking follow-up work to evidence-driven evaluation, adoption documentation, external configuration, and maintenance.

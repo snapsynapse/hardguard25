@@ -5,10 +5,13 @@
     "test": "npm run test:search",
     "test:search": "node scripts/check-search.mjs",
     "test:search:production": "node scripts/check-production-search.mjs",
-    "test:accessibility": "playwright test"
+    "test:accessibility": "playwright test",
+    "verify": "node scripts/verify.mjs",
+    "verify:browser": "npm run test:accessibility"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.12.1",
-    "@playwright/test": "1.62.1"
+    "@playwright/test": "1.62.1",
+    "typescript": "5.9.3"
   }
 }

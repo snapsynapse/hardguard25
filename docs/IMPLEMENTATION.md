@@ -58,6 +58,7 @@ Normalize at input boundaries:
 3. Uppercase all letters.
 4. Reject anything outside the HardGuard25 alphabet.
 The normalizer must be idempotent: `normalize(normalize(x)) === normalize(x)`.
+Empty and separator-only input has no canonical form and must be rejected. Validation returns false for those inputs, and check-digit calculation rejects an empty payload.
 ## JavaScript
 Install:
 ```bash
@@ -75,6 +76,7 @@ normalize('acdf-0g7h');
 checkDigit('ACDF0G7H');
 verifyCheckDigit(manualEntryId);
 ```
+The npm package includes TypeScript declarations for all named exports and the default export.
 ## Python
 Install:
 ```bash
@@ -123,7 +125,9 @@ Algorithm:
 - Generated IDs match `^[0-9ACDFGHJKMNPRUWY]+$`.
 - Normalization accepts lowercase and grouped input.
 - Normalization rejects characters outside the alphabet.
+- Normalization rejects empty and separator-only input; validation returns false for it.
 - Normalization is idempotent.
+- Check digit generation rejects an empty payload.
 - Check digit generation and verification match `conformance/vectors.json`.
 - Storage keeps canonical uppercase IDs without separators.
 - UI, email, PDF, label, and support views display grouped IDs when helpful.

@@ -5,11 +5,8 @@ Use this checklist for npm, PyPI, Go module, docs, and skill updates.
 ## Before Tagging
 
 - Update version strings in JavaScript, Python package and runtime metadata, the specification, conformance vectors and report, docs site, skill metadata, and changelogs when applicable.
-- Run all test suites locally.
-- Run `node scripts/check-agent-surfaces.mjs` for assistant-facing ASCII and hash checks.
-- Run `node scripts/check-doc-examples.mjs` for conformance-backed public examples.
-- Run `node scripts/check-release-versions.mjs` for cross-surface version alignment.
-- Run `npm run test:accessibility` after installing the root development dependencies and Playwright Chromium.
+- Run the canonical deterministic verifier locally: `npm run verify`.
+- Run `npm run verify:browser` after installing the root development dependencies and Playwright Chromium.
 - Confirm CI passes on `main`.
 - Review README, SPEC, Python README, docs site, and skill examples for API drift.
 - Install and import the packed npm tarball and built Python wheel in clean temporary environments.
@@ -17,15 +14,16 @@ Use this checklist for npm, PyPI, Go module, docs, and skill updates.
 
 ## Package Checks
 
+The canonical verifier builds and installs the npm tarball and Python wheel in clean temporary consumers, checks the TypeScript declarations, and runs the Go suite.
+
+Literal
 ```bash
-cd js && npm pack --dry-run
-cd python && python -m build
-cd go && GOCACHE="$(pwd)/../.gocache" go test ./...
+npm run verify
 ```
 
 ## Publication
 
-Pushing a `vX.Y.Z` tag triggers `.github/workflows/release.yml`, which verifies version strings match the tag, then publishes to npm (trusted publishing via OIDC, configured on the npm package settings page; no token) and PyPI (`PYPI_API_TOKEN` repo secret), and pushes the `go/vX.Y.Z` tag for Go consumers.
+Pushing a `vX.Y.Z` tag triggers `.github/workflows/release.yml`, which verifies version strings match the tag, then publishes to npm (trusted publishing via OIDC, configured on the npm package settings page; no token) and PyPI (`PYPI_API_TOKEN` repo secret until the coordinated migration in `docs/PYPI_TRUSTED_PUBLISHING.md` is activated), and pushes the `go/vX.Y.Z` tag for Go consumers.
 
 - Push the `vX.Y.Z` git tag and confirm the Release workflow passes.
 - Confirm GitHub Pages deploy completed.
