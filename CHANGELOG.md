@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+- Declared the assistant guide's existing GuideCheck 0.7.1 profile and bounded it to an honest Level 2 form claim.
+- Added task-scope and pre-action verification instructions, preserved explicit safety limits, and enforced guide size,
+  line-length, profile-selector, confirmation, copy-label, mirror, and sidecar integrity in the repository validator.
+
 ## 1.3.7 -- 2026-09-05
 
 ### Added
