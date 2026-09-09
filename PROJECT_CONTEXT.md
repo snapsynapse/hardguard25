@@ -2,6 +2,8 @@
 
 Context for content/docs skills (blog posts, dev.to posts, landing-page work, etc.) operating on this repo.
 
+For standards assessment or changes to published surfaces, read [repo-standards.yaml](repo-standards.yaml) for applicability, adoption, surface ownership, and verification expectations. [INTENT.md](INTENT.md) remains authoritative for purpose, scope, and exceptions; the declaration records expectations, not passing results.
+
 ## What this project is
 
 HardGuard25 is an open standard: a 25-character alphabet (`0123456789ACDFGHJKMNPRUWY`) for human-safe identifiers. It is designed to exclude common visual confusables, including patterns relevant to dyslexia-sensitive and OCR workflows. It removes 11 commonly confused characters (O/0, I/1, L/1, S/5, Z/2, B/8, E/3, Q/P, V/U, T/+, X/*), with digits winning any visual tie against a letter. The repo ships the normative spec plus small reference implementations (JavaScript, Python, Go), a conformance test suite, a static docs/landing site, and an agent-facing implementation skill. Comparative OCR and transcription error rates have not yet been established empirically.

@@ -1,0 +1,140 @@
+schema_version: 1
+intent: INTENT.md
+roles: [open-spec, application, hosted, agent-facing, skill-home]
+surfaces:
+  website:
+    kind: website
+    sources: [docs, imgs/og.png]
+    outputs: [docs]
+    urls: [https://hardguard25.com/]
+    producer: manual
+    build: "No site build; tracked docs/ files are deployed directly."
+    delivery: ".github/workflows/pages.yml deploys docs/ after a main push."
+  javascript:
+    kind: package
+    sources: [js/index.js, js/index.d.ts, js/package.json, js/README.md, js/LICENSE]
+    producer: generated
+    build: "npm pack from js/; the canonical verifier builds and tests an installed tarball."
+    delivery: ".github/workflows/release.yml publishes the npm package after an authorized version tag."
+  python:
+    kind: package
+    sources: [python/hardguard25, python/pyproject.toml, python/README.md, python/LICENSE]
+    producer: generated
+    build: "python -m build from python/; the canonical verifier tests an installed wheel."
+    delivery: ".github/workflows/release.yml publishes to PyPI after an authorized version tag."
+  go:
+    kind: package
+    sources: [go]
+    producer: manual
+    build: "No distribution build; consumers resolve the Go module from its version tag."
+    delivery: ".github/workflows/release.yml creates the go/vX.Y.Z module tag."
+  guide:
+    kind: guide
+    sources: [assistant-guide.txt, assistant-guide.txt.sha256]
+    outputs: [docs/assistant-guide.txt, docs/assistant-guide.txt.sha256, docs/.well-known/assistant-guide.txt, docs/.well-known/assistant-guide.txt.sha256]
+    urls: [https://hardguard25.com/.well-known/assistant-guide.txt, https://hardguard25.com/assistant-guide.txt]
+    producer: manual
+    build: "Maintain the three tracked guide copies and their SHA-256 sidecars together; no copy generator."
+    delivery: "GitHub Pages serves the docs/ copies; the root copy is available through the repository. Matching copies establish parity, not independent provenance."
+  skill:
+    kind: skill
+    sources: [skills/hardguard25]
+    producer: manual
+    build: "Maintain the canonical in-repo bundle and its manifest hash; no bundle generator."
+    delivery: "Tracked skills/hardguard25/ bundle is distributed with the repository."
+checks:
+  repository:
+    command: npm run verify
+    cwd: .
+    expected: "Exit 0 and all deterministic repository checks pass, including runtimes, installed artifacts, documentation, metadata, and agent-surface integrity."
+    blocking: true
+    prerequisites: "Root npm dependencies, Node.js, Go, and Python with pytest and build; versions used by CI are recorded in .github/workflows/test.yml."
+  agent-surfaces:
+    command: node scripts/check-agent-surfaces.mjs
+    cwd: .
+    expected: "Exit 0 with guide metadata, byte bounds, mirror hashes, skill hash, and other declared integrity assertions satisfied. This check does not award a GuideCheck conformance level."
+    blocking: true
+    prerequisites: Node.js
+  accessibility:
+    command: npm run verify:browser
+    cwd: .
+    expected: "Exit 0 for the generator smoke suite, including no detected axe violations under its configured WCAG tags and successful keyboard, copy, disclosure, and reduced-motion checks. Coverage is limited to tested generator states."
+    blocking: true
+    prerequisites: "Root npm dependencies, Playwright Chromium, Python, and local browser/server access; required before tagging and for generator accessibility changes."
+  deployed-search:
+    command: npm run test:search:production
+    cwd: .
+    expected: "Exit 0 after the authorized deployment, with the production search contract satisfied for the published surfaces."
+    blocking: true
+    prerequisites: "Node.js, network access, and the intended GitHub Pages deployment; this is a post-deployment acceptance check."
+standards:
+  hardguard25:
+    applicability: applicable
+    reason: "This is the canonical standard and reference-implementation repository."
+    adoption: adopted
+    surfaces: [website, javascript, python, go, guide, skill]
+    checks: [repository]
+    evidence: [SPEC.md, INTENT.md#conformance-philosophy, CONFORMANCE.md, conformance/vectors.json]
+  guidecheck:
+    applicability: applicable
+    reason: "Publishes an assistant implementation guide with an explicit profile and a verification-before-action workflow. Native integrity checks cover a subset; full conformance requires a profile-compatible verifier and recorded achieved level."
+    adoption: adopted
+    profile: human-verifiable-assistant-guide 0.7.1
+    surfaces: [guide]
+    checks: [agent-surfaces]
+    evidence: [assistant-guide.txt, scripts/check-agent-surfaces.mjs]
+  skill-provenance:
+    applicability: applicable
+    reason: "The canonical in-repo skill uses a versioned manifest and content hash. A Skill Provenance specification version is not declared; hash parity alone does not establish full conformance."
+    adoption: adopted
+    surfaces: [skill]
+    checks: [agent-surfaces]
+    evidence: [README.md, skills/hardguard25/MANIFEST.yaml, INTENT.md#exceptions-to-repo-standards]
+  skill-a11y-audit:
+    applicability: applicable
+    reason: "The public site includes an interactive generator. Existing automated coverage is a generator smoke suite; site-wide accessibility acceptance requires additional applicable review."
+    adoption: adopted
+    surfaces: [website]
+    checks: [accessibility]
+    evidence: [tests/accessibility/generator.spec.mjs, .github/workflows/accessibility.yml, RELEASE_CHECKLIST.md]
+  siteline:
+    applicability: applicable
+    reason: "Agents consume the public site and guide. The release checklist requires evidence-based assessment for hosted or machine-readable changes; no repository-local scan command or passing grade is declared."
+    adoption: adopted
+    surfaces: [website, guide]
+    checks: []
+    evidence: [RELEASE_CHECKLIST.md#hosted-site-siteline-assessment]
+  graceful-boundaries:
+    applicability: not-applicable
+    reason: "The current identifier libraries and static generator do not expose an AI-agent refusal or limit-response protocol. INTENT describes downstream use of HardGuard25 identifiers in Graceful Boundaries as optional integration."
+    adoption: not-applicable
+    surfaces: [javascript, python, go, website]
+    checks: []
+    evidence: [INTENT.md#relationship-to-other-paice-standards, INTENT.md#scope-boundaries]
+  ai-posture:
+    applicability: unresolved
+    reason: "The product has deterministic libraries and a static generator, plus a guide and skill for external assistants. Absence of an AI runtime does not settle the operator or AI-assisted-development posture scope; assess against the owning standard before declaring adoption or an exclusion."
+    adoption: unresolved
+    surfaces: [website, javascript, python, go, guide, skill]
+    checks: []
+    evidence: [INTENT.md#what-this-standard-is, PROJECT_CONTEXT.md#what-this-project-is]
+  turnfile:
+    applicability: unresolved
+    reason: "Applicability depends on the collaboration session. The repository has no declared Turnfile workflow; this declaration does not establish a session protocol."
+    adoption: unresolved
+    surfaces: []
+    checks: []
+    evidence: [CLAUDE.md]
+  obligation-first:
+    applicability: unresolved
+    reason: "The repository does not establish an operator-specific regulatory scope for an Obligation First declaration. Resolve with the responsible owner before proposing adoption."
+    adoption: unresolved
+    surfaces: []
+    checks: []
+    evidence: [INTENT.md#scope-boundaries]
+reassess_when:
+  - Add or remove a runtime, package, hosted surface, or agent interface.
+  - Change guide profile, claimed standard, verification requirements, or skill packaging.
+  - Introduce generated site output or change deployment and package-delivery workflows.
+  - Add AI execution, agent refusal or limit responses, or an operator-specific regulatory scope.
+  - Change repository collaboration protocols or exceptions recorded in INTENT.md.

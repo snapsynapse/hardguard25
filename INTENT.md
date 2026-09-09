@@ -55,11 +55,13 @@ These are non-binding integrations; each downstream standard decides whether to 
 
 ## Exceptions to Repo Standards
 
+[repo-standards.yaml](repo-standards.yaml) is the repository's pilot declaration of standards applicability, adoption, surfaces, and verification expectations. This INTENT remains authoritative for the reasons and exceptions. Reassess the declaration when adding a runtime, package, hosted surface, or agent interface, or changing a claimed standard/profile. Record test results in dated evidence rather than treating the declaration as certification.
+
 Per `0_Across/Repo Standards.md`, the following deviations are recorded:
 
 - `skills/hardguard25/` ships the full skill bundle in-repo. Reason: hardguard25 is the canonical home for the HardGuard25 skill. Per the skill-bundle-in-repo exception in the standards doc, full bundle tracking is correct here.
 - `docs/llms-full.txt` not present. Reason: `docs/llms.txt` is comprehensive standalone per the v0.3 criterion (inlines all referenced content); no separate `llms-full.txt` needed. Re-evaluate if `llms.txt` later becomes link-only.
-- Assistant guide is served at three paths (per file-location principle, trust-anchored category): `/assistant-guide.txt` at repo root, `docs/assistant-guide.txt` (served at https://hardguard25.com/assistant-guide.txt), and `docs/.well-known/assistant-guide.txt` (canonical served path per GuideCheck spec). All three byte-identical. SHA-256 sidecar mirrored in same locations.
+- Assistant guide uses three tracked locations (per the repository mirror policy): `/assistant-guide.txt` at repo root, `docs/assistant-guide.txt` (served at https://hardguard25.com/assistant-guide.txt), and `docs/.well-known/assistant-guide.txt` (canonical served path per GuideCheck spec). All three byte-identical. SHA-256 sidecar mirrored in same locations. Matching copies establish byte integrity and parity; independently administered provenance requires separate evidence.
 
 ## Changelog
 
