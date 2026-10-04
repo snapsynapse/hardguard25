@@ -4,7 +4,7 @@ HardGuard25 is stable and maintenance-only. The core standard, reference impleme
 
 ## Release Closeout
 
-Version 1.3.8 is the prepared maintenance closeout. It remains unreleased until exact-head checks pass, the commit is pushed, the site and packages are published, and each destination is independently verified. A local pass, pushed commit, deployment run, registry publication, and verified release are separate claims.
+Version 1.3.8 completed the maintenance closeout. Exact-head checks passed, the signed tag and GitHub Release are public, the site and packages were independently verified, and the release evidence is recorded in `ops/releases/1.3.8.json`. A local pass, pushed commit, deployment run, registry publication, and verified release remain separate claims for future work.
 
 ## Routine Maintenance
 
@@ -18,7 +18,7 @@ Version 1.3.8 is the prepared maintenance closeout. It remains unreleased until 
 ## Maintainer Configuration
 
 - Preserve the verified PyPI Trusted Publisher identity and matching `pypi` GitHub environment documented in `docs/PYPI_TRUSTED_PUBLISHING.md`.
-- Remove `PYPI_API_TOKEN` only after a trusted publication and its attestations are verified.
+- Keep PyPI publication tokenless. The legacy `PYPI_API_TOKEN` was removed after the 1.3.8 trusted publication and attestations were verified.
 
 These are external configuration tasks, not missing standard functionality.
 

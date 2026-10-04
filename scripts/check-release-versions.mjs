@@ -21,7 +21,7 @@ const versions = {
   skillBundle: capture('skills/hardguard25/MANIFEST.yaml', /^bundle_version: ([^\s]+)$/m, 'skill bundle'),
   changelog: capture('CHANGELOG.md', /^## ([^\s]+) --/m, 'current changelog'),
   skillChangelog: capture('skills/hardguard25/CHANGELOG.md', /^## ([^\s]+) --/m, 'skill changelog'),
-  projectContext: capture('PROJECT_CONTEXT.md', /spec version ([^,]+),/m, 'project context'),
+  projectContext: capture('PROJECT_CONTEXT.md', /(?:Prepared|Current published) spec version ([^,]+),/m, 'project context'),
   agentContext: capture('CLAUDE.md', /(?:Latest|Prepared) release line: ([^\s]+) \(/m, 'agent context'),
 };
 
