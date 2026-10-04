@@ -4,11 +4,11 @@
 identifier: hardguard25-assistant-guide
 profile: human-verifiable-assistant-guide
 profile-version: 0.7.1
-guide-version: 1.3.7+guide.20260908
+guide-version: 1.3.7+guide.20261003
 applies-to: hardguard25 1.3.7
 canonical-url: https://hardguard25.com/.well-known/assistant-guide.txt
 repository-url: https://github.com/snapsynapse/hardguard25
-last-reviewed: 2026-09-08
+last-reviewed: 2026-10-03
 recommended-verifier: https://guidecheck.org/verify
 [/assistant-guide-metadata]
 
@@ -133,11 +133,14 @@ common transcription mistakes.
 ## Normalization contract
 
 Implementations should:
-1. Trim leading and trailing whitespace.
-2. Remove separators: hyphens, underscores, dots, and whitespace.
+1. Remove the Unicode White_Space code points pinned by the specification wherever they appear.
+2. Remove punctuation separators: hyphens, underscores, and dots.
 3. Uppercase all letters.
 4. Reject any character outside the HardGuard25 alphabet.
 5. Reject empty and separator-only input because it has no canonical form.
+
+The pinned set is U+0009-U+000D, U+0020, U+0085, U+00A0, U+1680, U+2000-U+200A, U+2028, U+2029,
+U+202F, U+205F, and U+3000. Do not substitute a language-specific whitespace class. U+200B and U+FEFF are invalid.
 
 The normalizer must be idempotent: normalizing an already normalized ID returns the same ID.
 Validation returns false for empty and separator-only input. Check digit calculation rejects an empty payload.

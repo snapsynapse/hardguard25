@@ -54,8 +54,8 @@ ACDF-0G7H-J2KM-NP3R
 Accept lowercase and grouped input only when it normalizes cleanly to canonical form.
 ## Normalization
 Normalize at input boundaries:
-1. Trim leading and trailing whitespace.
-2. Remove separators: hyphens, underscores, dots, and whitespace.
+1. Remove the Unicode White_Space set pinned in the specification wherever it appears.
+2. Remove punctuation separators: hyphens, underscores, and dots.
 3. Uppercase all letters.
 4. Reject anything outside the HardGuard25 alphabet.
 The normalizer must be idempotent: `normalize(normalize(x)) === normalize(x)`.

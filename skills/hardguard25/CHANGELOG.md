@@ -2,6 +2,7 @@
 
 ## Unreleased
 - SKILL.md: Corrected payload namespace guidance, distinguished possible strings from safe random issuance counts, and clarified that a check digit adds no random entropy. File version advanced from 6 to 7.
+- SKILL.md: Pinned normalization to the specification's exact Unicode White_Space set and documented U+200B and U+FEFF as invalid. File version advanced from 7 to 8.
 - MANIFEST.yaml: Refreshed the SKILL.md file version and hash while retaining the parent-release-coupled bundle version 1.3.7.
 
 ## 1.3.7 -- 2026-09-05

@@ -180,7 +180,7 @@ All three libraries include an optional Mod-25 weighted check digit, adapted fro
 
 API contract across JavaScript, Python, and Go:
 
-- `normalize(...)` trims outer whitespace, removes separator characters (`-`, `_`, `.`, and any whitespace), uppercases, and returns canonical form
+- `normalize(...)` removes separator characters (`-`, `_`, `.`, and the Unicode White_Space set pinned in the specification), uppercases, and returns canonical form
 - `validate(...)` applies normalization first, then checks the canonical regex
 - `checkDigit(...)` accepts canonical or lowercase input and computes the checksum on the normalized uppercase characters
 - verify helpers accept canonical, lowercase, and grouped input, normalize it, then compare the trailing check character
@@ -210,6 +210,17 @@ HardGuard25 includes a Claude Code skill in the [Agent Skills](https://agentskil
 
 The skill is versioned with [Skill Provenance](https://github.com/snapsynapse/skill-provenance) for tracking across sessions and platforms.
 
+## Agent Discovery Surfaces
+
+The tracked site source defines complementary machine-readable surfaces that publish with `docs/`:
+
+- https://hardguard25.com/llms.txt is the canonical standalone text briefing.
+- https://hardguard25.com/llm.txt is a byte-identical compatibility mirror.
+- https://hardguard25.com/agents.json describes fit signals, non-fit cases, implementation tasks, packages, and execution boundaries.
+- https://hardguard25.com/.well-known/assistant-guide.txt is the human-verifiable implementation guide.
+
+HardGuard25 does not expose a hosted agent execution API. The interactive generator runs locally in the browser, and package adoption happens in the user's own project.
+
 ## Specification
 
 The full specification is in [SPEC.md](SPEC.md), covering:
@@ -237,7 +248,7 @@ Literal
 npm run verify
 ```
 
-Generator accessibility changes also require the root browser suite.
+Hosted-site accessibility changes also require the root browser suite.
 
 Literal
 ```bash

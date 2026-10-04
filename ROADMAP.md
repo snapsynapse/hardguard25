@@ -21,6 +21,7 @@ The HardGuard25 core standard is stable for the 1.3.7 patch release. Future chan
 - Prepared the coordinated PyPI Trusted Publishing migration procedure while retaining the working token path.
 - Corrected published namespace, entropy, and collision guidance and added deterministic mirror checks.
 - Contained narrow-screen landing overflow and made generator length and quantity validation explicit and accessible.
+- Added replicated LLM briefings, bounded structured agent discovery, exact agent-facing normalization guidance, and generator metadata.
 
 ## Evidence-Driven Candidates
 

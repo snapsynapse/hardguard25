@@ -11,6 +11,11 @@ const ALPHABET = '0123456789ACDFGHJKMNPRUWY';
  */
 const ALPHABET_SET = new Set(ALPHABET);
 
+// Unicode White_Space property, pinned explicitly for cross-runtime parity.
+// ECMAScript \s also matches U+FEFF and omits U+0085, so it cannot define
+// the HardGuard25 normalization contract.
+const UNICODE_WHITESPACE = /[\u0009-\u000D\u0020\u0085\u00A0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000]/g;
+
 /**
  * Map from character to its index (0-24) in the alphabet
  * @type {Map<string, number>}
@@ -81,7 +86,7 @@ export function generate(length, options = {}) {
 
 /**
  * Validate that a string is a valid HardGuard25 ID
- * Normalizes input first (trims, removes separators, uppercases)
+ * Normalizes input first (removes pinned separators and uppercases)
  *
  * @param {string} input - ID to validate
  * @returns {boolean} True if valid HardGuard25 ID
@@ -106,7 +111,7 @@ export function validate(input) {
 
 /**
  * Normalize a HardGuard25 ID string
- * Trims whitespace, removes separators (hyphens, spaces, underscores, dots), and uppercases
+ * Removes the pinned Unicode White_Space set and - _ ., then uppercases
  *
  * @param {string} input - ID to normalize
  * @returns {string} Normalized ID
@@ -120,8 +125,8 @@ export function normalize(input) {
     throw new Error('HardGuard25: Input must be a string');
   }
 
-  // Trim and remove separators
-  let normalized = input.trim().replace(/[-\s_\.]/g, '').toUpperCase();
+  // Remove punctuation separators and the pinned Unicode White_Space set.
+  let normalized = input.replace(/[-_.]/g, '').replace(UNICODE_WHITESPACE, '').toUpperCase();
 
   if (normalized.length === 0) {
     throw new Error('HardGuard25: Input must contain at least one identifier character');

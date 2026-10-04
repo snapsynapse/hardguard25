@@ -20,20 +20,20 @@ const conformance = JSON.parse(
   fs.readFileSync(path.join(__dirname, '..', 'conformance', 'vectors.json'), 'utf8')
 );
 
-function deterministicGenerate(bytesHex, length) {
-  const bytes = bytesHex.split(/\s+/).map((hex) => Number.parseInt(hex, 16));
-  let result = '';
-
-  for (const byte of bytes) {
-    if (byte < 225) {
-      result += ALPHABET[byte % 25];
+function withCryptoBytes(bytes, callback) {
+  const original = globalThis.crypto.getRandomValues;
+  const remaining = [...bytes];
+  globalThis.crypto.getRandomValues = (buffer) => {
+    for (let i = 0; i < buffer.length; i++) {
+      buffer[i] = remaining.length > 0 ? remaining.shift() : 255;
     }
-    if (result.length === length) {
-      return result;
-    }
+    return buffer;
+  };
+  try {
+    return callback();
+  } finally {
+    globalThis.crypto.getRandomValues = original;
   }
-
-  throw new Error('Not enough accepted bytes in deterministic vector');
 }
 
 function countCaughtSingleSubstitutions(code, digit) {
@@ -171,53 +171,31 @@ test('generate()', async (t) => {
     assert.throws(() => generate('10'), /positive integer/);
   });
 
-  await t.test('distribution: all 25 characters appear in large sample', () => {
-    const seen = new Set();
-    let totalChars = 0;
-
-    for (let i = 0; i < 500; i++) {
-      const id = generate(10);
-      for (const char of id) {
-        seen.add(char);
-        totalChars++;
-      }
-    }
-
-    assert.strictEqual(
-      seen.size,
-      25,
-      `All 25 characters should appear in 5000 generated characters (got ${seen.size})`
-    );
+  await t.test('maps all accepted byte residues uniformly through the production generator', () => {
+    const accepted = Array.from({ length: 225 }, (_, index) => index);
+    const output = withCryptoBytes([...accepted, ...new Array(64).fill(255)], () => generate(225));
+    assert.strictEqual(output, ALPHABET.repeat(9));
   });
 
-  await t.test('distribution: characters appear with reasonable frequency', () => {
-    const counts = new Map();
-    for (const char of ALPHABET) {
-      counts.set(char, 0);
+  await t.test('rejects bytes 225 through 255 in the production generator', () => {
+    const rejected = Array.from({ length: 31 }, (_, index) => 225 + index);
+    const output = withCryptoBytes([...rejected, 0, 24], () => generate(2));
+    assert.strictEqual(output, '0Y');
+  });
+
+  await t.test('appends the check digit to deterministic production output', () => {
+    const output = withCryptoBytes([0, 1, 2, 255], () => generate(3, { checkDigit: true }));
+    assert.strictEqual(output, '0128');
+  });
+
+  await t.test('fails closed when the entropy source fails', () => {
+    const original = globalThis.crypto.getRandomValues;
+    globalThis.crypto.getRandomValues = () => { throw new Error('entropy unavailable'); };
+    try {
+      assert.throws(() => generate(8), /entropy unavailable/);
+    } finally {
+      globalThis.crypto.getRandomValues = original;
     }
-
-    // Generate 5000 characters
-    for (let i = 0; i < 500; i++) {
-      const id = generate(10);
-      for (const char of id) {
-        counts.set(char, counts.get(char) + 1);
-      }
-    }
-
-    const totalChars = 5000;
-    const expectedFrequency = totalChars / 25;
-    const tolerance = expectedFrequency * 0.5; // Allow 50% deviation
-
-    let allReasonable = true;
-    for (const [char, count] of counts) {
-      const deviation = Math.abs(count - expectedFrequency);
-      if (deviation > tolerance) {
-        allReasonable = false;
-        console.log(`Character '${char}' frequency ${count} deviates by ${deviation.toFixed(0)}`);
-      }
-    }
-
-    assert.strictEqual(allReasonable, true, 'Character distribution should be reasonably uniform');
   });
 });
 
@@ -347,6 +325,12 @@ test('normalize()', async (t) => {
   await t.test('matches shared separator vectors', () => {
     for (const vector of conformance.separators) {
       assert.strictEqual(normalize(vector.input), vector.output);
+    }
+  });
+
+  await t.test('removes exactly the shared Unicode White_Space set', () => {
+    for (const whitespace of conformance.unicode_whitespace) {
+      assert.strictEqual(normalize(`AC${whitespace}DF`), 'ACDF');
     }
   });
 });
@@ -537,7 +521,9 @@ test('Expanded conformance vectors', async (t) => {
 
   await t.test('matches deterministic rejection-sampling vectors', () => {
     for (const vector of conformance.deterministic_generation) {
-      assert.strictEqual(deterministicGenerate(vector.bytes_hex, vector.length), vector.output);
+      const bytes = vector.bytes_hex.split(/\s+/).map((hex) => Number.parseInt(hex, 16));
+      const output = withCryptoBytes([...bytes, ...new Array(vector.length + 16).fill(255)], () => generate(vector.length));
+      assert.strictEqual(output, vector.output);
     }
   });
 

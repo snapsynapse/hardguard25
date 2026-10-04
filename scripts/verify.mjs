@@ -14,6 +14,7 @@ const steps = [
   ['release versions', process.execPath, ['scripts/check-release-versions.mjs'], root],
   ['project metadata', process.execPath, ['scripts/check-project-metadata.mjs'], root],
   ['benchmark protocol', process.execPath, ['scripts/check-benchmark-protocol.mjs'], root],
+  ['cross-runtime conformance', process.execPath, ['scripts/check-cross-runtime-conformance.mjs'], root],
   ['JavaScript tests', 'npm', ['test'], path.join(root, 'js')],
   ['Python tests', python, ['-m', 'pytest'], path.join(root, 'python')],
   ['Go tests', 'go', ['test', './...'], path.join(root, 'go')],

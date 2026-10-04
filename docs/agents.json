@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0",
+  "name": "HardGuard25",
+  "type": "open-standard",
+  "version": "1.3.7",
+  "last_updated": "2026-10-03",
+  "canonical_url": "https://hardguard25.com/",
+  "repository": "https://github.com/snapsynapse/hardguard25",
+  "description": "A 25-character alphabet for identifiers that humans read, type, print, scan, or say aloud.",
+  "fit_signals": [
+    "People manually read, type, print, scan, copy, or dictate identifiers.",
+    "The identifier design should exclude common visual confusables.",
+    "The implementation can choose a payload length appropriate to its collision risk.",
+    "A lightweight optional check digit would help detect common entry errors."
+  ],
+  "not_a_fit": [
+    "Cryptographic keys, passwords, authentication secrets, or encryption material.",
+    "Systems requiring a global UUID, distributed coordination, or time ordering protocol.",
+    "Machine-only identifiers where human readability is irrelevant.",
+    "A claim of empirically proven OCR or transcription superiority."
+  ],
+  "tasks": [
+    {
+      "id": "evaluate-fit",
+      "description": "Decide whether HardGuard25 is appropriate for a human-facing identifier workflow.",
+      "start_at": "https://hardguard25.com/",
+      "supporting_document": "https://github.com/snapsynapse/hardguard25/blob/main/HUMAN_FACTORS.md"
+    },
+    {
+      "id": "implement",
+      "description": "Add generation, normalization, validation, and optional check-digit verification to an existing project.",
+      "start_at": "https://hardguard25.com/.well-known/assistant-guide.txt",
+      "human_approval_required": true
+    },
+    {
+      "id": "inspect-specification",
+      "description": "Read the normative alphabet, normalization contract, collision guidance, checksum, and conformance requirements.",
+      "start_at": "https://github.com/snapsynapse/hardguard25/blob/main/SPEC.md"
+    },
+    {
+      "id": "try-generator",
+      "description": "Generate example identifiers locally in the browser without a hosted execution API.",
+      "start_at": "https://hardguard25.com/generator/"
+    }
+  ],
+  "packages": {
+    "javascript": "https://npmjs.com/package/hardguard25",
+    "python": "https://pypi.org/project/hardguard25/",
+    "go": "https://pkg.go.dev/github.com/snapsynapse/hardguard25/go"
+  },
+  "normalization_contract": {
+    "punctuation_separators": ["-", "_", "."],
+    "unicode_white_space": [
+      "U+0009-U+000D",
+      "U+0020",
+      "U+0085",
+      "U+00A0",
+      "U+1680",
+      "U+2000-U+200A",
+      "U+2028",
+      "U+2029",
+      "U+202F",
+      "U+205F",
+      "U+3000"
+    ],
+    "explicitly_invalid_nearby_code_points": ["U+200B", "U+FEFF"]
+  },
+  "machine_surfaces": {
+    "llms_txt": "https://hardguard25.com/llms.txt",
+    "llm_txt": "https://hardguard25.com/llm.txt",
+    "assistant_guide": "https://hardguard25.com/.well-known/assistant-guide.txt",
+    "assistant_guide_sha256": "https://hardguard25.com/.well-known/assistant-guide.txt.sha256",
+    "robots": "https://hardguard25.com/robots.txt",
+    "sitemap": "https://hardguard25.com/sitemap.xml"
+  },
+  "execution": {
+    "hosted_agent_api": false,
+    "authentication": false,
+    "side_effects": "none",
+    "note": "The interactive generator runs in the browser. Package adoption occurs in the user's own project."
+  },
+  "contact": {
+    "issues": "https://github.com/snapsynapse/hardguard25/issues",
+    "security_policy": "https://github.com/snapsynapse/hardguard25/security/policy"
+  }
+}

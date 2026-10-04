@@ -84,6 +84,14 @@ const compactGuidance = {
     '- 16 chars: 2.33 x 10^22 (cross-system identifiers)',
     '- 20 chars: 9.09 x 10^27 (public tokens)',
   ],
+  'docs/llm.txt': [
+    '- 4 chars: 390,625 possible strings (small inventory, tickets)',
+    '- 6 chars: 244 million (medium businesses)',
+    '- 8 chars: 152 billion (large systems)',
+    '- 12 chars: 59.6 quadrillion (internal tokens)',
+    '- 16 chars: 2.33 x 10^22 (cross-system identifiers)',
+    '- 20 chars: 9.09 x 10^27 (public tokens)',
+  ],
   'skills/hardguard25/SKILL.md': [
     '| 4 | 390,625 | Small inventory, tickets |',
     '| 6 | 244 million | Medium businesses |',

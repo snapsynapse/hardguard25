@@ -18,10 +18,12 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="sitemap" type="application/xml" href="/sitemap.xml">
   <link rel="alternate" type="text/plain" href="https://hardguard25.com/llms.txt" title="LLM-readable summary">
+  <link rel="alternate" type="text/plain" href="https://hardguard25.com/llm.txt" title="LLM-readable summary mirror">
+  <link rel="alternate" type="application/json" href="https://hardguard25.com/agents.json" title="Agent discovery">
   <link rel="alternate" type="text/plain" href="https://hardguard25.com/.well-known/assistant-guide.txt" title="Assistant guide">
 
   <!-- Identity verification (IndieWeb rel=me) -->
-  <link rel="me" href="https://paice.work">
+  <link rel="me" href="https://paice.work/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="article">
@@ -32,7 +34,7 @@
   <meta property="og:url" content="https://hardguard25.com/">
   <meta property="og:locale" content="en_US">
   <meta property="article:published_time" content="2019-11-14T00:00:00Z">
-  <meta property="article:modified_time" content="2026-09-05T00:00:00Z">
+  <meta property="article:modified_time" content="2026-10-03T00:00:00Z">
   <meta property="article:author" content="Sam Rogers">
   <meta property="article:publisher" content="https://snapsynapse.com/">
   <meta property="article:section" content="Open Patterns">
@@ -62,7 +64,7 @@
     "url": "https://hardguard25.com/",
     "mainEntityOfPage": { "@type": "WebPage", "@id": "https://hardguard25.com/" },
     "datePublished": "2019-11-14",
-    "dateModified": "2026-09-05",
+    "dateModified": "2026-10-03",
     "author": {
       "@type": "Person",
       "name": "Sam Rogers",
@@ -486,7 +488,7 @@
       <span class="sep">&middot;</span>
       Published <time datetime="2019-11-14">November 14, 2019</time>
       <span class="sep">&middot;</span>
-      Updated <time datetime="2026-09-05">September 5, 2026</time>
+      Updated <time datetime="2026-10-03">October 3, 2026</time>
       <span class="sep">&middot;</span>
       <span class="version">v1.3.7</span>
       <span class="sep">&middot;</span>
@@ -616,8 +618,8 @@ s, _ := hardguard25.Normalize("ac3h-7puw")</pre>
 # Regex
 ^[0-9ACDFGHJKMNPRUWY]+$
 
-# Normalization: trim, strip separators,
-# uppercase, reject anything outside the set.</pre>
+# Normalization: remove the pinned Unicode White_Space set
+# and - _ .; uppercase; reject all other characters.</pre>
         <p class="annotation">The alphabet is the standard. If you just need the character set, use it directly.</p>
       </div>
     </div>
@@ -643,7 +645,7 @@ s, _ := hardguard25.Normalize("ac3h-7puw")</pre>
       <a href="https://sam-rogers.com/blog/best-unique-ids/" target="_blank" rel="noopener">sam-rogers.com</a>,
       or other platforms are derived from this source and should cite
       <a href="https://hardguard25.com/">hardguard25.com</a> as canonical.
-      Last substantive revision: <time datetime="2026-09-05">2026-09-05</time>.
+      Last substantive revision: <time datetime="2026-10-03">2026-10-03</time>.
       <a href="https://github.com/snapsynapse/hardguard25/commits/main/SPEC.md" target="_blank" rel="noopener">Revision history &rarr;</a>
     </aside>
   </div>
@@ -669,6 +671,8 @@ s, _ := hardguard25.Normalize("ac3h-7puw")</pre>
         <a href="https://github.com/snapsynapse/hardguard25/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a>
         <a href="https://github.com/snapsynapse/hardguard25/commits/main/SPEC.md" target="_blank" rel="noopener">Revisions</a>
         <a href="/llms.txt">llms.txt</a>
+        <a href="/llm.txt">llm.txt</a>
+        <a href="/agents.json">agents.json</a>
         <a href="https://sam-rogers.com/blog/best-unique-ids/" target="_blank" rel="noopener">Original article</a>
         <a href="https://github.com/sponsors/snapsynapse" target="_blank" rel="noopener">Sponsor</a>
       </div>

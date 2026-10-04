@@ -28,6 +28,9 @@ Pushing a `vX.Y.Z` tag triggers `.github/workflows/release.yml`, which verifies 
 - Push the `vX.Y.Z` git tag and confirm the Release workflow passes.
 - Confirm GitHub Pages deploy completed.
 - Confirm `https://hardguard25.com/` and `https://hardguard25.com/generator/` load after deploy.
+- Confirm `https://hardguard25.com/llms.txt` and `https://hardguard25.com/llm.txt` are byte-identical plain text.
+- Confirm `https://hardguard25.com/agents.json` returns valid JSON and declares `hosted_agent_api: false`.
+- Confirm both assistant-guide URLs and their SHA-256 sidecars match the reviewed repository bytes.
 
 ## After Release
 

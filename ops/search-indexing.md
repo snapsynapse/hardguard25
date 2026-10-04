@@ -3,7 +3,7 @@
 title: "Search indexing"
 purpose: "Property-specific index policy, validation commands, deployment gate, and console follow-up."
 status: active
-updated: 2026-08-20
+updated: 2026-10-03
 owner: "Snap Synapse LLC"
 open_tasks: []
 ---
@@ -26,7 +26,7 @@ The repository is authoritative for property policy, validators, sanitized dated
 | `/` | Index and include in sitemap; JSON-LD required | Canonical specification and primary reader destination |
 | `/generator/` | Index and include in sitemap; JSON-LD optional | Interactive first-party reader destination |
 | `/404.html` and unknown routes | `noindex` and omit from sitemap | Error surfaces are not content destinations |
-| `/.well-known/assistant-guide.txt`, its SHA-256 sidecar, `/assistant-guide.txt`, `/llms.txt`, `/robots.txt`, `/sitemap.xml`, manifest, favicon, and images | Crawlable machine surfaces; omit from HTML sitemap | Machine consumption or page support, not canonical HTML index targets |
+| `/.well-known/assistant-guide.txt`, its SHA-256 sidecar, `/assistant-guide.txt`, `/llms.txt`, `/llm.txt`, `/agents.json`, `/robots.txt`, `/sitemap.xml`, manifest, favicon, and images | Crawlable machine surfaces; omit from HTML sitemap | Machine consumption or page support, not canonical HTML index targets |
 | HTTP and `www` variants | Redirect to the matching bare HTTPS canonical URL | Canonical host and protocol normalization |
 | External repository, package, article, and portfolio copies | Omit from sitemap | Distribution and reference copies are not site canonical pages |
 
@@ -67,7 +67,9 @@ Exit code `0` is pass, `1` is a site defect, and `2` is configuration or infrast
 - Missing, stale, insufficient, unknown, and zero are distinct states. No state may be inferred from an absent report.
 - Historical dated observations are append-only. Later evidence may supersede a prior classification, but must not rewrite what was observed on the earlier date.
 
-## Current classified state
+## Latest classified provider state
+
+The provider observations in this section were captured on 2026-08-09. They are historical evidence, not a claim that Google Search Console was rechecked on 2026-10-03.
 
 | Observation | Classification | Current disposition |
 |---|---|---|
@@ -86,6 +88,10 @@ Exit code `0` is pass, `1` is a site defect, and `2` is configuration or infrast
 | Google Search Console `sc-domain:hardguard25.com` | Submit `https://hardguard25.com/sitemap.xml` once after the deployed sitemap repair | 2026-08-09, exact time not retained | `Sitemap submitted successfully`; Submitted and Last read both 2026-08-09; `Success`; 2 discovered pages; 0 videos | Accepted console action; provider reporting current at observation time | Do not repeat while the sitemap remains healthy and its inventory is unchanged | Recheck only after a material sitemap revision, a reported sitemap error, or a later authorized maintenance review |
 
 No indexing requests or validation batches were started because both eligible canonical pages were already indexed and the only exclusion group was intentional redirects.
+
+## Current repository candidate
+
+The 2026-10-03 repository candidate adds `/llm.txt`, `/agents.json`, and generator JSON-LD while preserving the same two-page HTML sitemap inventory. Offline search, metadata, agent-surface, and browser checks pass. The deployed `/llm.txt` and `/agents.json` paths still return 404 until an authorized commit, push, and Pages deployment completes. After deployment, run the production search contract and verify content types and bytes. The unchanged sitemap inventory does not by itself justify another Google Search Console submission.
 
 ## Do not repeat
 

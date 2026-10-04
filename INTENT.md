@@ -61,8 +61,10 @@ Per `0_Across/Repo Standards.md`, the following deviations are recorded:
 
 - `skills/hardguard25/` ships the full skill bundle in-repo. Reason: hardguard25 is the canonical home for the HardGuard25 skill. Per the skill-bundle-in-repo exception in the standards doc, full bundle tracking is correct here.
 - `docs/llms-full.txt` not present. Reason: `docs/llms.txt` is comprehensive standalone per the v0.3 criterion (inlines all referenced content); no separate `llms-full.txt` needed. Re-evaluate if `llms.txt` later becomes link-only.
+- `docs/llm.txt` is a byte-identical compatibility mirror of `docs/llms.txt`. `docs/agents.json` provides structured fit, task, package, and execution-boundary data without implying a hosted agent API. Repository checks enforce both claims.
 - Assistant guide uses three tracked locations (per the repository mirror policy): `/assistant-guide.txt` at repo root, `docs/assistant-guide.txt` (served at https://hardguard25.com/assistant-guide.txt), and `docs/.well-known/assistant-guide.txt` (canonical served path per GuideCheck spec). All three byte-identical. SHA-256 sidecar mirrored in same locations. Matching copies establish byte integrity and parity; independently administered provenance requires separate evidence.
 
 ## Changelog
 
-- 2026-06-03 — Initial INTENT.md per `0_Across/Repo Standards.md` v0.3 layout matrix.
+- 2026-10-03 - Documented agent-discovery surfaces and their no-hosted-execution boundary.
+- 2026-06-03 - Initial INTENT.md per `0_Across/Repo Standards.md` v0.3 layout matrix.

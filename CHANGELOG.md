@@ -6,12 +6,26 @@
 - Declared the assistant guide's existing GuideCheck 0.7.1 profile and bounded it to an honest Level 2 form claim.
 - Added task-scope and pre-action verification instructions, preserved explicit safety limits, and enforced guide size,
   line-length, profile-selector, confirmation, copy-label, mirror, and sidecar integrity in the repository validator.
+- Pinned normalization to the explicit Unicode White_Space code-point set instead of language-specific whitespace supersets.
+- Updated the public assistant guide, LLM briefing, bundled skill, and project context to match that exact normalization contract.
+- Replaced the tracked Python license symlink with byte-identical package content for portable artifact builds.
+
+### Added
+- Added deterministic entropy injection through all three production generators, including rejection-boundary, refill, uniform residue, and entropy-failure checks.
+- Added a fixed-seed cross-runtime public-API parity evaluator covering shared vectors, ASCII boundaries, Unicode separators, and generated cases.
+- Added exact npm, wheel, and sdist inventory, metadata, source-byte, export, and license-byte verification.
+- Added CI coverage for the declared Python 3.9 and Go 1.21 minimums plus Windows Python artifact construction.
+- Added a byte-identical `llm.txt` compatibility briefing, a bounded `agents.json` discovery manifest, and deterministic integrity checks for both.
+- Added WebApplication structured data and complete Open Graph metadata to the browser generator.
+- Added a repository-grounded agent-readiness assessment that separates deployed evidence from the local candidate.
 
 ### Fixed
 - Corrected payload namespace, entropy, and birthday-collision guidance across the specification, documentation, site, and agent skill, with a deterministic regression gate for every published mirror.
 - Distinguished possible payload strings from safe random issuance counts and clarified that the optional check digit adds no random entropy.
 - Contained mobile landing-page code and table overflow while preserving keyboard-accessible local scrolling, and restored a non-color affordance for inline links.
 - Rejected invalid generator payload lengths and quantities with visible, announced recovery guidance instead of silently defaulting or clamping them.
+- Aligned U+0085, U+FEFF, and adjacent separator behavior across JavaScript, Python, and Go.
+- Preserved Go's documented entropy-error return path on runtimes where `crypto/rand.Read` terminates the process.
 
 ## 1.3.7 -- 2026-09-05
 

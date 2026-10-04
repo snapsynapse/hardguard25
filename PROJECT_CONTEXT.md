@@ -1,6 +1,6 @@
 # PROJECT_CONTEXT
 
-Context for content/docs skills (blog posts, dev.to posts, landing-page work, etc.) operating on this repo.
+Context for content and documentation work in this repository.
 
 For standards assessment or changes to published surfaces, read [repo-standards.yaml](repo-standards.yaml) for applicability, adoption, surface ownership, and verification expectations. [INTENT.md](INTENT.md) remains authoritative for purpose, scope, and exceptions; the declaration records expectations, not passing results.
 
@@ -13,7 +13,7 @@ It is one standard within a broader PAICE portfolio of open standards (see also 
 ## Audience
 
 - Developers and engineers designing identifiers that humans will actually handle: order numbers, tracking codes, license keys, support ticket IDs, patient/case numbers, promo codes, device IDs, short links, and similar.
-- Teams currently using base32/Crockford base32/ULID/KSUID/NanoID/ad hoc alphanumeric IDs who need a human-readability-first alternative — not a byte-efficiency or machine-sortability competitor.
+- Teams currently using base32/Crockford base32/ULID/KSUID/NanoID/ad hoc alphanumeric IDs who need a human-readability-first alternative, not a byte-efficiency or machine-sortability competitor.
 - AI coding assistants and agents helping a developer adopt the standard (hence the plain-text `assistant-guide.txt` designed to resist prompt-injection via presentation tricks).
 
 ## Style / tone
@@ -24,6 +24,9 @@ Precise, standards-document register: short declarative sentences, explicit scop
 
 - Canonical site: https://hardguard25.com/
 - Repository: https://github.com/snapsynapse/hardguard25
+- LLM briefing: https://hardguard25.com/llms.txt
+- Compatibility briefing mirror: https://hardguard25.com/llm.txt
+- Structured agent discovery: https://hardguard25.com/agents.json
 - Assistant guide (canonical, well-known path): https://hardguard25.com/.well-known/assistant-guide.txt
 - npm package: `hardguard25`
 - PyPI package: `hardguard25`
@@ -31,4 +34,48 @@ Precise, standards-document register: short declarative sentences, explicit scop
 
 ## Current status
 
-Actively maintained; the standard itself (spec version 1.3.7, September 2026) is stable. The 1.3.7 patch aligns invalid-input behavior across runtimes, adds TypeScript declarations and installed-artifact verification, documents the future human-factors benchmark, and prepares but does not activate PyPI Trusted Publishing. The alphabet and checksum algorithm are unchanged. `ROADMAP.md` limits non-blocking follow-up work to evidence-driven evaluation, adoption documentation, external configuration, and maintenance.
+Actively maintained. The current published spec version 1.3.7, dated September 2026, aligns with the published packages. The alphabet and checksum algorithm are unchanged. Repository changes after the published release remain unreleased until a later version is selected, tagged, published, and independently verified. Local validation, a pushed commit, a successful Pages workflow, and package publication are separate claims. `ROADMAP.md` limits non-blocking follow-up work to evidence-driven evaluation, adoption documentation, external configuration, and maintenance.
+
+## Documentation audit contract
+
+### Folder taxonomy and indexes
+
+| Scope | Category | Index or inventory |
+|---|---|---|
+| Repository-root Markdown | Reference and governance | This document's authoritative-doc map and `README.md` |
+| `docs/` | Hosted reference and application output | `repo-standards.yaml` `surfaces.website`, `search-audit.config.json`, and `docs/sitemap.xml` |
+| `skills/hardguard25/` | Agent-facing reference bundle | `skills/hardguard25/MANIFEST.yaml` |
+| `ops/search/` and `ops/releases/` | Dated evidence and release records | `ops/search-indexing.md` and the directory inventories |
+| `handoffs/` | Temporary continuity queue | The directory inventory; a nonempty directory means work remains unprocessed |
+
+The repository does not use general document frontmatter. Root reference documents use stable headings and repository history. The bundled skill uses version metadata in `SKILL.md`, a matching file version and hash in `MANIFEST.yaml`, and an append-only bundle changelog. Handoffs are dated in filenames and are deleted after durable facts and unresolved work are migrated to their owning files.
+
+### Anchor facts
+
+- Use the current session date in America/Denver for factual review dates.
+- `INTENT.md` owns purpose, scope, invariants, and repository-standard exceptions.
+- `SPEC.md` owns normative behavior. `conformance/vectors.json` and runtime tests prove executable behavior.
+- `repo-standards.yaml` owns surface inventory, delivery paths, checks, and claim boundaries.
+- Version 1.3.7 is the current published release. Do not describe later repository changes as published until release evidence exists.
+- Comparative OCR and transcription superiority remains unestablished until a reviewed study supports a stronger claim.
+- GitHub Pages deploys tracked `docs/` bytes after a push to `main`; repository-local checks do not establish live deployment.
+
+### Authoritative document map
+
+| Question | Authority |
+|---|---|
+| Why the standard exists and what is out of scope | `INTENT.md` |
+| Alphabet, normalization, checksum, and conformance requirements | `SPEC.md` |
+| Current deterministic coverage | `CONFORMANCE.md`, tests, and `scripts/verify.mjs` |
+| Published-site and package delivery routes | `repo-standards.yaml` and `.github/workflows/` |
+| Release status and procedure | `CHANGELOG.md`, `RELEASE_CHECKLIST.md`, tags, and release records |
+| Future work | `ROADMAP.md` |
+| Human-factors evidence limits | `HUMAN_FACTORS.md` |
+| Public agent summaries | `docs/llms.txt`, `docs/llm.txt`, `docs/agents.json`, and the assistant-guide mirrors |
+
+### Verification hints
+
+- Run `npm run verify` for deterministic repository, runtime, package, metadata, search, and agent-surface checks.
+- Run `npm run verify:browser` for the bounded landing-page and generator accessibility suite.
+- Use `npm run test:search:production` only after an authorized deployment to verify hosted bytes.
+- Exclude `.git/`, `.gocache/`, `node_modules/`, and temporary build directories from documentation searches.

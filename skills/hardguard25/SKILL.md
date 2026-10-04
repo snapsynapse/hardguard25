@@ -2,16 +2,16 @@
 name: hardguard25
 description: Use this skill whenever the user needs to generate, validate, or work with human-friendly unique identifiers. Trigger when the user mentions HardGuard25, unambiguous IDs, human-readable codes, or needs identifiers for order numbers, ticket codes, serial numbers, license keys, promo codes, booking references, tracking numbers, patient IDs, device IDs, short codes, or any scenario where an ID will be read, typed, printed, or spoken by a human. Also trigger when the user asks about ID alphabet design, character ambiguity, or compares encoding schemes like Crockford Base32.
 metadata:
-  author: Snap Synapse (snapsynapse.com)
+  author: Snap Synapse (https://snapsynapse.com/)
   source: https://github.com/snapsynapse/hardguard25
   skill_bundle: hardguard25
   file_role: skill
-  version: 7
+  version: 8
   version_date: 2026-10-03
-  previous_version: 6
+  previous_version: 7
   change_summary: >
-    Correct payload namespace guidance and distinguish possible strings from safe
-    random issuance. Clarify that a check digit adds no random entropy.
+    Pin normalization to the specification's exact Unicode White_Space set and
+    reject nearby format characters consistently across runtimes.
 ---
 
 # HardGuard25
@@ -112,11 +112,13 @@ Generate by picking random indices (0-24) from a CSPRNG. Use rejection sampling:
 
 ## Normalization Rules
 
-1. Trim whitespace
-2. Remove separators (hyphens, spaces, underscores, dots)
+1. Remove the exact Unicode White_Space set pinned in the specification wherever it appears
+2. Remove punctuation separators (hyphens, underscores, dots)
 3. Uppercase all letters
 4. Reject characters outside the alphabet
 5. Reject empty and separator-only input
+
+The pinned set is U+0009-U+000D, U+0020, U+0085, U+00A0, U+1680, U+2000-U+200A, U+2028, U+2029, U+202F, U+205F, and U+3000. Language-specific whitespace supersets do not define the contract. U+200B and U+FEFF are invalid.
 
 Normalizer must be idempotent: `normalize(normalize(x)) === normalize(x)`.
 Validation returns false for empty and separator-only input. Check digit calculation rejects an empty payload.

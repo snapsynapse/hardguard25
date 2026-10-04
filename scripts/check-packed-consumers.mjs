@@ -19,8 +19,15 @@ function run(command, args, cwd = root) {
 }
 
 try {
-  const tarballName = run('npm', ['pack', '--silent', '--pack-destination', temp], path.join(root, 'js'));
-  const tarball = path.join(temp, tarballName.split(/\r?\n/).at(-1));
+  const expectedFiles = ['LICENSE', 'README.md', 'index.d.ts', 'index.js', 'package.json'];
+  const packReport = JSON.parse(run('npm', ['pack', '--json', '--pack-destination', temp], path.join(root, 'js')));
+  assert.equal(packReport.length, 1, 'npm pack must produce exactly one artifact');
+  assert.deepEqual(
+    packReport[0].files.map((entry) => entry.path).sort(),
+    expectedFiles,
+    'npm tarball inventory must match the declared release surface'
+  );
+  const tarball = path.join(temp, packReport[0].filename);
   const consumer = path.join(temp, 'consumer');
   fs.mkdirSync(consumer);
   fs.writeFileSync(path.join(consumer, 'package.json'), JSON.stringify({ private: true, type: 'module' }));
@@ -54,10 +61,20 @@ try {
   run(process.execPath, [tsc, '--noEmit', '--strict', '--target', 'ES2022', '--module', 'NodeNext', '--moduleResolution', 'NodeNext', 'consumer.ts'], consumer);
 
   const installed = path.join(consumer, 'node_modules', 'hardguard25');
-  for (const required of ['index.js', 'index.d.ts', 'README.md', 'LICENSE', 'package.json']) {
+  for (const required of expectedFiles) {
     assert.ok(fs.existsSync(path.join(installed, required)), `npm artifact missing ${required}`);
   }
-  assert.ok(!fs.existsSync(path.join(installed, 'index.test.js')), 'npm artifact must exclude tests');
+  assert.deepEqual(fs.readdirSync(installed).sort(), expectedFiles, 'installed npm inventory must be exact');
+  assert.deepEqual(
+    fs.readFileSync(path.join(installed, 'LICENSE')),
+    fs.readFileSync(path.join(root, 'LICENSE')),
+    'npm license bytes must match the repository license'
+  );
+  const manifest = JSON.parse(fs.readFileSync(path.join(installed, 'package.json'), 'utf8'));
+  assert.equal(manifest.version, packReport[0].version);
+  assert.equal(manifest.license, 'MIT');
+  assert.equal(manifest.engines?.node, '>=22');
+  assert.deepEqual(manifest.exports, { '.': { types: './index.d.ts', import: './index.js' } });
   console.log('packed npm runtime and TypeScript consumer checks passed');
 } finally {
   fs.rmSync(temp, { recursive: true, force: true });

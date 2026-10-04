@@ -95,6 +95,26 @@
       ]
     },
     {
+      "path": "llm.txt",
+      "contentTypes": [
+        "text/plain"
+      ],
+      "contains": [
+        "HardGuard25"
+      ]
+    },
+    {
+      "path": "agents.json",
+      "contentTypes": [
+        "application/json",
+        "text/plain"
+      ],
+      "contains": [
+        "\"canonical_url\": \"https://hardguard25.com/\"",
+        "\"hosted_agent_api\": false"
+      ]
+    },
+    {
       "path": "site.webmanifest",
       "contentTypes": [
         "application/manifest+json",

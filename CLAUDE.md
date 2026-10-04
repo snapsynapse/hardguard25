@@ -4,7 +4,7 @@ Agent guidance for working in this repository. Keep this file concise and update
 
 ## Purpose
 
-HardGuard25 is an open standard defining a 25-character alphabet (`0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y`) optimized for human-safe identifiers — visually distinct in dyslexia-sensitive and high-error-cost contexts. The repo ships the spec plus reference implementations in JavaScript, Python, and Go, a static docs/landing site, an in-repo agent skill, and a shared conformance test suite.
+HardGuard25 is an open standard defining a 25-character alphabet (`0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y`) designed to exclude common visual confusables in dyslexia-sensitive and other human workflows. The repo ships the spec plus reference implementations in JavaScript, Python, and Go, a static docs site, machine-readable agent-discovery surfaces, an in-repo agent skill, and a shared conformance test suite. Comparative OCR and transcription error rates have not yet been established empirically.
 
 Canonical URL: https://hardguard25.com/
 Repo: https://github.com/snapsynapse/hardguard25
@@ -35,6 +35,8 @@ go/                               Go reference implementation + tests
 conformance/vectors.json          shared cross-language test vectors
 docs/                             static docs/landing site (deployed to GitHub Pages)
 docs/generator/                   interactive ID generator on the site
+docs/llms.txt, llm.txt            byte-identical agent briefings
+docs/agents.json                  structured fit, task, package, and execution boundaries
 scripts/                          Node-based CI conformance and search-indexing checkers
 skills/hardguard25/               canonical agent skill bundle for this standard
 conformance/                      shared conformance vectors
@@ -48,6 +50,7 @@ handoffs/                         temporary session-continuity queues; empty whe
 - Do not weaken CSPRNG or rejection-sampling behavior in generators.
 - Do not broaden normalization beyond documented separator handling without a spec update.
 - The three copies of `assistant-guide.txt` (repo root, `docs/`, `docs/.well-known/`) must stay byte-identical with matching `.sha256` sidecars — this is enforced by `scripts/check-agent-surfaces.mjs` in CI.
+- `docs/llms.txt` and `docs/llm.txt` must stay byte-identical. `docs/agents.json` must not imply a hosted agent API.
 - Alphabet changes are major-version decisions (see `INTENT.md` design invariants) — do not treat them as routine edits.
 - Every release-facing change needs a `CHANGELOG.md` entry; normative spec changes follow SemVer per `CONTRIBUTING.md`.
 - `INTENT.md` is authoritative for standards-level scope decisions; portfolio-level strategy lives one level up (PAICE Foundation INTENT), which wins on portfolio questions only.
@@ -61,18 +64,19 @@ Literal
 npm run verify
 ```
 
-Generator accessibility changes also require `npm ci`, a local Chromium installation through Playwright, and `npm run verify:browser` from the repository root.
+Hosted-site accessibility changes also require `npm ci`, a local Chromium installation through Playwright, and `npm run verify:browser` from the repository root.
 
 CI (`.github/workflows/`) additionally runs:
 - `test.yml` (push to main + PRs): installs the pinned development and build tools, then runs the canonical repository verifier across runtime, documentation, metadata, benchmark-protocol, and installed-artifact checks.
 - `release.yml` (on `vX.Y.Z` tag push): verifies package, runtime, spec, conformance, docs, and skill versions match the tag, re-runs the full preflight suite, then publishes to npm (OIDC trusted publishing) and PyPI (`PYPI_API_TOKEN` secret), and tags the Go submodule. Publication steps are rerun-safe.
 - `pages.yml` (push to main): deploys `docs/` to GitHub Pages, includes the tracked `.well-known` directory, then retries the production search-indexing contract until the deployment is live.
-- `accessibility.yml` (relevant PRs and main pushes, release tags, weekly production schedule, and manual runs): executes Playwright/axe checks against the static generator without adding dependencies to the reference libraries.
+- `accessibility.yml` (relevant PRs and main pushes, release tags, weekly production schedule, and manual runs): executes Playwright/axe checks against the landing page and static generator without adding dependencies to the reference libraries.
 
-## Current state (as of 2026-09-05)
+## Current state (as of 2026-10-03)
 
-- Prepared release line: 1.3.7 (September 2026). The alphabet and checksum algorithm remain stable.
+- Latest release line: 1.3.7 (published September 5, 2026). GitHub Release, npm, PyPI, Go module, exact-head tests, Pages, and accessibility runs were verified for commit `820af402d49f544e311f082446c35dc9816b7cb1`.
 - The 1.3.5 stabilization pass fixed Go non-ASCII lookup truncation, aligned Python length validation and runtime version metadata, added shared Unicode rejection vectors, and hardened release-version and rerun checks.
-- The 1.3.7 patch aligns rejection boundaries across runtimes, adds TypeScript declarations and installed-artifact checks, and documents future benchmark and PyPI migration work without claiming either has executed.
+- The published 1.3.7 patch aligns rejection boundaries across runtimes, adds TypeScript declarations and installed-artifact checks, and documents future benchmark and PyPI migration work without claiming either has executed.
+- The unreleased repository candidate adds exact Unicode White_Space boundaries, deterministic production entropy checks, cross-runtime public-API parity, exact package inventories, and expanded agent-discovery surfaces.
 - No TODO/FIXME markers found in tracked source or docs.
 - `ROADMAP.md` lists only evidence-driven, adoption-driven, and maintenance follow-ups. None represents broken or unfinished core functionality.

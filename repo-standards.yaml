@@ -6,10 +6,18 @@ surfaces:
     kind: website
     sources: [docs, imgs/og.png]
     outputs: [docs]
-    urls: [https://hardguard25.com/]
+    urls: [https://hardguard25.com/, https://hardguard25.com/generator/]
     producer: manual
     build: "No site build; tracked docs/ files are deployed directly."
     delivery: ".github/workflows/pages.yml deploys docs/ after a main push."
+  agent-discovery:
+    kind: machine-readable
+    sources: [docs/llms.txt, docs/llm.txt, docs/agents.json]
+    outputs: [docs/llms.txt, docs/llm.txt, docs/agents.json]
+    urls: [https://hardguard25.com/llms.txt, https://hardguard25.com/llm.txt, https://hardguard25.com/agents.json]
+    producer: manual
+    build: "Keep llms.txt and llm.txt byte-identical; validate agents.json structure and claim boundaries."
+    delivery: "GitHub Pages serves the tracked docs/ files after a main push."
   javascript:
     kind: package
     sources: [js/index.js, js/index.d.ts, js/package.json, js/README.md, js/LICENSE]
@@ -52,15 +60,15 @@ checks:
   agent-surfaces:
     command: node scripts/check-agent-surfaces.mjs
     cwd: .
-    expected: "Exit 0 with guide metadata, byte bounds, mirror hashes, skill hash, and other declared integrity assertions satisfied. This check does not award a GuideCheck conformance level."
+    expected: "Exit 0 with discovery mirrors, agents.json claims, guide metadata, byte bounds, mirror hashes, skill hash, and other declared integrity assertions satisfied. This check does not award a GuideCheck conformance level."
     blocking: true
     prerequisites: Node.js
   accessibility:
     command: npm run verify:browser
     cwd: .
-    expected: "Exit 0 for the generator smoke suite, including no detected axe violations under its configured WCAG tags and successful keyboard, copy, disclosure, and reduced-motion checks. Coverage is limited to tested generator states."
+    expected: "Exit 0 for the landing-page and generator smoke suites, including no detected axe violations under their configured WCAG tags and successful responsive-layout, keyboard, copy, disclosure, and reduced-motion checks. Coverage is limited to the tested pages, viewports, and generator states."
     blocking: true
-    prerequisites: "Root npm dependencies, Playwright Chromium, Python, and local browser/server access; required before tagging and for generator accessibility changes."
+    prerequisites: "Root npm dependencies, Playwright Chromium, Python, and local browser/server access; required before tagging and for hosted-site accessibility changes."
   deployed-search:
     command: npm run test:search:production
     cwd: .
@@ -72,7 +80,7 @@ standards:
     applicability: applicable
     reason: "This is the canonical standard and reference-implementation repository."
     adoption: adopted
-    surfaces: [website, javascript, python, go, guide, skill]
+    surfaces: [website, agent-discovery, javascript, python, go, guide, skill]
     checks: [repository]
     evidence: [SPEC.md, INTENT.md#conformance-philosophy, CONFORMANCE.md, conformance/vectors.json]
   guidecheck:
@@ -92,16 +100,16 @@ standards:
     evidence: [README.md, skills/hardguard25/MANIFEST.yaml, INTENT.md#exceptions-to-repo-standards]
   skill-a11y-audit:
     applicability: applicable
-    reason: "The public site includes an interactive generator. Existing automated coverage is a generator smoke suite; site-wide accessibility acceptance requires additional applicable review."
+    reason: "The public site includes a landing page and interactive generator. Existing automated coverage exercises both pages at selected viewports and generator states; site-wide accessibility acceptance remains bounded to that tested matrix."
     adoption: adopted
     surfaces: [website]
     checks: [accessibility]
-    evidence: [tests/accessibility/generator.spec.mjs, .github/workflows/accessibility.yml, RELEASE_CHECKLIST.md]
+    evidence: [tests/accessibility/landing.spec.mjs, tests/accessibility/generator.spec.mjs, .github/workflows/accessibility.yml, RELEASE_CHECKLIST.md]
   siteline:
     applicability: applicable
     reason: "Agents consume the public site and guide. The release checklist requires evidence-based assessment for hosted or machine-readable changes; no repository-local scan command or passing grade is declared."
     adoption: adopted
-    surfaces: [website, guide]
+    surfaces: [website, agent-discovery, guide]
     checks: []
     evidence: [RELEASE_CHECKLIST.md#hosted-site-siteline-assessment]
   graceful-boundaries:

@@ -12,6 +12,8 @@ JavaScript reference implementation of HardGuard25, an open standard for human-s
 npm install hardguard25
 ```
 
+Requires Node.js 22+ when used in Node. Browser use requires `crypto.getRandomValues`.
+
 ## Quickstart
 
 ```js
@@ -25,7 +27,7 @@ checkDigit("AC3H7PUW");              // "N"
 verifyCheckDigit("AC3H7PUWN");       // true
 ```
 
-Normalization rejects empty and separator-only input. Validation returns `false` for it, and check-digit calculation rejects an empty payload.
+Normalization removes the Unicode White_Space set pinned by the specification plus `-`, `_`, and `.`, and rejects empty or separator-only input. Validation returns `false` for invalid input, and check-digit calculation rejects an empty payload.
 
 Generation uses `crypto.getRandomValues` and unbiased rejection sampling. HardGuard25 is an identifier alphabet, not an authentication, authorization, encryption, or global uniqueness protocol.
 

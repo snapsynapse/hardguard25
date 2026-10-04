@@ -25,7 +25,10 @@ _CHAR_TO_INDEX: Dict[str, int] = {char: idx for idx, char in enumerate(ALPHABET)
 
 # Compiled regex pattern for validation
 _REGEX = re.compile(r"^[0-9ACDFGHJKMNPRUWY]+$")
-_SEPARATOR_REGEX = re.compile(r"[-\s_.]+")
+_SEPARATOR_REGEX = re.compile(
+    "[-_.\\u0009-\\u000D\\u0020\\u0085\\u00A0\\u1680"
+    "\\u2000-\\u200A\\u2028\\u2029\\u202F\\u205F\\u3000]+"
+)
 
 
 def generate(length: int, *, check_digit: bool = False) -> str:
@@ -94,7 +97,8 @@ def normalize(input_str: str) -> str:
     """
     Normalize a HardGuard25 identifier.
 
-    Trims whitespace, collapses separators (hyphens, spaces, underscores, dots),
+    Removes Unicode White_Space and punctuation separators (hyphens,
+    underscores, dots),
     converts to uppercase, and validates the result.
 
     Args:
@@ -109,11 +113,8 @@ def normalize(input_str: str) -> str:
     if not isinstance(input_str, str):
         raise ValueError("input must be a string")
 
-    # Trim whitespace
-    normalized = input_str.strip()
-
-    # Remove common separators
-    normalized = _SEPARATOR_REGEX.sub("", normalized)
+    # Remove punctuation separators and the pinned Unicode White_Space set.
+    normalized = _SEPARATOR_REGEX.sub("", input_str)
 
     # Convert to uppercase
     normalized = normalized.upper()

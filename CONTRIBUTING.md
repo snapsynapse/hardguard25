@@ -11,7 +11,7 @@ Literal
 npm run verify
 ```
 
-For generator accessibility changes, install the root development dependencies and Playwright Chromium, then run the browser verifier.
+For hosted-site accessibility changes, install the root development dependencies and Playwright Chromium, then run the browser verifier.
 
 Literal
 ```bash
@@ -32,4 +32,4 @@ npm run verify:browser
 - Public docs and examples match actual API behavior.
 - Conformance report is updated when fixture behavior changes.
 - Changelog entry is added for release-facing changes.
-- Generator accessibility changes pass the Playwright/axe browser smoke test.
+- Hosted-site accessibility changes pass the Playwright/axe browser smoke tests.

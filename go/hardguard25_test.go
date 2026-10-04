@@ -1,8 +1,11 @@
 package hardguard25
 
 import (
+	"bytes"
+	"crypto/rand"
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,7 +18,7 @@ type conformanceFixture struct {
 		Output string `json:"output"`
 	} `json:"normalize"`
 	NormalizeRejection []string `json:"normalize_rejection"`
-	Validate []struct {
+	Validate           []struct {
 		Input string `json:"input"`
 		Valid bool   `json:"valid"`
 	} `json:"validate"`
@@ -24,7 +27,7 @@ type conformanceFixture struct {
 		Digit string `json:"digit"`
 	} `json:"check_digit"`
 	CheckDigitRejection []string `json:"check_digit_rejection"`
-	Verify []struct {
+	Verify              []struct {
 		Input string `json:"input"`
 		Valid bool   `json:"valid"`
 	} `json:"verify"`
@@ -34,6 +37,7 @@ type conformanceFixture struct {
 		Input  string `json:"input"`
 		Output string `json:"output"`
 	} `json:"separators"`
+	UnicodeWhitespace        []string `json:"unicode_whitespace"`
 	SingleSubstitutionChecks []struct {
 		Code       string `json:"code"`
 		CheckDigit string `json:"check_digit"`
@@ -69,26 +73,32 @@ func loadConformanceFixture(t *testing.T) conformanceFixture {
 	return fixture
 }
 
-func deterministicGenerate(t *testing.T, bytesHex string, length int) string {
+func parseBytesHex(t *testing.T, bytesHex string) []byte {
 	t.Helper()
 
 	fields := strings.Fields(bytesHex)
-	result := make([]byte, 0, length)
+	result := make([]byte, 0, len(fields))
 	for _, field := range fields {
 		var b byte
 		if _, err := fmt.Sscanf(field, "%02x", &b); err != nil {
 			t.Fatalf("failed to parse byte %q: %v", field, err)
 		}
-		if b < 225 {
-			result = append(result, Alphabet[b%25])
-		}
-		if len(result) == length {
-			return string(result)
-		}
+		result = append(result, b)
 	}
+	return result
+}
 
-	t.Fatalf("not enough accepted bytes in deterministic vector")
-	return ""
+func withRandomReader(reader io.Reader, callback func()) {
+	original := rand.Reader
+	rand.Reader = reader
+	defer func() { rand.Reader = original }()
+	callback()
+}
+
+type failingReader struct{}
+
+func (failingReader) Read(_ []byte) (int, error) {
+	return 0, fmt.Errorf("entropy unavailable")
 }
 
 func countCaughtSingleSubstitutions(t *testing.T, code string, digit byte) (int, int) {
@@ -326,6 +336,18 @@ func TestNormalize(t *testing.T) {
 			}
 		})
 	}
+
+	for _, whitespace := range fixture.UnicodeWhitespace {
+		t.Run("Unicode whitespace "+fmt.Sprintf("%U", []rune(whitespace)[0]), func(t *testing.T) {
+			got, err := Normalize("AC" + whitespace + "DF")
+			if err != nil {
+				t.Fatalf("Normalize Unicode whitespace returned an error: %v", err)
+			}
+			if got != "ACDF" {
+				t.Errorf("Normalize Unicode whitespace = %q, want ACDF", got)
+			}
+		})
+	}
 }
 
 // TestCheckDigit verifies check digit computation.
@@ -460,40 +482,59 @@ func TestVerifyCheckDigit(t *testing.T) {
 	}
 }
 
-// TestDistribution verifies that all 25 alphabet characters appear in 10000 generated characters.
-func TestDistribution(t *testing.T) {
-	charCount := make(map[byte]int)
-	const totalChars = 10000
-	const idLength = 100 // 100 chars * 100 IDs = 10000 chars
-
-	for i := 0; i < totalChars/idLength; i++ {
-		id, err := Generate(idLength)
-		if err != nil {
-			t.Fatalf("Generate failed: %v", err)
+func TestDeterministicProductionGeneration(t *testing.T) {
+	t.Run("maps all accepted byte residues uniformly", func(t *testing.T) {
+		input := make([]byte, 225)
+		for index := range input {
+			input[index] = byte(index)
 		}
-
-		for j := 0; j < len(id); j++ {
-			charCount[id[j]]++
-		}
-	}
-
-	// Verify all 25 characters appear
-	if len(charCount) != 25 {
-		t.Errorf("Expected all 25 characters in distribution, got %d", len(charCount))
-	}
-
-	for i := 0; i < len(Alphabet); i++ {
-		ch := Alphabet[i]
-		if count, ok := charCount[ch]; !ok || count == 0 {
-			t.Errorf("Character %c did not appear in 10000 generated characters", ch)
-		} else {
-			// Each character should appear roughly 400 times (10000/25)
-			// Allow for significant variance but check it's reasonable
-			if count < 200 || count > 600 {
-				t.Logf("Character %c appeared %d times (expected ~400)", ch, count)
+		withRandomReader(bytes.NewReader(input), func() {
+			got, err := Generate(225)
+			if err != nil {
+				t.Fatalf("Generate failed: %v", err)
 			}
+			if got != strings.Repeat(Alphabet, 9) {
+				t.Fatalf("Generate did not map accepted residues uniformly")
+			}
+		})
+	})
+
+	t.Run("rejects bytes 225 through 255", func(t *testing.T) {
+		input := make([]byte, 0, 33)
+		for value := 225; value <= 255; value++ {
+			input = append(input, byte(value))
 		}
-	}
+		input = append(input, 0, 24)
+		withRandomReader(bytes.NewReader(input), func() {
+			got, err := Generate(2)
+			if err != nil {
+				t.Fatalf("Generate failed: %v", err)
+			}
+			if got != "0Y" {
+				t.Fatalf("Generate = %q, want 0Y", got)
+			}
+		})
+	})
+
+	t.Run("appends check digit to deterministic output", func(t *testing.T) {
+		withRandomReader(bytes.NewReader([]byte{0, 1, 2}), func() {
+			got, err := GenerateWithCheck(3)
+			if err != nil {
+				t.Fatalf("GenerateWithCheck failed: %v", err)
+			}
+			if got != "0128" {
+				t.Fatalf("GenerateWithCheck = %q, want 0128", got)
+			}
+		})
+	})
+
+	t.Run("fails closed when entropy is unavailable", func(t *testing.T) {
+		withRandomReader(failingReader{}, func() {
+			if _, err := Generate(8); err == nil || !strings.Contains(err.Error(), "entropy unavailable") {
+				t.Fatalf("Generate error = %v, want entropy unavailable", err)
+			}
+		})
+	})
 }
 
 func TestExpandedConformance(t *testing.T) {
@@ -569,10 +610,15 @@ func TestExpandedConformance(t *testing.T) {
 
 	t.Run("DeterministicGeneration", func(t *testing.T) {
 		for _, vector := range fixture.DeterministicGeneration {
-			got := deterministicGenerate(t, vector.BytesHex, vector.Length)
-			if got != vector.Output {
-				t.Errorf("deterministicGenerate(%q, %d) = %q, want %q", vector.BytesHex, vector.Length, got, vector.Output)
-			}
+			withRandomReader(bytes.NewReader(parseBytesHex(t, vector.BytesHex)), func() {
+				got, err := Generate(vector.Length)
+				if err != nil {
+					t.Fatalf("Generate(%d) failed: %v", vector.Length, err)
+				}
+				if got != vector.Output {
+					t.Errorf("Generate(%d) = %q, want %q", vector.Length, got, vector.Output)
+				}
+			})
 		}
 	})
 }

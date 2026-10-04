@@ -97,10 +97,12 @@ Birthday-bound approximation: for alphabet size N and length L, the probability 
 
 ## Normalization Rules
 
-1. Trim leading and trailing whitespace
-2. Collapse any separator characters (hyphens, underscores, dots, and any Unicode whitespace)
+1. Remove the pinned Unicode White_Space set wherever it appears
+2. Collapse punctuation separators (hyphens, underscores, and dots)
 3. Uppercase fold all letters
 4. Reject any character outside the alphabet
+
+For cross-runtime consistency, Unicode White_Space means exactly U+0009-U+000D, U+0020, U+0085, U+00A0, U+1680, U+2000-U+200A, U+2028, U+2029, U+202F, U+205F, and U+3000. Language-specific supersets such as ECMAScript `\s` or Python `str.isspace()` do not define this contract. Format characters and nearby non-members, including U+200B and U+FEFF, are invalid rather than separators.
 
 A normalizer must be idempotent: `normalize(normalize(x)) === normalize(x)`.
 
@@ -166,6 +168,8 @@ To verify, normalize the full input, strip the last character, recompute the che
 - Distribution across symbols is uniform within statistical tolerance
 - Normalizer is idempotent
 - Check digit behavior is profiled against substitution and transposition vectors
+
+Blocking conformance tests must inject deterministic byte streams through the production generator and prove the acceptance boundary, rejection path, residue mapping, refill behavior, and entropy-source failure behavior. Statistical sampling may be run as a separate evaluation, but it is not deterministic conformance evidence.
 
 ## Test Vectors
 

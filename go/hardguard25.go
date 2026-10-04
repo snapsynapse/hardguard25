@@ -4,6 +4,7 @@ package hardguard25
 import (
 	"crypto/rand"
 	"fmt"
+	"io"
 	"strings"
 	"unicode"
 )
@@ -47,7 +48,7 @@ func Generate(length int) (string, error) {
 	for i := 0; i < length; i++ {
 		// Rejection sampling: keep generating until we get a value < 225 (9 * 25)
 		for {
-			_, err := rand.Read(buf)
+			_, err := io.ReadFull(rand.Reader, buf)
 			if err != nil {
 				return "", fmt.Errorf("failed to read random bytes: %w", err)
 			}
@@ -89,27 +90,39 @@ func Validate(input string) bool {
 	return normalized != ""
 }
 
+func isUnicodeWhitespace(r rune) bool {
+	switch {
+	case r >= '\u0009' && r <= '\u000D':
+		return true
+	case r == '\u0020', r == '\u0085', r == '\u00A0', r == '\u1680':
+		return true
+	case r >= '\u2000' && r <= '\u200A':
+		return true
+	case r == '\u2028', r == '\u2029', r == '\u202F', r == '\u205F', r == '\u3000':
+		return true
+	default:
+		return false
+	}
+}
+
 // Normalize processes a HardGuard25 ID by:
-// - Trimming whitespace
-// - Collapsing separators (hyphens, spaces, underscores, dots)
+// - Removing the Unicode White_Space set
+// - Collapsing separators (hyphens, underscores, dots)
 // - Converting to uppercase
 // - Validating against the alphabet
 // Returns an error if the normalized string contains invalid characters.
 func Normalize(input string) (string, error) {
-	// Trim whitespace
-	normalized := strings.TrimSpace(input)
-
-	// Replace common separators with empty string
-	normalized = strings.Map(func(r rune) rune {
+	// Remove punctuation separators and the pinned Unicode White_Space set.
+	normalized := strings.Map(func(r rune) rune {
 		switch {
 		case r == '-', r == '_', r == '.':
 			return -1
-		case unicode.IsSpace(r):
+		case isUnicodeWhitespace(r):
 			return -1
 		default:
 			return r
 		}
-	}, normalized)
+	}, input)
 
 	// Convert to uppercase
 	normalized = strings.ToUpper(normalized)

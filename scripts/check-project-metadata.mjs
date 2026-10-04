@@ -11,6 +11,8 @@ const repository = 'https://github.com/snapsynapse/hardguard25';
 const sponsor = 'https://github.com/sponsors/snapsynapse';
 const securityContact = 'info@snapsynapse.com';
 const evidenceLimit = 'Comparative OCR and transcription error rates have not yet been established empirically';
+const repositoryStandards = read('repo-standards.yaml');
+const accessibilityWorkflow = read('.github/workflows/accessibility.yml');
 
 assert.match(funding, /^github: snapsynapse$/m, 'GitHub funding owner must be snapsynapse');
 assert.equal(npmPackage.homepage, canonicalSite);
@@ -30,5 +32,10 @@ for (const path of ['README.md', 'PROJECT_CONTEXT.md']) {
 for (const path of ['README.md', 'CONTRIBUTING.md', 'CONFORMANCE.md']) {
   assert.ok(read(path).includes('npm run verify'), `${path}: missing canonical verifier`);
 }
+
+assert.ok(repositoryStandards.includes('landing-page and generator smoke suites'));
+assert.ok(repositoryStandards.includes('tests/accessibility/landing.spec.mjs'));
+assert.ok(repositoryStandards.includes('tests/accessibility/generator.spec.mjs'));
+assert.match(accessibilityWorkflow, /^  site:$/m, 'accessibility workflow job must describe site-wide smoke coverage');
 
 console.log('project metadata parity check passed');

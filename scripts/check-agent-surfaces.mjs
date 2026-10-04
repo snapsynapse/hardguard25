@@ -7,6 +7,7 @@ const guideCopies = [
   'docs/assistant-guide.txt',
   'docs/.well-known/assistant-guide.txt',
 ];
+const briefingCopies = ['docs/llms.txt', 'docs/llm.txt'];
 
 const guideProfile = 'human-verifiable-assistant-guide';
 const guideProfileVersion = '0.7.1';
@@ -16,7 +17,7 @@ const maxGuideLineBytes = 120;
 
 const asciiProfileFiles = [
   ...guideCopies,
-  'docs/llms.txt',
+  ...briefingCopies,
   'skills/hardguard25/SKILL.md',
   'skills/hardguard25/CHANGELOG.md',
 ];
@@ -110,6 +111,49 @@ for (const copy of guideCopies) {
       `${copy}:${index + 1}: copy/paste block must have a Literal or Customize label`
     );
   }
+}
+
+assert.equal(
+  sha256Hex(fs.readFileSync(briefingCopies[0])),
+  sha256Hex(fs.readFileSync(briefingCopies[1])),
+  'docs/llms.txt and docs/llm.txt must be byte-identical'
+);
+
+const normalizationSet =
+  'U+0009-U+000D, U+0020, U+0085, U+00A0, U+1680, U+2000-U+200A, U+2028, U+2029, U+202F, U+205F, and U+3000';
+for (const file of [briefingCopies[0], ...guideCopies, 'skills/hardguard25/SKILL.md']) {
+  const text = fs.readFileSync(file, 'utf8');
+  const normalizedText = text.replace(/\s+/g, ' ');
+  assert.ok(normalizedText.includes(normalizationSet), `${file}: missing the exact Unicode White_Space set`);
+  assert.ok(text.includes('U+200B') && text.includes('U+FEFF'), `${file}: missing explicitly invalid nearby code points`);
+}
+
+const agents = JSON.parse(fs.readFileSync('docs/agents.json', 'utf8'));
+assert.equal(agents.schema_version, '1.0', 'agents.json: unexpected schema version');
+assert.equal(agents.name, 'HardGuard25', 'agents.json: unexpected name');
+assert.equal(agents.type, 'open-standard', 'agents.json: unexpected type');
+assert.equal(agents.version, '1.3.7', 'agents.json: version must match the current published release');
+assert.equal(agents.canonical_url, 'https://hardguard25.com/', 'agents.json: canonical URL must use the bare HTTPS origin');
+assert.equal(agents.repository, 'https://github.com/snapsynapse/hardguard25', 'agents.json: unexpected repository');
+assert.ok(Array.isArray(agents.fit_signals) && agents.fit_signals.length >= 3, 'agents.json: fit signals are incomplete');
+assert.ok(Array.isArray(agents.not_a_fit) && agents.not_a_fit.length >= 3, 'agents.json: non-fit signals are incomplete');
+assert.deepEqual(
+  agents.tasks.map((task) => task.id),
+  ['evaluate-fit', 'implement', 'inspect-specification', 'try-generator'],
+  'agents.json: task inventory changed unexpectedly'
+);
+assert.equal(agents.execution.hosted_agent_api, false, 'agents.json: must not claim a hosted agent API');
+assert.equal(agents.execution.side_effects, 'none', 'agents.json: browser generator must declare no side effects');
+assert.deepEqual(
+  agents.normalization_contract.explicitly_invalid_nearby_code_points,
+  ['U+200B', 'U+FEFF'],
+  'agents.json: invalid nearby code points drifted'
+);
+
+for (const page of ['docs/index.html', 'docs/generator/index.html']) {
+  const html = fs.readFileSync(page, 'utf8');
+  assert.ok(html.includes('/llms.txt'), `${page}: missing llms.txt discovery link`);
+  assert.ok(html.includes('/agents.json'), `${page}: missing agents.json discovery link`);
 }
 
 assert.equal(

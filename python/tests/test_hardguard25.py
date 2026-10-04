@@ -7,7 +7,6 @@ check digits, and distribution characteristics.
 
 import json
 import pytest
-from collections import Counter
 from pathlib import Path
 
 import hardguard25
@@ -17,14 +16,16 @@ CONFORMANCE = json.loads(
 )
 
 
-def deterministic_generate(bytes_hex, length):
-    result = []
-    for byte in bytes.fromhex(bytes_hex):
-        if byte < 225:
-            result.append(hardguard25.ALPHABET[byte % 25])
-        if len(result) == length:
-            return "".join(result)
-    raise ValueError("not enough accepted bytes in deterministic vector")
+def install_entropy_sequence(monkeypatch, values):
+    remaining = list(values)
+
+    def token_bytes(length):
+        assert length == 1
+        if not remaining:
+            raise AssertionError("deterministic entropy sequence exhausted")
+        return bytes([remaining.pop(0)])
+
+    monkeypatch.setattr(hardguard25.secrets, "token_bytes", token_bytes)
 
 
 def count_caught_single_substitutions(code, digit):
@@ -106,18 +107,25 @@ class TestGeneration:
             result = hardguard25.generate(length, check_digit=True)
             assert len(result) == length + 1
 
-    def test_generate_randomness(self):
-        results = [hardguard25.generate(20) for _ in range(10)]
-        assert len(set(results)) == 10
+    def test_generate_maps_all_accepted_byte_residues_uniformly(self, monkeypatch):
+        install_entropy_sequence(monkeypatch, range(225))
+        assert hardguard25.generate(225) == hardguard25.ALPHABET * 9
 
-    def test_generate_distribution(self):
-        chars = []
-        for _ in range(400):
-            chars.extend(hardguard25.generate(25))
-        counter = Counter(chars)
-        assert len(counter) == 25
-        for char in hardguard25.ALPHABET:
-            assert counter.get(char, 0) > 0
+    def test_generate_rejects_bytes_225_through_255(self, monkeypatch):
+        install_entropy_sequence(monkeypatch, [*range(225, 256), 0, 24])
+        assert hardguard25.generate(2) == "0Y"
+
+    def test_generate_appends_check_digit_to_deterministic_output(self, monkeypatch):
+        install_entropy_sequence(monkeypatch, [0, 1, 2])
+        assert hardguard25.generate(3, check_digit=True) == "0128"
+
+    def test_generate_fails_closed_when_entropy_source_fails(self, monkeypatch):
+        def unavailable(_length):
+            raise OSError("entropy unavailable")
+
+        monkeypatch.setattr(hardguard25.secrets, "token_bytes", unavailable)
+        with pytest.raises(OSError, match="entropy unavailable"):
+            hardguard25.generate(8)
 
 
 class TestValidation:
@@ -204,6 +212,10 @@ class TestNormalization:
     def test_normalize_matches_separator_vectors(self):
         for vector in CONFORMANCE["separators"]:
             assert hardguard25.normalize(vector["input"]) == vector["output"]
+
+    def test_normalize_removes_exact_unicode_whitespace_set(self):
+        for whitespace in CONFORMANCE["unicode_whitespace"]:
+            assert hardguard25.normalize(f"AC{whitespace}DF") == "ACDF"
 
 
 class TestCheckDigit:
@@ -295,28 +307,6 @@ class TestCheckDigit:
             assert hardguard25.verify_check_digit(vector["input"]) is vector["valid"]
 
 
-class TestDistribution:
-
-    def test_distribution_all_chars_appear(self):
-        chars = []
-        for _ in range(400):
-            chars.extend(hardguard25.generate(25))
-        counter = Counter(chars)
-        assert len(counter) == 25
-
-    def test_distribution_roughly_uniform(self):
-        chars = []
-        for _ in range(400):
-            chars.extend(hardguard25.generate(25))
-        counter = Counter(chars)
-        total = len(chars)
-        expected_per_char = total / 25
-        for char in hardguard25.ALPHABET:
-            count = counter.get(char, 0)
-            ratio = count / expected_per_char
-            assert 0.5 < ratio < 1.5
-
-
 class TestConformanceValidation:
 
     def test_validate_matches_shared_vectors(self):
@@ -351,6 +341,7 @@ class TestConformanceValidation:
                 vector["code"], vector["check_digit"]
             ) == {"caught": vector["caught"], "total": vector["total"]}
 
-    def test_deterministic_generation_vectors(self):
+    def test_deterministic_generation_vectors(self, monkeypatch):
         for vector in CONFORMANCE["deterministic_generation"]:
-            assert deterministic_generate(vector["bytes_hex"], vector["length"]) == vector["output"]
+            install_entropy_sequence(monkeypatch, bytes.fromhex(vector["bytes_hex"]))
+            assert hardguard25.generate(vector["length"]) == vector["output"]

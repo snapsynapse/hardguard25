@@ -31,7 +31,7 @@ check_digit("AC3H7PUW")           # "N"
 verify_check_digit("AC3H7PUWN")   # True
 ```
 
-Normalization rejects empty and separator-only input. Validation returns `False` for it, and check-digit calculation rejects an empty payload.
+Normalization removes the Unicode White_Space set pinned by the specification plus `-`, `_`, and `.`, and rejects empty or separator-only input. Validation returns `False` for invalid input, and check-digit calculation rejects an empty payload.
 
 ## API
 
@@ -39,7 +39,7 @@ Normalization rejects empty and separator-only input. Validation returns `False`
 |---|---|
 | `generate(length, *, check_digit=False)` | Cryptographically secure random ID using rejection sampling for uniform distribution |
 | `validate(s)` | `True` if `s` normalizes to a valid HardGuard25 ID; never raises |
-| `normalize(s)` | Trim, uppercase, strip `-` `_` `.` and spaces; raises `ValueError` on invalid chars |
+| `normalize(s)` | Remove pinned Unicode White_Space and `-` `_` `.`, uppercase, and reject other characters |
 | `check_digit(code)` | Mod-25 weighted check digit for manual-entry error detection |
 | `verify_check_digit(code)` | Strip last char, recompute, compare |
 | `ALPHABET` | `"0123456789ACDFGHJKMNPRUWY"` |
