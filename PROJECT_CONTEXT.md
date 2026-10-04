@@ -34,7 +34,7 @@ Precise, standards-document register: short declarative sentences, explicit scop
 
 ## Current status
 
-Stable and maintenance-only. Prepared spec version 1.3.8, dated October 2026, remains unreleased until it is tagged, published, and independently verified. The current published version is 1.3.7. The alphabet and checksum algorithm are unchanged. Local validation, a pushed commit, a successful Pages workflow, and package publication are separate claims.
+Stable and maintenance-only. Current published spec version 1.3.8, dated October 2026, is independently verified across the signed Git tag, GitHub Release, npm, PyPI, Go proxy, and deployed documentation site. The alphabet and checksum algorithm are unchanged. Local validation, a pushed commit, a successful Pages workflow, and package publication remain separate claims for future releases.
 
 Routine work is limited to security, correctness, conformance, compatibility, accessibility, dependency, release-process, and evidence-backed documentation maintenance. New runtimes, hosted services, identifier capabilities, benchmark execution, comparative claims, and feature expansion require renewed owner authorization under `INTENT.md`.
 
@@ -58,7 +58,7 @@ The repository does not use general document frontmatter. Root reference documen
 - `INTENT.md` owns purpose, scope, invariants, and repository-standard exceptions.
 - `SPEC.md` owns normative behavior. `conformance/vectors.json` and runtime tests prove executable behavior.
 - `repo-standards.yaml` owns surface inventory, delivery paths, checks, and claim boundaries.
-- Version 1.3.8 is the prepared release; version 1.3.7 remains the current published release until registry, tag, and deployment evidence confirms the transition.
+- Version 1.3.8 is the current published release. The release record in `ops/releases/1.3.8.json` identifies the exact commit, workflow runs, registry hashes, provenance, and deployment evidence.
 - Comparative OCR and transcription superiority remains unestablished until a reviewed study supports a stronger claim.
 - GitHub Pages deploys tracked `docs/` bytes after a push to `main`; repository-local checks do not establish live deployment.
 

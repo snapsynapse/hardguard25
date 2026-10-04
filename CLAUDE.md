@@ -74,9 +74,9 @@ CI (`.github/workflows/`) additionally runs:
 
 ## Current state (as of 2026-10-03)
 
-- Prepared release line: 1.3.8 (unreleased). Exact-head CI, publication, package registry, and deployed-site evidence remain pending until the reviewed candidate is pushed, tagged, published, and verified.
+- Latest release line: 1.3.8 (published and verified). Exact-head CI, signed tags, GitHub Release, npm, PyPI, Go proxy, provenance, and deployed-site evidence are recorded in `ops/releases/1.3.8.json`.
 - The 1.3.5 stabilization pass fixed Go non-ASCII lookup truncation, aligned Python length validation and runtime version metadata, added shared Unicode rejection vectors, and hardened release-version and rerun checks.
-- The prepared 1.3.8 patch pins exact Unicode White_Space behavior across runtimes, strengthens production-generator and package-artifact verification, and adds bounded agent-discovery surfaces without claiming publication before release evidence exists.
-- The unreleased repository candidate adds exact Unicode White_Space boundaries, deterministic production entropy checks, cross-runtime public-API parity, exact package inventories, and expanded agent-discovery surfaces.
+- Release 1.3.8 pins exact Unicode White_Space behavior across runtimes, strengthens production-generator and package-artifact verification, and adds bounded agent-discovery surfaces.
+- Release 1.3.8 adds deterministic production entropy checks, cross-runtime public-API parity, exact package inventories, and expanded agent-discovery surfaces.
 - No TODO/FIXME markers found in tracked source or docs.
 - `ROADMAP.md` lists only evidence-driven, adoption-driven, and maintenance follow-ups. None represents broken or unfinished core functionality.

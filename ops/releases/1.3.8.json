@@ -4,15 +4,15 @@
   "profile": "other",
   "authority": "R2",
   "start_head": "3768782a04d6d6cf30bbaec6f4949ee620441554",
-  "candidate_head": null,
+  "candidate_head": "9ead0a5ad76ede45f8c8149754c54e2917808054",
   "candidate_version": "1.3.8",
-  "updated_at": "2026-10-04T02:53:07Z",
+  "updated_at": "2026-10-04T03:05:20Z",
   "steps": [
     {
       "id": "local-release-preparation",
       "status": "completed",
-      "evidence": "Version 1.3.8 metadata, maintenance governance, adoption guidance, agent surfaces, semantic maps, dependency maintenance, repository settings, and the verified PyPI OIDC workflow are prepared in the working tree.",
-      "head": null,
+      "evidence": "Version 1.3.8 metadata, maintenance governance, adoption guidance, agent surfaces, semantic maps, dependency maintenance, repository settings, and the verified PyPI OIDC workflow were prepared and validated in the candidate.",
+      "head": "9ead0a5ad76ede45f8c8149754c54e2917808054",
       "completed_at": "2026-10-04T02:53:07Z"
     },
     {
@@ -39,7 +39,7 @@
     {
       "id": "github-security-configuration",
       "status": "completed",
-      "evidence": "GitHub API verification returned vulnerability alerts HTTP 204, automated security fixes enabled and not paused, secret scanning enabled, and push protection enabled. The pypi environment was created as environment ID 23400367585.",
+      "evidence": "GitHub API verification returned vulnerability alerts HTTP 204, automated security fixes enabled and not paused, secret scanning enabled, and push protection enabled. Environment pypi is ID 23400367585. Active ruleset 24440079 blocks default-branch deletion and non-fast-forward updates while preserving direct fast-forward maintenance.",
       "head": null,
       "completed_at": "2026-10-04T02:37:32Z"
     },
@@ -52,73 +52,73 @@
     },
     {
       "id": "stage-and-commit",
-      "status": "not_started",
-      "evidence": null,
-      "head": null,
-      "completed_at": null
+      "status": "completed",
+      "evidence": "Signed commit 9ead0a5ad76ede45f8c8149754c54e2917808054: Release 1.3.8. The commit contains 44 exact reviewed paths and an SSH signature.",
+      "head": "9ead0a5ad76ede45f8c8149754c54e2917808054",
+      "completed_at": "2026-10-04T02:54:02Z"
     },
     {
       "id": "push-main-and-exact-head-ci",
-      "status": "not_started",
-      "evidence": null,
-      "head": null,
-      "completed_at": null
+      "status": "completed",
+      "evidence": "Pushed main to the candidate. Exact-head Test run 37172468686 passed repository, minimum-runtimes, and windows-python-artifact; Accessibility run 37172468664 passed.",
+      "head": "9ead0a5ad76ede45f8c8149754c54e2917808054",
+      "completed_at": "2026-10-04T02:55:25Z"
     },
     {
       "id": "production-pages-verification",
-      "status": "not_started",
-      "evidence": null,
-      "head": null,
-      "completed_at": null
+      "status": "completed",
+      "evidence": "Pages run 37172468702 passed deploy and verify-search. An independent npm run test:search:production reported 2 sitemap pages, 0 defects, and 0 infrastructure failures at https://hardguard25.com/.",
+      "head": "9ead0a5ad76ede45f8c8149754c54e2917808054",
+      "completed_at": "2026-10-04T02:55:25Z"
     },
     {
       "id": "tag-v1.3.8",
-      "status": "not_started",
-      "evidence": null,
-      "head": null,
-      "completed_at": null
+      "status": "completed",
+      "evidence": "Signed annotated tag v1.3.8 is object 7c98cce43aa4d77aa892ce17dd4b5c273b9496b8 and peels to the candidate commit.",
+      "head": "9ead0a5ad76ede45f8c8149754c54e2917808054",
+      "completed_at": "2026-10-04T02:56:20Z"
     },
     {
       "id": "release-workflow",
-      "status": "not_started",
-      "evidence": null,
-      "head": null,
-      "completed_at": null
+      "status": "completed",
+      "evidence": "Release run 37172572267 passed verify, preflight, publish-npm, publish-pypi, and tag-go. Tag Accessibility run 37172572285 passed.",
+      "head": "9ead0a5ad76ede45f8c8149754c54e2917808054",
+      "completed_at": "2026-10-04T02:58:02Z"
     },
     {
       "id": "npm-publication",
-      "status": "not_started",
-      "evidence": null,
-      "head": null,
-      "completed_at": null
+      "status": "completed",
+      "evidence": "npm latest is 1.3.8. Public tarball SHA-1 is 82080dbbe5650d2821a3532d54990d076efeef1d and integrity is sha512-k64Urenj8p1vIVpKAzgZk0ba/VMiJjYc3PFg5JDzWpdD4iiWdi5zPeRtLNJUHMb8U4ODFfUfpAfJwz9s3REwRg==. A clean consumer install passed. npm recorded signed provenance at transparency-log index 3076258939.",
+      "head": "9ead0a5ad76ede45f8c8149754c54e2917808054",
+      "completed_at": "2026-10-04T03:02:30Z"
     },
     {
       "id": "pypi-publication",
-      "status": "not_started",
-      "evidence": null,
-      "head": null,
-      "completed_at": null
+      "status": "completed",
+      "evidence": "PyPI 1.3.8 exposes wheel SHA-256 056cb6e98bc69f12c5544f7206d31caa6e02acc0cd25b231cba4c69aac2f735b and sdist SHA-256 9ea511598dac76da9b0086d6f212d53bf106d1135c486167d6314a0c3ef198f1. The integrity endpoint verifies GitHub publisher snapsynapse/hardguard25, workflow release.yml, environment pypi. A clean consumer install passed, and the legacy PYPI_API_TOKEN secret was removed and verified absent.",
+      "head": "9ead0a5ad76ede45f8c8149754c54e2917808054",
+      "completed_at": "2026-10-04T03:04:30Z"
     },
     {
       "id": "go-module-publication",
-      "status": "not_started",
-      "evidence": null,
-      "head": null,
-      "completed_at": null
+      "status": "completed",
+      "evidence": "Tag go/v1.3.8 and the Go proxy origin both resolve to candidate commit 9ead0a5ad76ede45f8c8149754c54e2917808054.",
+      "head": "9ead0a5ad76ede45f8c8149754c54e2917808054",
+      "completed_at": "2026-10-04T02:58:34Z"
     },
     {
       "id": "github-release",
-      "status": "not_started",
-      "evidence": null,
-      "head": null,
-      "completed_at": null
+      "status": "completed",
+      "evidence": "GitHub Release 402800396, HardGuard25 1.3.8, is published and is neither draft nor prerelease: https://github.com/snapsynapse/hardguard25/releases/tag/v1.3.8",
+      "head": "9ead0a5ad76ede45f8c8149754c54e2917808054",
+      "completed_at": "2026-10-04T03:02:54Z"
     },
     {
       "id": "maintenance-closeout",
-      "status": "not_started",
-      "evidence": null,
+      "status": "completed",
+      "evidence": "Published-state documentation and this immutable evidence record were reconciled after package, provenance, deployment, GitHub security, ruleset, and credential-cleanup verification.",
       "head": null,
-      "completed_at": null
+      "completed_at": "2026-10-04T03:05:20Z"
     }
   ]
 }

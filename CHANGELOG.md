@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Changed
+- Reconciled the repository to the verified 1.3.8 published state and recorded immutable release, registry, provenance, deployment, and GitHub configuration evidence.
+- Updated the release-version checker to accept the explicit current-published marker after release closeout.
+
+### Security
+- Removed the legacy `PYPI_API_TOKEN` repository secret after the 1.3.8 OIDC publication and provenance attestations were verified.
+
 ## 1.3.8 -- 2026-10-03
 
 ### Changed
