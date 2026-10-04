@@ -3,6 +3,7 @@ name: Accessibility
 on:
   pull_request:
     paths:
+      - "docs/index.html"
       - "docs/generator/**"
       - "tests/accessibility/**"
       - "package.json"
@@ -14,6 +15,7 @@ on:
     tags:
       - "v[0-9]*"
     paths:
+      - "docs/index.html"
       - "docs/generator/**"
       - "tests/accessibility/**"
       - "package.json"

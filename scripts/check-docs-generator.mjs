@@ -9,6 +9,10 @@ const conformance = JSON.parse(
 
 const scriptMatch = html.match(/<script>([\s\S]*)<\/script>\s*<\/body>/);
 assert.ok(scriptMatch, 'docs generator script block should be present');
+assert.ok(html.includes('Payload Length'), 'generator must identify the selected length as payload length');
+assert.ok(html.includes('Possible payload strings'), 'generator must label namespace statistics as payload strings');
+assert.ok(html.includes('Payload entropy'), 'generator must label entropy as payload entropy');
+assert.ok(html.includes('adds no random entropy'), 'generator must explain the check digit entropy boundary');
 
 let activeBytes = [];
 
@@ -17,11 +21,14 @@ function element(id) {
   if (!elements.has(id)) {
     elements.set(id, {
       value: id === 'codeLength' ? '8' : '',
+      get valueAsNumber() { return this.value === '' ? Number.NaN : Number(this.value); },
       textContent: '',
       hidden: false,
       classList: { add() {}, remove() {}, toggle() {} },
       addEventListener() {},
       setAttribute() {},
+      removeAttribute() {},
+      focus() {},
       querySelectorAll() { return []; },
       style: {},
     });
@@ -87,5 +94,9 @@ for (const vector of conformance.deterministic_generation) {
 for (const vector of conformance.check_digit) {
   assert.equal(context.computeCheckDigit(vector.code), vector.digit.toLowerCase());
 }
+
+context.updateStats(16);
+assert.equal(element('permutations').textContent, '2.33e+22');
+assert.equal(element('bitsEntropy').textContent, '74.3 bits');
 
 console.log('docs generator conformance check passed');

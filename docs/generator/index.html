@@ -48,6 +48,8 @@
   }
   label .hint { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--text-dim); }
   legend { padding: 0; margin-bottom: 6px; }
+  .field-error { color: var(--red); font-size: 12px; max-width: 180px; }
+  .control-note { color: var(--text-dim); font-size: 13px; line-height: 1.5; margin: -8px 0 20px; }
   .sr-only {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
@@ -178,12 +180,14 @@
 
   <div class="controls">
     <div class="field">
-      <label for="codeLength">Code Length</label>
-      <input type="number" id="codeLength" value="8" min="1" max="32">
+      <label for="codeLength">Payload Length <span class="hint">(1-32)</span></label>
+      <input type="number" id="codeLength" value="8" min="1" max="32" step="1" aria-describedby="codeLengthError">
+      <p class="field-error" id="codeLengthError" hidden>Enter a whole number from 1 to 32.</p>
     </div>
     <div class="field">
-      <label for="quantity">Quantity</label>
-      <input type="number" id="quantity" value="10" min="1" max="500">
+      <label for="quantity">Quantity <span class="hint">(1-500)</span></label>
+      <input type="number" id="quantity" value="10" min="1" max="500" step="1" aria-describedby="quantityError">
+      <p class="field-error" id="quantityError" hidden>Enter a whole number from 1 to 500.</p>
     </div>
     <div class="field">
       <label for="groupSize">Group every N <span class="hint">(0 = no grouping)</span></label>
@@ -196,7 +200,7 @@
     <fieldset class="field">
       <legend>Check digit</legend>
       <label class="check-toggle">
-        <input type="checkbox" id="checkDigit">
+        <input type="checkbox" id="checkDigit" aria-describedby="checkDigitNote">
         <span>Mod-25</span>
       </label>
     </fieldset>
@@ -209,6 +213,8 @@
     </fieldset>
   </div>
 
+  <p class="control-note" id="checkDigitNote">The optional check digit adds one character after the payload. It detects common entry errors but adds no random entropy.</p>
+
   <div class="actions">
     <button type="button" class="btn" onclick="generate()">Generate</button>
     <button type="button" class="btn btn-secondary" onclick="clearOutput()">Clear</button>
@@ -217,11 +223,11 @@
   <div class="stats">
     <div class="stat">
       <div class="stat-value" id="permutations">--</div>
-      <div class="stat-label">Possible combinations</div>
+      <div class="stat-label">Possible payload strings</div>
     </div>
     <div class="stat">
       <div class="stat-value" id="bitsEntropy">--</div>
-      <div class="stat-label">Bits of entropy</div>
+      <div class="stat-label">Payload entropy</div>
     </div>
     <div class="stat">
       <div class="stat-value" id="generated">0</div>
@@ -351,9 +357,54 @@ function formatCode(code) {
   return groups.join(sep);
 }
 
+const boundedIntegerFields = {
+  codeLength: { label: 'Payload Length', min: 1, max: 32 },
+  quantity: { label: 'Quantity', min: 1, max: 500 },
+};
+
+function readBoundedInteger(id) {
+  const input = document.getElementById(id);
+  const rule = boundedIntegerFields[id];
+  const value = input.valueAsNumber;
+  const valid = input.value !== '' && Number.isInteger(value) && value >= rule.min && value <= rule.max;
+  return { input, rule, valid, value };
+}
+
+function clearFieldError(id) {
+  const input = document.getElementById(id);
+  input.removeAttribute('aria-invalid');
+  document.getElementById(id + 'Error').hidden = true;
+}
+
+function validateBoundedInteger(id) {
+  const result = readBoundedInteger(id);
+  const error = document.getElementById(id + 'Error');
+  if (result.valid) {
+    clearFieldError(id);
+    return result;
+  }
+  result.input.setAttribute('aria-invalid', 'true');
+  error.hidden = false;
+  return {
+    ...result,
+    message: result.rule.label + ': enter a whole number from ' + result.rule.min + ' to ' + result.rule.max + '.',
+  };
+}
+
 function generate() {
-  const length = Math.max(1, Math.min(32, parseInt(document.getElementById('codeLength').value) || 8));
-  const qty = Math.max(1, Math.min(500, parseInt(document.getElementById('quantity').value) || 10));
+  const lengthResult = validateBoundedInteger('codeLength');
+  const quantityResult = validateBoundedInteger('quantity');
+  const invalid = [lengthResult, quantityResult].filter(result => !result.valid);
+  const resultsStatus = document.getElementById('resultsStatus');
+  if (invalid.length > 0) {
+    resultsStatus.hidden = false;
+    resultsStatus.textContent = 'Generation stopped. ' + invalid.map(result => result.message).join(' ');
+    invalid[0].input.focus();
+    return;
+  }
+
+  const length = lengthResult.value;
+  const qty = quantityResult.value;
   const withCheck = document.getElementById('checkDigit').checked;
   const container = document.getElementById('codesContainer');
   const placeholder = document.getElementById('placeholder');
@@ -378,14 +429,20 @@ function generate() {
   }
 
   totalGenerated += qty;
-  const resultsStatus = document.getElementById('resultsStatus');
   resultsStatus.hidden = false;
   resultsStatus.textContent = 'Generated ' + qty + (qty === 1 ? ' code.' : ' codes.');
-  updateStats();
+  updateStats(length);
 }
 
-function updateStats() {
-  const length = parseInt(document.getElementById('codeLength').value) || 8;
+function updateStats(validatedLength) {
+  const lengthResult = readBoundedInteger('codeLength');
+  const length = validatedLength ?? (lengthResult.valid ? lengthResult.value : null);
+  if (length === null) {
+    document.getElementById('permutations').textContent = '--';
+    document.getElementById('bitsEntropy').textContent = '--';
+    document.getElementById('generated').textContent = totalGenerated;
+    return;
+  }
   const perms = Math.pow(25, length);
 
   let permStr;
@@ -442,7 +499,11 @@ function showToast(msg) {
 }
 
 updateStats();
-document.getElementById('codeLength').addEventListener('input', updateStats);
+document.getElementById('codeLength').addEventListener('input', () => {
+  clearFieldError('codeLength');
+  updateStats();
+});
+document.getElementById('quantity').addEventListener('input', () => clearFieldError('quantity'));
 </script>
 
 </body>

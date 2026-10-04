@@ -31,6 +31,6 @@ dependencies: []
 files:
   - path: SKILL.md
     role: skill
-    version: 6
-    hash: sha256:85be7b143c0a6d347d02ad142443524360217cf20cda0d51b9faa4c89a7139ea
+    version: 7
+    hash: sha256:93c5007e2d1250ff0056b13baeeb587d5ad07771aa6df32cb5b003c81658d36a
     note: Canonical skill definition with alphabet reference, code examples, and comparison matrix

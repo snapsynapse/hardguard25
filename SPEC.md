@@ -62,7 +62,7 @@ Design principle: when a letter and a digit compete for the same visual slot, th
 
 Bits per character = log2(25) = 4.64.
 
-| Length | Bits | Unique IDs | Typical Use |
+| Length | Bits | Namespace Size | Typical Use |
 |-------:|-----:|-----------:|-------------|
 | 4 | 18.6 | 390,625 | Small inventory, tickets |
 | 5 | 23.2 | 9,765,625 | Small business |
@@ -70,9 +70,11 @@ Bits per character = log2(25) = 4.64.
 | 7 | 32.5 | 6.1 billion | Large catalogs |
 | 8 | 37.2 | 152.6 billion | Large systems |
 | 12 | 55.7 | 5.96 x 10^16 | Internal tokens |
-| 16 | 74.2 | 3.55 x 10^22 | Cross-system IDs |
-| 20 | 92.8 | 2.11 x 10^27 | Public tokens |
-| 22 | 102.1 | 1.32 x 10^30 | Internet-scale |
+| 16 | 74.3 | 2.33 x 10^22 | Cross-system IDs |
+| 20 | 92.9 | 9.09 x 10^27 | Public tokens |
+| 22 | 102.2 | 5.68 x 10^30 | Internet-scale |
+
+These values are possible payload strings, not safe random issuance counts. Random issuance must account for birthday collisions. An appended check digit is derived from the payload and does not add random entropy.
 
 Recommended defaults:
 
@@ -82,16 +84,16 @@ Recommended defaults:
 
 ## Collision Guidance
 
-Birthday-bound approximation: for alphabet size N and length L, the probability of any collision after generating k IDs is approximately p = 1 - exp(-k^2 / (2 * N^L)).
+Birthday-bound approximation: for alphabet size N and length L, the probability of any collision after generating k IDs is approximately p = 1 - exp(-k(k-1) / (2 * N^L)). The table conservatively floors the positive solution for k at each probability threshold.
 
 | Length | Space Size | Max IDs before 1e-9 collision | Max IDs before 1e-12 collision |
 |-------:|-----------:|------------------------------:|-------------------------------:|
 | 12 | 5.96e16 | 10,918 | 345 |
-| 14 | 3.72e20 | 689,957 | 21,823 |
-| 16 | 2.33e22 | 6,823,938 | 215,584 |
-| 18 | 1.46e25 | 67,627,923 | 2,136,731 |
-| 20 | 9.09e27 | 4,264,961,375 | 134,875,910 |
-| 22 | 5.68e30 | 106,624,034,378 | 3,371,897,753 |
+| 14 | 3.73e19 | 272,958 | 8,632 |
+| 16 | 2.33e22 | 6,823,938 | 215,792 |
+| 18 | 1.46e25 | 170,598,448 | 5,394,797 |
+| 20 | 9.09e27 | 4,264,961,201 | 134,869,915 |
+| 22 | 5.68e30 | 106,624,030,021 | 3,371,747,881 |
 
 ## Normalization Rules
 

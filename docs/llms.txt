@@ -34,12 +34,14 @@ When a letter and a digit compete for the same visual slot, the digit always win
 
 Each character provides 4.64 bits of entropy (log2 25).
 
-- 4 chars: 390,625 unique IDs (small inventory, tickets)
+- 4 chars: 390,625 possible strings (small inventory, tickets)
 - 6 chars: 244 million (medium businesses)
 - 8 chars: 152 billion (large systems)
-- 12 chars: 59.6 trillion (internal tokens)
-- 16 chars: 3.55 x 10^22 (cross-system identifiers)
-- 20 chars: 2.11 x 10^27 (public tokens)
+- 12 chars: 59.6 quadrillion (internal tokens)
+- 16 chars: 2.33 x 10^22 (cross-system identifiers)
+- 20 chars: 9.09 x 10^27 (public tokens)
+
+These values are possible payload strings, not safe random issuance counts. Random issuance must account for birthday collisions. An appended check digit is derived from the payload and does not add random entropy.
 
 ## Normalization
 

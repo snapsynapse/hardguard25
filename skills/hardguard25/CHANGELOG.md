@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+- SKILL.md: Corrected payload namespace guidance, distinguished possible strings from safe random issuance counts, and clarified that a check digit adds no random entropy. File version advanced from 6 to 7.
+- MANIFEST.yaml: Refreshed the SKILL.md file version and hash while retaining the parent-release-coupled bundle version 1.3.7.
+
 ## 1.3.7 -- 2026-09-05
 - SKILL.md: Defined empty and separator-only normalization behavior and empty checksum-payload rejection consistently with the parent specification. File version advanced from 5 to 6 and the hash was refreshed.
 - MANIFEST.yaml: Advanced the parent-release-coupled bundle version and date to 1.3.7 and 2026-09-05.

@@ -150,11 +150,11 @@ Start by checking my project language, package manager, test command, and curren
 ID handling. Then summarize the exact implementation plan and wait for my
 approval before installing packages or changing persistent data.
 ```
-## How Many IDs Can I Make?
+## Choosing a Payload Length
 
 Each character carries `log2(25) = 4.64` bits of entropy.
 
-| Length | Bits | Unique IDs | Typical Use |
+| Length | Bits | Possible Strings | Typical Use |
 |-------:|-----:|-----------:|-------------|
 | 4 | 18.6 | 390,625 | Small inventory, tickets |
 | 5 | 23.2 | 9,765,625 | Small business |
@@ -162,9 +162,11 @@ Each character carries `log2(25) = 4.64` bits of entropy.
 | 7 | 32.5 | 6.1 billion | Large catalogs |
 | 8 | 37.2 | 152.6 billion | Large systems |
 | 12 | 55.7 | 5.96 × 10¹⁶ | Internal tokens |
-| 16 | 74.2 | 3.55 × 10²² | Cross-system IDs |
-| 20 | 92.8 | 2.11 × 10²⁷ | Public tokens |
-| 22 | 102.1 | 1.32 × 10³⁰ | Internet-scale |
+| 16 | 74.3 | 2.33 × 10²² | Cross-system IDs |
+| 20 | 92.9 | 9.09 × 10²⁷ | Public tokens |
+| 22 | 102.2 | 5.68 × 10³⁰ | Internet-scale |
+
+These values are possible payload strings, not safe random issuance counts. Random issuance must account for birthday collisions. An appended check digit is derived from the payload and does not add random entropy.
 
 Recommended defaults:
 

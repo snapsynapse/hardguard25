@@ -1,6 +1,6 @@
 # Conformance Report
 
-Report date: 2026-09-05
+Report date: 2026-10-03
 
 Fixture version: `1.3.7`
 
@@ -38,3 +38,7 @@ npm run verify:browser
 ```
 
 CI runs equivalent checks on GitHub Actions for pull requests and pushes to `main`.
+
+## Repository Guidance Checks
+
+Current repository verification independently computes namespace sizes, rounded payload entropy, and birthday-collision thresholds before checking every published guidance mirror. It also rejects the known stale values corrected after 1.3.7. These checks cover documentation correctness; the runtime behavior vectors remain unchanged.

@@ -145,6 +145,7 @@
 
     a { color: var(--accent); text-decoration: none; }
     a:hover { color: var(--accent-hover); text-decoration: underline; }
+    main p a:not(.btn) { text-decoration: underline; text-underline-offset: 2px; }
 
     /* Skip link (a11y) */
     .skip-link {
@@ -341,11 +342,11 @@
     /* Code blocks */
     .code-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1.5rem;
       margin-top: 1.5rem;
     }
-    .code-block { text-align: left; }
+    .code-block { min-width: 0; text-align: left; }
     .code-block h3 { font-size: 0.95rem; margin-bottom: 0.75rem; }
     .code-block .annotation {
       font-size: 0.85rem;
@@ -367,6 +368,8 @@
     code { font-family: var(--mono); font-size: 0.88em; color: var(--accent); }
 
     /* Tables */
+    .table-scroll { max-width: 100%; overflow-x: auto; margin-bottom: 1.5rem; }
+    .table-scroll table { margin-bottom: 0; }
     table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; }
     th, td {
       text-align: left;
@@ -429,7 +432,7 @@
       .hero { padding: 3rem 0 2.5rem; }
       .charset { font-size: 0.85rem; letter-spacing: 0.2em; padding: 1.1rem 0.25rem 1.1rem 0.45rem; }
       .pillars { grid-template-columns: 1fr; }
-      .code-grid { grid-template-columns: 1fr; }
+      .code-grid { grid-template-columns: minmax(0, 1fr); }
       nav .links { display: none; }
       nav .links.mobile-compact { display: flex; gap: 0.75rem; }
       .footer-grid { flex-direction: column; }
@@ -520,6 +523,7 @@
       </div>
     </div>
 
+    <div class="table-scroll" role="region" aria-label="Excluded characters table" tabindex="0">
     <table>
       <thead>
         <tr><th>Removed</th><th>Reason</th></tr>
@@ -538,22 +542,26 @@
         <tr><td class="char">X</td><td>Collides with multiplication operator; varies by locale</td></tr>
       </tbody>
     </table>
+    </div>
 
     <h3 style="margin-top: 2rem;">Entropy and length</h3>
     <p>Each HardGuard25 character carries <code>log2(25) &approx; 4.64</code> bits of entropy. Pick a length for your risk profile:</p>
+    <div class="table-scroll" role="region" aria-label="Payload namespace table" tabindex="0">
     <table>
       <thead>
-        <tr><th>Length</th><th class="num">Unique IDs</th><th>Sweet spot for</th></tr>
+        <tr><th>Length</th><th class="num">Possible payload strings</th><th>Sweet spot for</th></tr>
       </thead>
       <tbody>
         <tr><td>4</td><td class="num">390,625</td><td>Small inventory, tickets</td></tr>
         <tr><td>6</td><td class="num">244 million</td><td>Medium businesses</td></tr>
         <tr><td>8</td><td class="num">152 billion</td><td>Large systems</td></tr>
-        <tr><td>12</td><td class="num">59.6 trillion</td><td>Internal tokens</td></tr>
-        <tr><td>16</td><td class="num">3.55 &times; 10<sup>22</sup></td><td>Cross-system identifiers</td></tr>
-        <tr><td>20</td><td class="num">2.11 &times; 10<sup>27</sup></td><td>Public tokens</td></tr>
+        <tr><td>12</td><td class="num">59.6 quadrillion</td><td>Internal tokens</td></tr>
+        <tr><td>16</td><td class="num">2.33 &times; 10<sup>22</sup></td><td>Cross-system identifiers</td></tr>
+        <tr><td>20</td><td class="num">9.09 &times; 10<sup>27</sup></td><td>Public tokens</td></tr>
       </tbody>
     </table>
+    </div>
+    <p>These values are possible payload strings, not safe random issuance counts. Random issuance must account for birthday collisions. An appended check digit is derived from the payload and does not add random entropy.</p>
   </div>
 </section>
 
@@ -565,7 +573,7 @@
     <div class="code-grid">
       <div class="code-block">
         <h3>JavaScript</h3>
-<pre>npm install hardguard25
+<pre tabindex="0" aria-label="JavaScript installation and usage example">npm install hardguard25
 
 import { generate, validate, normalize, checkDigit }
   from 'hardguard25';
@@ -578,7 +586,7 @@ normalize("ac3h-7puw");             // "AC3H7PUW"</pre>
 
       <div class="code-block">
         <h3>Python</h3>
-<pre>pip install hardguard25
+<pre tabindex="0" aria-label="Python installation and usage example">pip install hardguard25
 
 from hardguard25 import (
   generate, validate, normalize, check_digit,
@@ -592,7 +600,7 @@ normalize("ac3h-7puw")              # "AC3H7PUW"</pre>
 
       <div class="code-block">
         <h3>Go</h3>
-<pre>import "github.com/snapsynapse/hardguard25/go"
+<pre tabindex="0" aria-label="Go installation and usage example">import "github.com/snapsynapse/hardguard25/go"
 
 id, _ := hardguard25.Generate(8)
 id, _ = hardguard25.GenerateWithCheck(8)
@@ -602,7 +610,7 @@ s, _ := hardguard25.Normalize("ac3h-7puw")</pre>
 
       <div class="code-block">
         <h3>No library needed</h3>
-<pre># Alphabet
+<pre tabindex="0" aria-label="No-library alphabet and normalization example"># Alphabet
 0123456789ACDFGHJKMNPRUWY
 
 # Regex

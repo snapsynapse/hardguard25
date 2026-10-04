@@ -24,15 +24,16 @@ B E I L O Q S T V X Z
 Rule: when a letter and a digit compete for the same visual slot, the digit wins.
 ## Length selection
 Each character carries `log2(25) = 4.64` bits of entropy.
-| Length | Bits | Unique IDs | Typical use |
+| Length | Bits | Possible strings | Typical use |
 |-------:|-----:|-----------:|-------------|
 | 4 | 18.6 | 390,625 | Small inventory, ticket queues |
 | 6 | 27.9 | 244 million | Medium operational systems |
 | 8 | 37.2 | 152.6 billion | Large operational systems |
 | 12 | 55.7 | 5.96 x 10^16 | Internal tokens |
-| 16 | 74.2 | 3.55 x 10^22 | Cross-system IDs |
-| 20 | 92.8 | 2.11 x 10^27 | Public tokens |
-| 22 | 102.1 | 1.32 x 10^30 | Long-lived internet-scale IDs |
+| 16 | 74.3 | 2.33 x 10^22 | Cross-system IDs |
+| 20 | 92.9 | 9.09 x 10^27 | Public tokens |
+| 22 | 102.2 | 5.68 x 10^30 | Long-lived internet-scale IDs |
+These values are possible payload strings, not safe random issuance counts. Random issuance must account for birthday collisions. An appended check digit is derived from the payload and does not add random entropy.
 Recommended defaults:
 - Use 8 for operational IDs that are not security tokens and do not need internet-scale collision resistance.
 - Use 16 for internal cross-system identifiers.

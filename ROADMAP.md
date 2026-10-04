@@ -19,6 +19,8 @@ The HardGuard25 core standard is stable for the 1.3.7 patch release. Future chan
 - Specified a reproducible human-factors benchmark protocol without claiming that a pilot or study has occurred.
 - Added TypeScript declarations and packed-consumer compile checks for the JavaScript package.
 - Prepared the coordinated PyPI Trusted Publishing migration procedure while retaining the working token path.
+- Corrected published namespace, entropy, and collision guidance and added deterministic mirror checks.
+- Contained narrow-screen landing overflow and made generator length and quantity validation explicit and accessible.
 
 ## Evidence-Driven Candidates
 

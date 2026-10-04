@@ -6,12 +6,12 @@ metadata:
   source: https://github.com/snapsynapse/hardguard25
   skill_bundle: hardguard25
   file_role: skill
-  version: 6
-  version_date: 2026-09-05
-  previous_version: 5
+  version: 7
+  version_date: 2026-10-03
+  previous_version: 6
   change_summary: >
-    Define non-empty normalization and checksum inputs consistently across runtimes.
-    Preserve the existing alphabet, checksum algorithm, and evidence limits.
+    Correct payload namespace guidance and distinguish possible strings from safe
+    random issuance. Clarify that a check digit adds no random entropy.
 ---
 
 # HardGuard25
@@ -48,16 +48,18 @@ Rule: when a letter and a digit compete, the digit wins.
 
 ## Quick Reference: Length Selection
 
-| Length | Unique IDs | Use For |
+| Length | Possible Strings | Use For |
 |-------:|-----------:|---------|
 | 4 | 390,625 | Small inventory, tickets |
 | 6 | 244 million | Medium businesses |
 | 8 | 152 billion | Large systems |
-| 12 | 59.6 trillion | Internal tokens |
-| 16 | 3.55 x 10^22 | Cross-system IDs |
-| 20 | 2.11 x 10^27 | Public tokens |
+| 12 | 59.6 quadrillion | Internal tokens |
+| 16 | 2.33 x 10^22 | Cross-system IDs |
+| 20 | 9.09 x 10^27 | Public tokens |
 
 Each character = 4.64 bits of entropy (log2 25).
+
+These values are possible payload strings, not safe random issuance counts. Random issuance must account for birthday collisions. An appended check digit is derived from the payload and does not add random entropy.
 
 ## Generating IDs
 

@@ -7,6 +7,12 @@
 - Added task-scope and pre-action verification instructions, preserved explicit safety limits, and enforced guide size,
   line-length, profile-selector, confirmation, copy-label, mirror, and sidecar integrity in the repository validator.
 
+### Fixed
+- Corrected payload namespace, entropy, and birthday-collision guidance across the specification, documentation, site, and agent skill, with a deterministic regression gate for every published mirror.
+- Distinguished possible payload strings from safe random issuance counts and clarified that the optional check digit adds no random entropy.
+- Contained mobile landing-page code and table overflow while preserving keyboard-accessible local scrolling, and restored a non-color affordance for inline links.
+- Rejected invalid generator payload lengths and quantities with visible, announced recovery guidance instead of silently defaulting or clamping them.
+
 ## 1.3.7 -- 2026-09-05
 
 ### Added

@@ -7,6 +7,7 @@ const python = process.env.PYTHON || (fs.existsSync(path.join(root, '.venv', 'bi
 const steps = [
   ['documentation generator', process.execPath, ['scripts/check-docs-generator.mjs'], root],
   ['documentation examples', process.execPath, ['scripts/check-doc-examples.mjs'], root],
+  ['numeric guidance', process.execPath, ['scripts/check-numeric-guidance.mjs'], root],
   ['URL conventions', process.execPath, ['scripts/check-url-conventions.mjs'], root],
   ['search contract', process.execPath, ['scripts/check-search.mjs'], root],
   ['agent surfaces', process.execPath, ['scripts/check-agent-surfaces.mjs'], root],
