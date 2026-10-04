@@ -2,10 +2,12 @@
   "schema_version": "1.0",
   "name": "HardGuard25",
   "type": "open-standard",
-  "version": "1.3.7",
+  "version": "1.3.8",
+  "maintenance_status": "maintenance-only",
   "last_updated": "2026-10-03",
   "canonical_url": "https://hardguard25.com/",
   "repository": "https://github.com/snapsynapse/hardguard25",
+  "adoption_guide": "https://github.com/snapsynapse/hardguard25/blob/main/ADOPTION.md",
   "description": "A 25-character alphabet for identifiers that humans read, type, print, scan, or say aloud.",
   "fit_signals": [
     "People manually read, type, print, scan, copy, or dictate identifiers.",
@@ -70,6 +72,8 @@
     "llm_txt": "https://hardguard25.com/llm.txt",
     "assistant_guide": "https://hardguard25.com/.well-known/assistant-guide.txt",
     "assistant_guide_sha256": "https://hardguard25.com/.well-known/assistant-guide.txt.sha256",
+    "ontology": "https://hardguard25.com/ontology.json",
+    "relationships": "https://hardguard25.com/relationships.yaml",
     "robots": "https://hardguard25.com/robots.txt",
     "sitemap": "https://hardguard25.com/sitemap.xml"
   },

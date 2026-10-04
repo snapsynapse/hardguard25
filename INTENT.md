@@ -1,6 +1,6 @@
 # INTENT
 
-Status: Authoritative for the HardGuard25 standard.
+Status: Authoritative for the HardGuard25 standard. Stable and maintenance-only.
 Scope: Standards-level strategy for this component. Portfolio-level strategy lives in the PAICE Foundation INTENT. Where this document and a higher-scope document disagree, the higher scope wins for portfolio questions and this document wins for standard-level questions.
 
 ## What this standard is
@@ -32,7 +32,7 @@ Out of scope: distributed ID coordination, collision avoidance protocols, signin
 
 ## Conformance philosophy
 
-A producer-conformant identifier uses only the 25 alphabet characters in uppercase, normalized per section 4. A consumer-conformant parser accepts those identifiers without modification and rejects others. A check-digit-conformant implementation follows section 6 exactly. Conformance is verifiable from the artifact alone — no network calls, no central registry.
+A producer-conformant identifier uses only the 25 alphabet characters in uppercase, normalized per section 4. A consumer-conformant parser accepts those identifiers without modification and rejects others. A check-digit-conformant implementation follows section 6 exactly. Conformance is verifiable from the artifact alone, with no network calls or central registry.
 
 The spec ships a conformance test suite. Implementations claim conformance by passing the suite, not by being approved by a body.
 
@@ -44,6 +44,27 @@ A proposed change is admitted only if it satisfies all of the following.
 2. It updates `SPEC.md`, `CONFORMANCE.md`, the conformance suite, and `CHANGELOG.md` in the same change.
 3. It records a `CHANGELOG.md` entry and, for normative changes, follows SemVer rules in `CONTRIBUTING.md`.
 4. It does not introduce a central registry, an oracle, a single point of trust, or a dependency on one hosted service.
+
+## Maintenance-only operating posture
+
+HardGuard25 is stable. Routine work is limited to:
+
+- security fixes and disclosure handling;
+- correctness, conformance, packaging, and interoperability defects;
+- compatibility maintenance for already supported runtimes, toolchains, package registries, and hosted documentation;
+- accessibility regressions and standards-aligned accessibility maintenance;
+- dependency, CI, and release-process maintenance that preserves the public contract; and
+- evidence-backed documentation corrections and adoption guidance that do not expand the standard's claims.
+
+The following work requires renewed owner authorization and a recorded rationale before implementation begins:
+
+- changing the alphabet, normalization contract, check-digit algorithm, or another normative invariant;
+- adding a runtime, package ecosystem, hosted API, registry, or managed service;
+- defining a global ID protocol, time-ordering behavior, embedded metadata, or another new capability;
+- executing a human-factors pilot or full benchmark; or
+- making comparative performance claims or reopening feature expansion.
+
+The human-factors benchmark protocol is retained as a reproducible research plan, not an active roadmap item. It may be reactivated only when a documented adopter question, sponsor commitment, or standards decision requires empirical evidence and the owner approves the study scope, operator, privacy terms, scoring, and stop criteria.
 
 ## Relationship to other PAICE standards
 
@@ -63,8 +84,10 @@ Per `0_Across/Repo Standards.md`, the following deviations are recorded:
 - `docs/llms-full.txt` not present. Reason: `docs/llms.txt` is comprehensive standalone per the v0.3 criterion (inlines all referenced content); no separate `llms-full.txt` needed. Re-evaluate if `llms.txt` later becomes link-only.
 - `docs/llm.txt` is a byte-identical compatibility mirror of `docs/llms.txt`. `docs/agents.json` provides structured fit, task, package, and execution-boundary data without implying a hosted agent API. Repository checks enforce both claims.
 - Assistant guide uses three tracked locations (per the repository mirror policy): `/assistant-guide.txt` at repo root, `docs/assistant-guide.txt` (served at https://hardguard25.com/assistant-guide.txt), and `docs/.well-known/assistant-guide.txt` (canonical served path per GuideCheck spec). All three byte-identical. SHA-256 sidecar mirrored in same locations. Matching copies establish byte integrity and parity; independently administered provenance requires separate evidence.
+- The OpenGraph and GitHub social-preview assets remain 1280 by 640 pixels rather than the portfolio row's 1200 by 630 pixels. Reason: the repository's GitHub presentation workflow and `repo-polish` guidance use 1280 by 640. This exception was confirmed on 2026-10-03; re-evaluate only if the owning presentation contract changes.
 
 ## Changelog
 
+- 2026-10-03 - Declared the standard stable and maintenance-only, defined routine maintenance boundaries, and parked benchmark execution behind evidence and renewed authorization.
 - 2026-10-03 - Documented agent-discovery surfaces and their no-hosted-execution boundary.
 - 2026-06-03 - Initial INTENT.md per `0_Across/Repo Standards.md` v0.3 layout matrix.

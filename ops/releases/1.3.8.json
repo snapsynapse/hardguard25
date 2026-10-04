@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "repository": "https://github.com/snapsynapse/hardguard25",
+  "profile": "other",
+  "authority": "R2",
+  "start_head": "3768782a04d6d6cf30bbaec6f4949ee620441554",
+  "candidate_head": null,
+  "candidate_version": "1.3.8",
+  "updated_at": "2026-10-04T02:53:07Z",
+  "steps": [
+    {
+      "id": "local-release-preparation",
+      "status": "completed",
+      "evidence": "Version 1.3.8 metadata, maintenance governance, adoption guidance, agent surfaces, semantic maps, dependency maintenance, repository settings, and the verified PyPI OIDC workflow are prepared in the working tree.",
+      "head": null,
+      "completed_at": "2026-10-04T02:53:07Z"
+    },
+    {
+      "id": "deterministic-preflight",
+      "status": "completed",
+      "evidence": "npm run verify passed for 1.3.8 after the isolated Python build environment resolved its declared build requirements: 459 cross-runtime cases, 76 JavaScript tests, 47 Python tests, Go tests, packed npm consumption, and Python sdist/wheel consumption passed.",
+      "head": null,
+      "completed_at": "2026-10-04T02:35:52Z"
+    },
+    {
+      "id": "browser-accessibility",
+      "status": "completed",
+      "evidence": "npm run verify:browser passed all 9 Playwright and axe checks for the landing page and generator.",
+      "head": null,
+      "completed_at": "2026-10-04T02:35:58Z"
+    },
+    {
+      "id": "workflow-validation",
+      "status": "completed",
+      "evidence": "actionlint v1.7.7 passed all four GitHub Actions workflows after the PyPI OIDC change.",
+      "head": null,
+      "completed_at": "2026-10-04T02:53:07Z"
+    },
+    {
+      "id": "github-security-configuration",
+      "status": "completed",
+      "evidence": "GitHub API verification returned vulnerability alerts HTTP 204, automated security fixes enabled and not paused, secret scanning enabled, and push protection enabled. The pypi environment was created as environment ID 23400367585.",
+      "head": null,
+      "completed_at": "2026-10-04T02:37:32Z"
+    },
+    {
+      "id": "pypi-trusted-publisher-registration",
+      "status": "completed",
+      "evidence": "PyPI Trusted Publisher Management displayed exactly one publisher for repository snapsynapse/hardguard25, workflow release.yml, environment pypi. A duplicate submission was rejected because that exact publisher already existed.",
+      "head": null,
+      "completed_at": "2026-10-04T02:46:00Z"
+    },
+    {
+      "id": "stage-and-commit",
+      "status": "not_started",
+      "evidence": null,
+      "head": null,
+      "completed_at": null
+    },
+    {
+      "id": "push-main-and-exact-head-ci",
+      "status": "not_started",
+      "evidence": null,
+      "head": null,
+      "completed_at": null
+    },
+    {
+      "id": "production-pages-verification",
+      "status": "not_started",
+      "evidence": null,
+      "head": null,
+      "completed_at": null
+    },
+    {
+      "id": "tag-v1.3.8",
+      "status": "not_started",
+      "evidence": null,
+      "head": null,
+      "completed_at": null
+    },
+    {
+      "id": "release-workflow",
+      "status": "not_started",
+      "evidence": null,
+      "head": null,
+      "completed_at": null
+    },
+    {
+      "id": "npm-publication",
+      "status": "not_started",
+      "evidence": null,
+      "head": null,
+      "completed_at": null
+    },
+    {
+      "id": "pypi-publication",
+      "status": "not_started",
+      "evidence": null,
+      "head": null,
+      "completed_at": null
+    },
+    {
+      "id": "go-module-publication",
+      "status": "not_started",
+      "evidence": null,
+      "head": null,
+      "completed_at": null
+    },
+    {
+      "id": "github-release",
+      "status": "not_started",
+      "evidence": null,
+      "head": null,
+      "completed_at": null
+    },
+    {
+      "id": "maintenance-closeout",
+      "status": "not_started",
+      "evidence": null,
+      "head": null,
+      "completed_at": null
+    }
+  ]
+}

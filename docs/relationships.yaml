@@ -1,0 +1,43 @@
+schema_version: 1
+last_updated: 2026-10-03
+project:
+  id: hardguard25
+  name: HardGuard25
+  canonical_url: https://hardguard25.com/
+  repository: https://github.com/snapsynapse/hardguard25
+  owner: Snap Synapse LLC
+ontology: https://hardguard25.com/ontology.json
+agent_discovery: https://hardguard25.com/agents.json
+relationships:
+  - id: hardguard25_to_guidecheck
+    from: hardguard25
+    to: guidecheck
+    relationship: optionally_supplies_human_readable_identifiers_to
+    url: https://guidecheck.org/
+    binding: false
+    note: GuideCheck decides whether a guide uses HardGuard25 identifiers.
+  - id: hardguard25_to_skill_provenance
+    from: hardguard25
+    to: skill-provenance
+    relationship: optionally_supplies_human_readable_identifiers_to
+    url: https://skillprovenance.dev/
+    binding: false
+    note: Skill Provenance decides whether a manifest uses HardGuard25 bundle identifiers.
+  - id: hardguard25_to_graceful_boundaries
+    from: hardguard25
+    to: graceful-boundaries
+    relationship: optionally_supplies_human_readable_identifiers_to
+    url: https://gracefulboundaries.dev/
+    binding: false
+    note: Graceful Boundaries decides whether a response uses HardGuard25 for a human-facing code.
+  - id: paice_work_uses_hardguard25
+    from: paice-work
+    to: hardguard25
+    relationship: uses
+    url: https://paice.work/
+    binding: false
+    note: PAICE.work uses HardGuard25 for human-readable identifiers in agent and person handoffs.
+evidence_boundaries:
+  - These relationships are non-binding integrations, not conformance claims.
+  - A relationship does not establish that another project uses the current HardGuard25 release.
+  - Comparative OCR and transcription error rates have not been established empirically.

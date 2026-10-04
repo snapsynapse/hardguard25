@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "last_updated": "2026-10-03",
+  "canonical_url": "https://hardguard25.com/ontology.json",
+  "project": {
+    "id": "hardguard25",
+    "name": "HardGuard25",
+    "url": "https://hardguard25.com/",
+    "repository": "https://github.com/snapsynapse/hardguard25",
+    "type": "open_identifier_alphabet_standard"
+  },
+  "alphabet": {
+    "canonical": "0123456789ACDFGHJKMNPRUWY",
+    "radix": 25,
+    "case": "uppercase_ascii",
+    "canonical_pattern": "^[0-9ACDFGHJKMNPRUWY]+$"
+  },
+  "definitions": {
+    "hardguard25_identifier": "A nonempty sequence whose canonical form contains only characters from the HardGuard25 alphabet.",
+    "payload": "The identifier characters before an optional check digit.",
+    "normalization": "Removal of the separators and exact Unicode White_Space set allowed by the specification, followed by uppercasing and alphabet validation.",
+    "check_digit": "An optional final HardGuard25 character computed from the payload by the specification's weighted mod-25 algorithm.",
+    "producer_conformance": "Generation of uppercase identifiers containing only HardGuard25 alphabet characters and following the claimed check-digit behavior.",
+    "consumer_conformance": "Acceptance of conforming identifiers after specified normalization and rejection of invalid input.",
+    "human_safe": "A design goal based on excluding common visual confusables, not a measured guarantee of error-free reading, typing, speech, or OCR."
+  },
+  "capabilities": [
+    "alphabet",
+    "normalization",
+    "optional_check_digit",
+    "formatting_guidance",
+    "length_guidance",
+    "cross_runtime_conformance_vectors"
+  ],
+  "non_capabilities": [
+    "global_uniqueness_guarantee",
+    "distributed_coordination",
+    "time_ordering",
+    "encryption",
+    "signature_or_sealing",
+    "hosted_agent_execution"
+  ],
+  "authoritative_sources": {
+    "intent": "https://github.com/snapsynapse/hardguard25/blob/main/INTENT.md",
+    "specification": "https://github.com/snapsynapse/hardguard25/blob/main/SPEC.md",
+    "conformance": "https://github.com/snapsynapse/hardguard25/blob/main/CONFORMANCE.md",
+    "agent_discovery": "https://hardguard25.com/agents.json",
+    "relationships": "https://hardguard25.com/relationships.yaml"
+  },
+  "evidence_boundaries": [
+    "Passing conformance tests does not establish global uniqueness for a consuming system.",
+    "The alphabet's exclusions are documented design choices; comparative OCR and transcription error rates have not been established empirically.",
+    "Repository source, published packages, and deployed website bytes are separate release states."
+  ]
+}

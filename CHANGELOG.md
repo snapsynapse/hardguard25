@@ -2,15 +2,23 @@
 
 ## Unreleased
 
+## 1.3.8 -- 2026-10-03
+
 ### Changed
+- Declared the repository stable and maintenance-only, with explicit routine-maintenance categories and renewed-authorization boundaries for expansion.
 - Declared the assistant guide's existing GuideCheck 0.7.1 profile and bounded it to an honest Level 2 form claim.
 - Added task-scope and pre-action verification instructions, preserved explicit safety limits, and enforced guide size,
   line-length, profile-selector, confirmation, copy-label, mirror, and sidecar integrity in the repository validator.
 - Pinned normalization to the explicit Unicode White_Space code-point set instead of language-specific whitespace supersets.
 - Updated the public assistant guide, LLM briefing, bundled skill, and project context to match that exact normalization contract.
 - Replaced the tracked Python license symlink with byte-identical package content for portable artifact builds.
+- Aligned repository, specification, package, site, agent-surface, citation, and skill-bundle metadata for the 1.3.8 maintenance release.
 
 ### Added
+- Added an adoption and migration guide covering alias-first integration, uniqueness boundaries, compatibility, rollback, and bounded cutover choices.
+- Added citation metadata, a public project ontology, a non-binding relationship map, and deterministic checks for the new semantic surfaces.
+- Added monthly Dependabot maintenance configuration and a repository-settings contract for conservative default-branch and security controls.
+- Migrated PyPI publication to the verified GitHub Actions OIDC trusted publisher using the dedicated `pypi` environment while retaining the legacy secret as an unused recovery credential until release verification.
 - Added deterministic entropy injection through all three production generators, including rejection-boundary, refill, uniform residue, and entropy-failure checks.
 - Added a fixed-seed cross-runtime public-API parity evaluator covering shared vectors, ASCII boundaries, Unicode separators, and generated cases.
 - Added exact npm, wheel, and sdist inventory, metadata, source-byte, export, and license-byte verification.
@@ -26,6 +34,7 @@
 - Rejected invalid generator payload lengths and quantities with visible, announced recovery guidance instead of silently defaulting or clamping them.
 - Aligned U+0085, U+FEFF, and adjacent separator behavior across JavaScript, Python, and Go.
 - Preserved Go's documented entropy-error return path on runtimes where `crypto/rand.Read` terminates the process.
+- Synchronized the root, npm, and Python license copies and clarified the distinct code and specification license scopes.
 
 ## 1.3.7 -- 2026-09-05
 

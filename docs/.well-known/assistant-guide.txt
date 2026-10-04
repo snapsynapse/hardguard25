@@ -4,8 +4,8 @@
 identifier: hardguard25-assistant-guide
 profile: human-verifiable-assistant-guide
 profile-version: 0.7.1
-guide-version: 1.3.7+guide.20261003
-applies-to: hardguard25 1.3.7
+guide-version: 1.3.8+guide.20261003
+applies-to: hardguard25 1.3.8
 canonical-url: https://hardguard25.com/.well-known/assistant-guide.txt
 repository-url: https://github.com/snapsynapse/hardguard25
 last-reviewed: 2026-10-03
@@ -17,7 +17,7 @@ Repository: https://github.com/snapsynapse/hardguard25
 Source file: https://github.com/snapsynapse/hardguard25/blob/main/docs/assistant-guide.txt
 SHA-256 file: https://hardguard25.com/.well-known/assistant-guide.txt.sha256
 Specification: https://hardguard25.com/
-HardGuard25 release: 1.3.7
+HardGuard25 release: 1.3.8
 
 ## Task scope
 

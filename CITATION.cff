@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use HardGuard25, please cite the standard and software using this metadata."
+title: "HardGuard25"
+type: software
+version: 1.3.8
+date-released: 2026-10-03
+authors:
+  - family-names: "Rogers"
+    given-names: "Sam"
+    affiliation: "Snap Synapse LLC"
+abstract: >-
+  An open standard and reference implementations for a 25-character
+  low-confusion alphabet for human-readable identifiers.
+repository-code: "https://github.com/snapsynapse/hardguard25"
+url: "https://hardguard25.com/"
+license:
+  - MIT
+  - CC-BY-4.0
+keywords:
+  - identifiers
+  - human-readable
+  - low-confusion
+  - accessibility
+  - open-standard

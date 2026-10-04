@@ -1,9 +1,9 @@
 Creative Commons Attribution 4.0 International (CC BY 4.0)
 
-Copyright (c) 2025 Sam Rogers / Snap Synapse LLC
+Copyright (c) 2025-2026 Sam Rogers / Snap Synapse LLC
 
-This specification (SPEC.md) is licensed under the Creative Commons
-Attribution 4.0 International License.
+The HardGuard25 specification and documentation prose are licensed under the
+Creative Commons Attribution 4.0 International License.
 
 You are free to:
 - Share: copy and redistribute the material in any medium or format
@@ -17,3 +17,18 @@ Under the following terms:
   endorses you or your use.
 
 Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+---
+
+License scope
+
+- LICENSE (MIT): applies to reference implementations and executable
+  code in js/, python/, go/, scripts/, tests/, and docs/, plus code examples in
+  mixed documentation files.
+- LICENSE-SPEC (CC BY 4.0): applies to specification and documentation prose in
+  SPEC.md, CONFORMANCE.md, HUMAN_FACTORS.md, ADOPTION.md, README.md,
+  assistant-guide.txt, conformance/, skills/hardguard25/, and docs/, including
+  their tracked mirrors.
+
+For files containing both code and prose, MIT applies to the code portions and
+CC BY 4.0 applies to the prose portions.

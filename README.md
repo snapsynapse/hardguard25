@@ -8,7 +8,7 @@
 # HardGuard25
 
 <p align="center">
-  <img src="/.github/assets/social-preview.jpg" alt="HardGuard25 — 25 characters. Less confusion." width="100%">
+  <img src="/.github/assets/social-preview.jpg" alt="HardGuard25: 25 characters. Less confusion." width="100%">
 </p>
 
 **An open standard for human-safe identifiers.**
@@ -23,7 +23,7 @@ It removes 11 letters associated with predictable confusion (O/0, I/1, L/1, S/5,
 
 ## Who this is for
 
-Anyone designing identifiers that humans read, type, print, or say aloud — including dyslexia-sensitive and high-error-cost contexts.
+Anyone designing identifiers that humans read, type, print, or say aloud, including dyslexia-sensitive and high-error-cost contexts.
 
 ## What problem it solves
 
@@ -32,6 +32,10 @@ Common identifier alphabets contain visually similar characters such as 0/O and 
 ## Canonical URL
 
 https://hardguard25.com/
+
+## Project Status
+
+HardGuard25 is stable and maintenance-only. Routine work is limited to security, correctness, conformance, compatibility, accessibility, dependency, release-process, and evidence-backed documentation maintenance. New runtimes, hosted services, identifier capabilities, benchmark execution, comparative claims, and feature expansion require renewed owner authorization under [INTENT.md](INTENT.md).
 
 ## Use Cases
 
@@ -123,6 +127,8 @@ Regex: `^[0-9ACDFGHJKMNPRUWY]+$`
 
 For project integration guidance, see [docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md). It covers length selection, check-digit decisions, storage versus display formatting, no-library implementation, and test expectations.
 
+For migration planning, including UUID, ULID, Crockford Base32, and existing order-code systems, see [ADOPTION.md](ADOPTION.md). It covers alias-first migration, compatibility boundaries, uniqueness enforcement, and a bounded cutover sequence.
+
 The JavaScript package includes TypeScript declarations for its named and default exports.
 
 ### AI-assisted implementation
@@ -182,7 +188,7 @@ API contract across JavaScript, Python, and Go:
 
 - `normalize(...)` removes separator characters (`-`, `_`, `.`, and the Unicode White_Space set pinned in the specification), uppercases, and returns canonical form
 - `validate(...)` applies normalization first, then checks the canonical regex
-- `checkDigit(...)` accepts canonical or lowercase input and computes the checksum on the normalized uppercase characters
+- `checkDigit(...)` accepts canonical or lowercase ungrouped payload input and uppercases it before computing the checksum
 - verify helpers accept canonical, lowercase, and grouped input, normalize it, then compare the trailing check character
 - Empty and separator-only inputs are not canonical: normalization and check-digit calculation reject them, while validation returns `false`
 
@@ -217,6 +223,8 @@ The tracked site source defines complementary machine-readable surfaces that pub
 - https://hardguard25.com/llms.txt is the canonical standalone text briefing.
 - https://hardguard25.com/llm.txt is a byte-identical compatibility mirror.
 - https://hardguard25.com/agents.json describes fit signals, non-fit cases, implementation tasks, packages, and execution boundaries.
+- https://hardguard25.com/ontology.json defines the project vocabulary and evidence boundaries.
+- https://hardguard25.com/relationships.yaml records non-binding relationships to adjacent standards and adopters.
 - https://hardguard25.com/.well-known/assistant-guide.txt is the human-verifiable implementation guide.
 
 HardGuard25 does not expose a hosted agent execution API. The interactive generator runs locally in the browser, and package adoption happens in the user's own project.
@@ -233,9 +241,11 @@ The full specification is in [SPEC.md](SPEC.md), covering:
 - Formatting and accessibility guidelines
 
 The current conformance status is summarized in [CONFORMANCE.md](CONFORMANCE.md).
-The human-factors rationale and limits are documented in [HUMAN_FACTORS.md](HUMAN_FACTORS.md). A future comparison is defined, but not yet executed, in [docs/HUMAN_FACTORS_BENCHMARK_PROTOCOL.md](docs/HUMAN_FACTORS_BENCHMARK_PROTOCOL.md).
+The human-factors rationale and limits are documented in [HUMAN_FACTORS.md](HUMAN_FACTORS.md). A reproducible comparison protocol is retained in [docs/HUMAN_FACTORS_BENCHMARK_PROTOCOL.md](docs/HUMAN_FACTORS_BENCHMARK_PROTOCOL.md), but benchmark execution is parked and no pilot or full study is active.
 
-The spec is licensed [CC BY 4.0](LICENSE-SPEC) — reference it freely.
+The spec is licensed [CC BY 4.0](LICENSE-SPEC). Reference it freely.
+
+Citation metadata for the current published release is available in [CITATION.cff](CITATION.cff).
 
 ## Live Demo
 
@@ -263,8 +273,8 @@ HardGuard25 is free and open. If you use this encoding, consider [sponsoring its
 
 ## License
 
-- **Specification:** [CC BY 4.0](LICENSE-SPEC) — cite, adapt, and redistribute
-- **Code:** [MIT](LICENSE) — use in any project
+- **Specification:** [CC BY 4.0](LICENSE-SPEC). Cite, adapt, and redistribute.
+- **Code:** [MIT](LICENSE). Use in any project.
 
 ## Origin
 

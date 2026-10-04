@@ -68,15 +68,15 @@ Hosted-site accessibility changes also require `npm ci`, a local Chromium instal
 
 CI (`.github/workflows/`) additionally runs:
 - `test.yml` (push to main + PRs): installs the pinned development and build tools, then runs the canonical repository verifier across runtime, documentation, metadata, benchmark-protocol, and installed-artifact checks.
-- `release.yml` (on `vX.Y.Z` tag push): verifies package, runtime, spec, conformance, docs, and skill versions match the tag, re-runs the full preflight suite, then publishes to npm (OIDC trusted publishing) and PyPI (`PYPI_API_TOKEN` secret), and tags the Go submodule. Publication steps are rerun-safe.
+- `release.yml` (on `vX.Y.Z` tag push): verifies package, runtime, spec, conformance, docs, and skill versions match the tag, re-runs the full preflight suite, then publishes to npm and PyPI through OIDC trusted publishing, and tags the Go submodule. PyPI uses the dedicated `pypi` GitHub environment. Publication steps are rerun-safe.
 - `pages.yml` (push to main): deploys `docs/` to GitHub Pages, includes the tracked `.well-known` directory, then retries the production search-indexing contract until the deployment is live.
 - `accessibility.yml` (relevant PRs and main pushes, release tags, weekly production schedule, and manual runs): executes Playwright/axe checks against the landing page and static generator without adding dependencies to the reference libraries.
 
 ## Current state (as of 2026-10-03)
 
-- Latest release line: 1.3.7 (published September 5, 2026). GitHub Release, npm, PyPI, Go module, exact-head tests, Pages, and accessibility runs were verified for commit `820af402d49f544e311f082446c35dc9816b7cb1`.
+- Prepared release line: 1.3.8 (unreleased). Exact-head CI, publication, package registry, and deployed-site evidence remain pending until the reviewed candidate is pushed, tagged, published, and verified.
 - The 1.3.5 stabilization pass fixed Go non-ASCII lookup truncation, aligned Python length validation and runtime version metadata, added shared Unicode rejection vectors, and hardened release-version and rerun checks.
-- The published 1.3.7 patch aligns rejection boundaries across runtimes, adds TypeScript declarations and installed-artifact checks, and documents future benchmark and PyPI migration work without claiming either has executed.
+- The prepared 1.3.8 patch pins exact Unicode White_Space behavior across runtimes, strengthens production-generator and package-artifact verification, and adds bounded agent-discovery surfaces without claiming publication before release evidence exists.
 - The unreleased repository candidate adds exact Unicode White_Space boundaries, deterministic production entropy checks, cross-runtime public-API parity, exact package inventories, and expanded agent-discovery surfaces.
 - No TODO/FIXME markers found in tracked source or docs.
 - `ROADMAP.md` lists only evidence-driven, adoption-driven, and maintenance follow-ups. None represents broken or unfinished core functionality.

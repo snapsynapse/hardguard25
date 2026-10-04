@@ -23,7 +23,7 @@ npm run verify
 
 ## Publication
 
-Pushing a `vX.Y.Z` tag triggers `.github/workflows/release.yml`, which verifies version strings match the tag, then publishes to npm (trusted publishing via OIDC, configured on the npm package settings page; no token) and PyPI (`PYPI_API_TOKEN` repo secret until the coordinated migration in `docs/PYPI_TRUSTED_PUBLISHING.md` is activated), and pushes the `go/vX.Y.Z` tag for Go consumers.
+Pushing a `vX.Y.Z` tag triggers `.github/workflows/release.yml`, which verifies version strings match the tag, then publishes to npm and PyPI through their configured OIDC trusted publishers without passing registry tokens, and pushes the `go/vX.Y.Z` tag for Go consumers. PyPI publication uses the `pypi` GitHub environment documented in `docs/PYPI_TRUSTED_PUBLISHING.md`.
 
 - Push the `vX.Y.Z` git tag and confirm the Release workflow passes.
 - Confirm GitHub Pages deploy completed.

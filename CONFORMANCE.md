@@ -2,14 +2,14 @@
 
 Report date: 2026-10-03
 
-Fixture version: `1.3.7`
+Fixture version: `1.3.8`
 
 ## Implementations
 
 | Runtime | Package version | Fixture coverage | Status |
 |---|---:|---|---|
-| JavaScript | 1.3.7 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, packed TypeScript consumer | Passing locally |
-| Python | 1.3.7 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, exact wheel and sdist consumer | Passing locally |
+| JavaScript | 1.3.8 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, packed TypeScript consumer | Passing locally |
+| Python | 1.3.8 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, exact wheel and sdist consumer | Passing locally |
 | Go | module package | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure | Passing locally |
 
 ## Check Digit Profile
@@ -41,6 +41,6 @@ CI runs equivalent checks on GitHub Actions for pull requests and pushes to `mai
 
 ## Repository Guidance Checks
 
-Current repository verification independently computes namespace sizes, rounded payload entropy, and birthday-collision thresholds before checking every published guidance mirror. It also rejects the known stale values corrected after 1.3.7. Runtime behavior vectors now pin the exact Unicode White_Space set and adjacent rejected code points while retaining fixture version 1.3.7 until the next release is selected.
+Current repository verification independently computes namespace sizes, rounded payload entropy, and birthday-collision thresholds before checking every published guidance mirror. It also rejects the known stale values corrected after 1.3.7. Runtime behavior vectors in 1.3.8 pin the exact Unicode White_Space set and adjacent rejected code points.
 
 The canonical verifier also compares JavaScript, Python, and Go public-API transcripts across shared vectors, every ASCII insertion boundary, Unicode separator boundaries, and a fixed-seed generated corpus. The current parity corpus contains 459 deterministic cases. Package verification enforces exact npm, wheel, and sdist inventories, metadata, source bytes, and license bytes.

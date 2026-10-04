@@ -1,6 +1,6 @@
 bundle: hardguard25
-bundle_version: 1.3.7
-bundle_date: 2026-09-05
+bundle_version: 1.3.8
+bundle_date: 2026-10-03
 description: >
   Skill for working with HardGuard25, an open standard for human-safe
   identifiers. Provides the alphabet reference, exclusion rationale,
@@ -34,3 +34,8 @@ files:
     version: 8
     hash: sha256:0ccc4cf3ff95288367465b609e2b0135fa6547f6cd463ff408dfe1dbc1f100a1
     note: Canonical skill definition with alphabet reference, code examples, and comparison matrix
+  - path: PROJECT_CONTEXT.md
+    role: reference
+    version: 1
+    hash: sha256:875a548e5dd5c86644e2c6d135177ed2f5c0144e322d9c821bc9b76b284f1e9c
+    note: Portable project, adoption, authority, and maintenance context

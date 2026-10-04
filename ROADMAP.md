@@ -1,49 +1,33 @@
 # Roadmap
 
-The HardGuard25 core standard is stable for the 1.3.7 patch release. Future changes should be driven by interoperability defects, security or correctness findings, or adoption evidence rather than feature expansion.
+HardGuard25 is stable and maintenance-only. The core standard, reference implementations, conformance suite, packages, documentation site, accessibility checks, and agent-facing surfaces are complete for the current scope. `INTENT.md` defines the authoritative maintenance boundary.
 
-## Completed Follow-Ups
+## Release Closeout
 
-- Added shared conformance checks for the static docs generator.
-- Added a URL convention checker for stale GitHub Pages URLs, `http`, and non-canonical `www` forms.
-- Added cross-runtime conformance vectors, agent-surface integrity checks, and release-version alignment checks.
-- Added conformance-backed checks for the public check-digit examples.
-- Added clean-environment smoke tests for published JavaScript and Python artifacts.
-- Removed redundant runtime validation paths and non-portable repository-local links while preserving public APIs.
-- Added automated npm, PyPI, and Go releases with rerun-safe publication behavior.
-- Added CI, npm, PyPI, release, and license badges.
-- Documented collision guidance, check-digit limitations, security boundaries, and human-factors claim limits.
-- Upgraded official GitHub Actions to Node.js 24-compatible majors and disabled dependency caching for the dependency-free Go module.
-- Reconciled public human-factors language with the documented evidence limits.
-- Added keyboard-operable generator controls, accessible status and disclosure semantics, reduced-motion handling, and a Playwright/axe browser smoke test.
-- Specified a reproducible human-factors benchmark protocol without claiming that a pilot or study has occurred.
-- Added TypeScript declarations and packed-consumer compile checks for the JavaScript package.
-- Prepared the coordinated PyPI Trusted Publishing migration procedure while retaining the working token path.
-- Corrected published namespace, entropy, and collision guidance and added deterministic mirror checks.
-- Contained narrow-screen landing overflow and made generator length and quantity validation explicit and accessible.
-- Added replicated LLM briefings, bounded structured agent discovery, exact agent-facing normalization guidance, and generator metadata.
+Version 1.3.8 is the prepared maintenance closeout. It remains unreleased until exact-head checks pass, the commit is pushed, the site and packages are published, and each destination is independently verified. A local pass, pushed commit, deployment run, registry publication, and verified release are separate claims.
 
-## Evidence-Driven Candidates
+## Routine Maintenance
 
-- Review and approve `docs/HUMAN_FACTORS_BENCHMARK_PROTOCOL.md` before collecting observations.
-- Run the bounded pilot when an operator is available. Lock conditions, schema, corpus seed, scoring, privacy notice, and stop criteria first.
-- Decide after the pilot whether to stop, revise, or authorize a full benchmark.
-- Do not change comparative public claims until a reviewed full study supports them.
+- Address security, correctness, conformance, packaging, and interoperability defects.
+- Maintain compatibility with supported JavaScript, Python, and Go versions and their packaging toolchains.
+- Keep deterministic, installed-artifact, accessibility, metadata, and agent-surface checks current.
+- Keep `CONFORMANCE.md`, `HUMAN_FACTORS.md`, `ADOPTION.md`, and public discovery surfaces aligned with the normative specification and shipped behavior.
+- Review dependencies and GitHub Actions on a bounded maintenance cadence. Major upgrades require compatibility review rather than automatic adoption.
+- Preserve the fixed alphabet, current scope boundaries, and evidence limits.
 
-## External Configuration
+## Maintainer Configuration
 
-- Configure PyPI Trusted Publishing using `docs/PYPI_TRUSTED_PUBLISHING.md` only as a coordinated maintainer action.
-- Activate the prepared OIDC workflow change only after the publisher identity is confirmed.
-- Remove `PYPI_API_TOKEN` only after a trusted publication and attestations are verified.
+- Preserve the verified PyPI Trusted Publisher identity and matching `pypi` GitHub environment documented in `docs/PYPI_TRUSTED_PUBLISHING.md`.
+- Remove `PYPI_API_TOKEN` only after a trusted publication and its attestations are verified.
 
-## Adoption-Driven Documentation
+These are external configuration tasks, not missing standard functionality.
 
-- Add an adoption guide for teams migrating from Crockford Base32, UUIDs, ULIDs, or ad hoc order codes.
-- Expand the plain-language length-selection examples only when adopter questions show that the existing table and implementation guide are insufficient.
+## Parked Work
 
-## Release Hygiene
+The human-factors benchmark protocol is retained but inactive. Do not collect pilot or study observations unless a documented adopter question, sponsor commitment, or standards decision requires the evidence and the owner renews authorization for the study scope, operator, privacy terms, scoring, and stop criteria. Comparative OCR, dyslexia-sensitive, and transcription claims remain unestablished until a reviewed study supports them.
 
-- Keep `CONFORMANCE.md` updated whenever shared vectors or detection profiles change.
-- Keep `HUMAN_FACTORS.md` aligned with any stronger public claims made in the README or docs site.
-- Keep the accessibility workflow current with supported Playwright, axe, and GitHub Actions releases.
-- Preserve the fixed alphabet and current scope boundaries unless field evidence meets the admission criteria in `INTENT.md`.
+New runtimes, package ecosystems, hosted APIs, registries, managed services, identifier capabilities, and feature expansion are not roadmap commitments. Each requires renewed owner authorization and a recorded rationale under `INTENT.md`.
+
+## Adoption Feedback
+
+`ADOPTION.md` provides the current migration and selection guidance. Expand it only when concrete adopter questions reveal a recurring gap. Adoption feedback may justify clarification or maintenance; it does not by itself authorize a new feature or stronger claim.

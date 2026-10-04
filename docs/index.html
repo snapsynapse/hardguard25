@@ -490,11 +490,12 @@
       <span class="sep">&middot;</span>
       Updated <time datetime="2026-10-03">October 3, 2026</time>
       <span class="sep">&middot;</span>
-      <span class="version">v1.3.7</span>
+      <span class="version">v1.3.8</span>
       <span class="sep">&middot;</span>
       <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank">CC&nbsp;BY&nbsp;4.0</a>
     </p>
     <p class="hook">Ambiguous characters can become support problems. HardGuard25 removes 11 letters associated with predictable visual, dictation, and OCR confusion while keeping all ten digits so versioning stays natural.</p>
+    <p><strong>Status:</strong> Stable and maintenance-only. Future work is limited to security, correctness, compatibility, accessibility, release-process, and evidence-backed documentation maintenance.</p>
 
     <div class="charset" role="img" tabindex="0" aria-label="HardGuard25 alphabet: 0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y">0123456789ACDFGHJKMNPRUWY</div>
 
@@ -570,7 +571,7 @@
 <section id="install">
   <div class="container">
     <h2>Install</h2>
-    <p>Reference implementations are available in JavaScript, Python, and Go. Each includes generation, validation, normalization, and an optional Mod-25 check digit. The JavaScript package includes TypeScript declarations. For adopter guidance, read the <a href="https://github.com/snapsynapse/hardguard25/blob/main/docs/IMPLEMENTATION.md" target="_blank" rel="noopener">implementation guide</a> or the <a href="/.well-known/assistant-guide.txt">assistant guide</a>. The plain-text guide has a <a href="/.well-known/assistant-guide.txt.sha256">SHA-256 sidecar</a> for verification.</p>
+    <p>Reference implementations are available in JavaScript, Python, and Go. Each includes generation, validation, normalization, and an optional Mod-25 check digit. The JavaScript package includes TypeScript declarations. Start with the <a href="https://github.com/snapsynapse/hardguard25/blob/main/ADOPTION.md" target="_blank" rel="noopener">adoption guide</a>, then use the <a href="https://github.com/snapsynapse/hardguard25/blob/main/docs/IMPLEMENTATION.md" target="_blank" rel="noopener">implementation guide</a> or the <a href="/.well-known/assistant-guide.txt">assistant guide</a>. The plain-text guide has a <a href="/.well-known/assistant-guide.txt.sha256">SHA-256 sidecar</a> for verification.</p>
 
     <div class="code-grid">
       <div class="code-block">
@@ -656,7 +657,7 @@ s, _ := hardguard25.Normalize("ac3h-7puw")</pre>
   <div class="container">
     <div class="footer-grid">
       <div class="footer-meta">
-        <p>HardGuard25 v1.3.7 &middot; <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank">CC BY 4.0</a> (spec) &middot; <a href="https://github.com/snapsynapse/hardguard25/blob/main/LICENSE" target="_blank" rel="noopener">MIT</a> (code)</p>
+        <p>HardGuard25 v1.3.8 &middot; <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank">CC BY 4.0</a> (spec) &middot; <a href="https://github.com/snapsynapse/hardguard25/blob/main/LICENSE" target="_blank" rel="noopener">MIT</a> (code)</p>
         <p>By <a href="https://linkedin.com/in/samrogers" target="_blank" rel="noopener author">Sam Rogers</a>, <a href="https://snapsynapse.com/" target="_blank" rel="noopener">Snap Synapse LLC</a>. Used by <a href="https://paice.work/" target="_blank" rel="noopener">PAICE.work</a> for human-readable identifiers in agent and person handoffs.</p>
         <p style="margin-top: 0.5rem;">See also: <a href="https://gracefulboundaries.dev/" target="_blank" rel="noopener">Graceful Boundaries</a> &middot; <a href="https://knowledge-as-code.com/" target="_blank" rel="noopener">Knowledge as Code</a> &middot; <a href="https://skillprovenance.dev/" target="_blank" rel="noopener">Skill Provenance</a></p>
       </div>
@@ -665,6 +666,7 @@ s, _ := hardguard25.Normalize("ac3h-7puw")</pre>
         <a href="https://github.com/snapsynapse/hardguard25" target="_blank" rel="noopener">GitHub</a>
         <a href="https://github.com/snapsynapse/hardguard25/blob/main/SPEC.md" target="_blank" rel="noopener">Specification</a>
         <a href="https://github.com/snapsynapse/hardguard25/blob/main/docs/IMPLEMENTATION.md" target="_blank" rel="noopener">Implementation</a>
+        <a href="https://github.com/snapsynapse/hardguard25/blob/main/ADOPTION.md" target="_blank" rel="noopener">Adoption</a>
         <a href="https://github.com/snapsynapse/hardguard25/blob/main/docs/HUMAN_FACTORS_BENCHMARK_PROTOCOL.md" target="_blank" rel="noopener">Benchmark protocol</a>
         <a href="/.well-known/assistant-guide.txt">Assistant guide</a>
         <a href="/.well-known/assistant-guide.txt.sha256">Assistant guide SHA-256</a>

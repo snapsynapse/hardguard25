@@ -115,6 +115,30 @@
       ]
     },
     {
+      "path": "ontology.json",
+      "contentTypes": [
+        "application/json",
+        "text/plain"
+      ],
+      "contains": [
+        "\"canonical_url\": \"https://hardguard25.com/ontology.json\"",
+        "\"global_uniqueness_guarantee\""
+      ]
+    },
+    {
+      "path": "relationships.yaml",
+      "contentTypes": [
+        "application/octet-stream",
+        "application/yaml",
+        "text/plain",
+        "text/yaml"
+      ],
+      "contains": [
+        "ontology: https://hardguard25.com/ontology.json",
+        "These relationships are non-binding integrations, not conformance claims."
+      ]
+    },
+    {
       "path": "site.webmanifest",
       "contentTypes": [
         "application/manifest+json",

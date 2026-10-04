@@ -132,7 +132,8 @@ const agents = JSON.parse(fs.readFileSync('docs/agents.json', 'utf8'));
 assert.equal(agents.schema_version, '1.0', 'agents.json: unexpected schema version');
 assert.equal(agents.name, 'HardGuard25', 'agents.json: unexpected name');
 assert.equal(agents.type, 'open-standard', 'agents.json: unexpected type');
-assert.equal(agents.version, '1.3.7', 'agents.json: version must match the current published release');
+assert.equal(agents.version, '1.3.8', 'agents.json: version must match the prepared release');
+assert.equal(agents.maintenance_status, 'maintenance-only', 'agents.json: maintenance posture must remain explicit');
 assert.equal(agents.canonical_url, 'https://hardguard25.com/', 'agents.json: canonical URL must use the bare HTTPS origin');
 assert.equal(agents.repository, 'https://github.com/snapsynapse/hardguard25', 'agents.json: unexpected repository');
 assert.ok(Array.isArray(agents.fit_signals) && agents.fit_signals.length >= 3, 'agents.json: fit signals are incomplete');
@@ -148,6 +149,45 @@ assert.deepEqual(
   agents.normalization_contract.explicitly_invalid_nearby_code_points,
   ['U+200B', 'U+FEFF'],
   'agents.json: invalid nearby code points drifted'
+);
+assert.equal(
+  agents.machine_surfaces.ontology,
+  'https://hardguard25.com/ontology.json',
+  'agents.json: missing canonical ontology surface'
+);
+assert.equal(
+  agents.machine_surfaces.relationships,
+  'https://hardguard25.com/relationships.yaml',
+  'agents.json: missing canonical relationships surface'
+);
+
+const ontology = JSON.parse(fs.readFileSync('docs/ontology.json', 'utf8'));
+assert.equal(ontology.schema_version, '1.0', 'ontology.json: unexpected schema version');
+assert.equal(
+  ontology.canonical_url,
+  'https://hardguard25.com/ontology.json',
+  'ontology.json: unexpected canonical URL'
+);
+assert.equal(
+  ontology.alphabet.canonical,
+  '0123456789ACDFGHJKMNPRUWY',
+  'ontology.json: canonical alphabet drifted'
+);
+assert.ok(
+  ontology.non_capabilities.includes('global_uniqueness_guarantee') &&
+    ontology.non_capabilities.includes('hosted_agent_execution'),
+  'ontology.json: critical non-capability boundaries are incomplete'
+);
+
+const relationships = fs.readFileSync('docs/relationships.yaml', 'utf8');
+assert.match(relationships, /^schema_version: 1$/m, 'relationships.yaml: unexpected schema version');
+assert.ok(
+  relationships.includes('ontology: https://hardguard25.com/ontology.json'),
+  'relationships.yaml: missing canonical ontology URL'
+);
+assert.ok(
+  relationships.includes('These relationships are non-binding integrations, not conformance claims.'),
+  'relationships.yaml: missing evidence boundary'
 );
 
 for (const page of ['docs/index.html', 'docs/generator/index.html']) {

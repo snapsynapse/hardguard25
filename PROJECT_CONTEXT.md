@@ -34,7 +34,9 @@ Precise, standards-document register: short declarative sentences, explicit scop
 
 ## Current status
 
-Actively maintained. The current published spec version 1.3.7, dated September 2026, aligns with the published packages. The alphabet and checksum algorithm are unchanged. Repository changes after the published release remain unreleased until a later version is selected, tagged, published, and independently verified. Local validation, a pushed commit, a successful Pages workflow, and package publication are separate claims. `ROADMAP.md` limits non-blocking follow-up work to evidence-driven evaluation, adoption documentation, external configuration, and maintenance.
+Stable and maintenance-only. Prepared spec version 1.3.8, dated October 2026, remains unreleased until it is tagged, published, and independently verified. The current published version is 1.3.7. The alphabet and checksum algorithm are unchanged. Local validation, a pushed commit, a successful Pages workflow, and package publication are separate claims.
+
+Routine work is limited to security, correctness, conformance, compatibility, accessibility, dependency, release-process, and evidence-backed documentation maintenance. New runtimes, hosted services, identifier capabilities, benchmark execution, comparative claims, and feature expansion require renewed owner authorization under `INTENT.md`.
 
 ## Documentation audit contract
 
@@ -56,7 +58,7 @@ The repository does not use general document frontmatter. Root reference documen
 - `INTENT.md` owns purpose, scope, invariants, and repository-standard exceptions.
 - `SPEC.md` owns normative behavior. `conformance/vectors.json` and runtime tests prove executable behavior.
 - `repo-standards.yaml` owns surface inventory, delivery paths, checks, and claim boundaries.
-- Version 1.3.7 is the current published release. Do not describe later repository changes as published until release evidence exists.
+- Version 1.3.8 is the prepared release; version 1.3.7 remains the current published release until registry, tag, and deployment evidence confirms the transition.
 - Comparative OCR and transcription superiority remains unestablished until a reviewed study supports a stronger claim.
 - GitHub Pages deploys tracked `docs/` bytes after a push to `main`; repository-local checks do not establish live deployment.
 
@@ -71,6 +73,7 @@ The repository does not use general document frontmatter. Root reference documen
 | Release status and procedure | `CHANGELOG.md`, `RELEASE_CHECKLIST.md`, tags, and release records |
 | Future work | `ROADMAP.md` |
 | Human-factors evidence limits | `HUMAN_FACTORS.md` |
+| Adoption and migration choices | `ADOPTION.md` |
 | Public agent summaries | `docs/llms.txt`, `docs/llm.txt`, `docs/agents.json`, and the assistant-guide mirrors |
 
 ### Verification hints

@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2025 Snap Synapse LLC
+Copyright (c) 2025-2026 Snap Synapse LLC
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,18 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+License scope
+
+- LICENSE (MIT): applies to reference implementations and executable
+  code in js/, python/, go/, scripts/, tests/, and docs/, plus code examples in
+  mixed documentation files.
+- LICENSE-SPEC (CC BY 4.0): applies to specification and documentation prose in
+  SPEC.md, CONFORMANCE.md, HUMAN_FACTORS.md, ADOPTION.md, README.md,
+  assistant-guide.txt, conformance/, skills/hardguard25/, and docs/, including
+  their tracked mirrors.
+
+For files containing both code and prose, MIT applies to the code portions and
+CC BY 4.0 applies to the prose portions.
