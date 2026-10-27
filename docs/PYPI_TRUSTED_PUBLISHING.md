@@ -2,7 +2,7 @@
 
 ## Current state
 
-PyPI Trusted Publishing is configured and verified for this project. The 1.3.8 release published successfully through GitHub Actions OIDC with provenance attestations. The workflow does not pass an API token or password to PyPI, and the legacy `PYPI_API_TOKEN` repository secret was removed after verification.
+PyPI Trusted Publishing is configured and verified for this project. The 1.3.8 and 1.3.9 releases published successfully through GitHub Actions OIDC with provenance attestations. Release 1.3.9 provenance and clean-consumer evidence is recorded in `ops/releases/1.3.9.json`. The workflow does not pass an API token or password to PyPI, and the legacy `PYPI_API_TOKEN` repository secret was removed after verification.
 
 ## Publisher identity
 

@@ -4,7 +4,7 @@
 
 ## 1.3.9 -- 2026-10-26
 
-Prepared release candidate; not yet tagged or published.
+Released as v1.3.9; publication independently verified across GitHub, npm, PyPI and Go.
 
 ### Changed
 - Clarified ASCII-only case folding and lookup identifiers versus authentication secrets across user and agent guidance; corrected executable specification and API examples.

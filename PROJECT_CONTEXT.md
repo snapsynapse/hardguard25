@@ -34,7 +34,7 @@ Precise, standards-document register: short declarative sentences, explicit scop
 
 ## Current status
 
-Stable and maintenance-only. Prepared spec version 1.3.9, dated October 2026, is a local patch candidate for the reviewed parsing, generation, documentation and release-integrity fixes. Published packages remain at 1.3.8; its historical release evidence is retained in `ops/releases/1.3.8.json`. The alphabet and checksum algorithm are unchanged. Local validation, a pushed commit, deployment and registry publication remain separate claims. Candidate readiness and delivery evidence live in `ops/releases/1.3.9.json`.
+Stable and maintenance-only. Current published spec version 1.3.9, dated October 2026, is independently verified across the signed Git tag, GitHub Release, npm, PyPI, Go proxy and deployed documentation site. The alphabet and checksum algorithm are unchanged. Release and consumer evidence is recorded in `ops/releases/1.3.9.json`; historical 1.3.7/1.3.8 evidence is preserved. Local validation, a pushed commit, deployment and registry publication remain separate claims for future releases.
 
 Routine work is limited to security, correctness, conformance, compatibility, accessibility, dependency, release-process, and evidence-backed documentation maintenance. New runtimes, hosted services, identifier capabilities, benchmark execution, comparative claims, and feature expansion require renewed owner authorization under `INTENT.md`.
 

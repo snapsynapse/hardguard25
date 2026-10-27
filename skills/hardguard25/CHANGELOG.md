@@ -3,9 +3,9 @@
 ## Unreleased
 
 ## 1.3.9 -- 2026-10-26
-Prepared release candidate; not yet tagged or published.
+Released as v1.3.9; publication independently verified across GitHub, npm, PyPI and Go.
 - SKILL.md: Clarified ASCII-only case folding and lookup identifiers versus authentication secrets; file version advanced from 8 to 9.
-- MANIFEST.yaml: Refreshed the working-copy skill hash and date; parent release candidate advanced to 1.3.9.
+- MANIFEST.yaml: Refreshed the working-copy skill hash and date; parent release advanced to 1.3.9.
 
 ## 1.3.8 -- 2026-10-03
 - SKILL.md: Corrected payload namespace guidance, distinguished possible strings from safe random issuance counts, and clarified that a check digit adds no random entropy. File version advanced from 6 to 7.

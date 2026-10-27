@@ -4,9 +4,9 @@
   "profile": "other",
   "authority": "R2",
   "start_head": "4eb0cff123ccb528c0931772e2a74654c0bddb3b",
-  "candidate_head": null,
+  "candidate_head": "6d4d580bf9e0dccc6c4be4276895bead4a09f453",
   "candidate_version": "1.3.9",
-  "updated_at": "2026-10-27T03:51:05.387882Z",
+  "updated_at": "2026-10-27T04:02:45.004442Z",
   "steps": [
     {
       "id": "fix-diff-review",
@@ -40,7 +40,7 @@
       "id": "documentation-check",
       "status": "completed",
       "evidence": "High-level source/doc audit and deterministic documentation gates passed. Review dates and candidate-versus-published labels refreshed in the local 1.3.9 preparation; no new blocking semantic issue.",
-      "head": null,
+      "head": "6d4d580bf9e0dccc6c4be4276895bead4a09f453",
       "completed_at": "2026-10-27T03:36:51.543149Z"
     },
     {
@@ -52,15 +52,16 @@
     },
     {
       "id": "candidate-working-tree",
-      "status": "ready",
-      "evidence": "Reviewed preparation fingerprint sha256:5dd0cd0bb7e5226a96e234a4be01865f270d500cb0fff58affec23b39a08d3e7. Sorted changed/untracked paths excluding this state file; each path plus NUL plus raw SHA-256 content digest. 28 paths.",
-      "head": null
+      "status": "completed",
+      "evidence": "Reviewed preparation fingerprint retained in the tagged snapshot; committed as 6d4d580bf9e0dccc6c4be4276895bead4a09f453.",
+      "head": "6d4d580bf9e0dccc6c4be4276895bead4a09f453",
+      "completed_at": "2026-10-27T04:02:45.004442Z"
     },
     {
       "id": "candidate-local-verification",
       "status": "completed",
       "evidence": "Final npm run verify passed: 469 parity cases, 77 JS tests, 47 Python tests, Go, release-tag, metadata/docs/agent gates and clean npm/TypeScript/wheel/sdist consumers. Ten browser tests passed. Actionlint, search, numeric guidance and diff checks pass. Sandboxed recheck could not resolve PyPI for isolated build dependencies; network-enabled rerun passed fully.",
-      "head": null,
+      "head": "6d4d580bf9e0dccc6c4be4276895bead4a09f453",
       "completed_at": "2026-10-27T03:51:05.387882Z"
     },
     {
@@ -72,27 +73,31 @@
     },
     {
       "id": "release-notes",
-      "status": "ready",
-      "evidence": "ops/releases/1.3.9-notes.md and the 1.3.9 changelogs are prepared; package/spec/guide/site/skill/citation versions propagated together.",
-      "head": null
+      "status": "completed",
+      "evidence": "Reviewed notes published verbatim in GitHub Release 425017983; notes SHA256 6091b8d9aebd7f88436b3a7e52f34240b11938c7620522a6e1d1422fe358a6af.",
+      "head": "6d4d580bf9e0dccc6c4be4276895bead4a09f453",
+      "completed_at": "2026-10-27T04:02:45.004442Z"
     },
     {
       "id": "candidate-commit-push",
-      "status": "ready",
-      "evidence": "Owner explicitly authorized staging, commit and push of the 1.3.9 candidate, followed by exact-head CI and release; publisher confirmation precedes commit.",
-      "head": null
+      "status": "completed",
+      "evidence": "Signed candidate 6d4d580bf9e0dccc6c4be4276895bead4a09f453 pushed to origin/main; remote matched and GitHub verified SSH signature at 2026-10-27T03:51:32Z.",
+      "head": "6d4d580bf9e0dccc6c4be4276895bead4a09f453",
+      "completed_at": "2026-10-27T04:02:45.004442Z"
     },
     {
       "id": "candidate-exact-head-ci",
-      "status": "not_started",
-      "evidence": "Run after the authorized candidate commit/push; prior fix-head CI does not satisfy this gate.",
-      "head": null
+      "status": "completed",
+      "evidence": "All succeeded on the release commit: Test 40446495119 (including minimum runtimes and Windows), Accessibility 40446495033, Pages validate/deploy/search 40446495103, Dependency Graph 40446500889. Tag Accessibility 40446747475 also passed.",
+      "head": "6d4d580bf9e0dccc6c4be4276895bead4a09f453",
+      "completed_at": "2026-10-27T04:02:45.004442Z"
     },
     {
       "id": "candidate-pages-assessment",
-      "status": "not_started",
-      "evidence": "After candidate deployment, verify intended bytes and reconcile the then-live Siteline result; a cached scan of the fix commit is historical.",
-      "head": null
+      "status": "completed",
+      "evidence": "Successful Pages deployment 7349887586 at 2026-10-27T03:53:10Z identifies the release commit. Nine hosted files match Git bytes; production search: 2 pages, 0 defects, 0 infrastructure failures. Stored Siteline result was retrieved after deployment; it remains a historical fix-commit scan, not a fresh candidate scan. Only version/review metadata differs on assessed pages; scope reconciliation remains valid and is documented in 1.3.9-preparation.md.",
+      "head": "6d4d580bf9e0dccc6c4be4276895bead4a09f453",
+      "completed_at": "2026-10-27T04:02:45.004442Z"
     },
     {
       "id": "publisher-configuration-preflight",
@@ -103,33 +108,52 @@
     },
     {
       "id": "signed-tag-v1.3.9",
-      "status": "not_started",
-      "evidence": "Owner explicitly authorized signed tag/release after candidate exact-head CI passes and publishers are confirmed. No tag created yet.",
-      "head": null
+      "status": "completed",
+      "evidence": "Signed annotated tag object 1ab2d418f559b1cc8e93bb066f11dcb852a35d75 peels to 6d4d580bf9e0dccc6c4be4276895bead4a09f453. Local public-key verification and GitHub verification both pass; tag pushed without replacement.",
+      "head": "6d4d580bf9e0dccc6c4be4276895bead4a09f453",
+      "completed_at": "2026-10-27T04:02:45.004442Z"
     },
     {
       "id": "npm-publication",
-      "status": "not_started",
-      "evidence": "Expected hardguard25@1.3.9 through the existing tag workflow; verify identity/provenance and clean consumer independently.",
-      "head": null
+      "status": "completed",
+      "evidence": "npm latest is 1.3.9; gitHead 6d4d580bf9e0dccc6c4be4276895bead4a09f453. SHA1 30fdd5e4a75dc7d581ec6897a0fcc868e46acbb0; integrity sha512-TcDDQIdEibmX59OCbOWj78zh0zFlit4yg1lpoY4T+1R/FHHsgZqaMPsn1olUMJFRwW1jYk+f5+4J4iw9NnsQ/g==; tarball SHA256 c23d03e9decdd09b0c562d42e2f3aadfca2702128a1ce5e99e89cbc1089161b3. Five-file inventory and source identity checked. Clean registry runtime and TypeScript consumers passed. audited 1 package in 0s\n\n1 package has a verified registry signature\n\n1 package has a verified attestation\n(use --json --include-attestations to view attestation details) Provenance transparency log index 3504359441.",
+      "head": "6d4d580bf9e0dccc6c4be4276895bead4a09f453",
+      "completed_at": "2026-10-27T04:02:45.004442Z"
     },
     {
       "id": "pypi-publication",
-      "status": "not_started",
-      "evidence": "Expected hardguard25==1.3.9 through the pypi OIDC environment; verify wheel/sdist hashes and provenance independently.",
-      "head": null
+      "status": "completed",
+      "evidence": "PyPI latest is 1.3.9. hardguard25-1.3.9-py3-none-any.whl SHA256 0feac7e2213b32a4da2c852c95e28d3cf31fe45813eeecbf6bcfb3db47836c5d uploaded 2026-10-27T03:55:38.577831Z; hardguard25-1.3.9.tar.gz SHA256 8f9dd123f3f92783ab35afff107b8ae9eb44fd0da8ba57e7f31a1d4f807ae050 uploaded 2026-10-27T03:55:39.870968Z. Downloaded hashes and source bytes match; clean registry consumer passed. Provenance statements bind artifact hashes; publisher and certificate bind snapsynapse/hardguard25, release.yml, pypi, tag v1.3.9, source commit and run 40446747542. Certificate identity inspection is distinct from full standalone cryptographic attestation verification.",
+      "head": "6d4d580bf9e0dccc6c4be4276895bead4a09f453",
+      "completed_at": "2026-10-27T04:02:45.004442Z"
     },
     {
       "id": "go-module-tag",
-      "status": "not_started",
-      "evidence": "Expected go/v1.3.9 after both publishers succeed; existing-tag identity must match the release commit; verify Go proxy origin.",
-      "head": null
+      "status": "completed",
+      "evidence": "Remote go/v1.3.9 and Go proxy Origin.Hash both equal 6d4d580bf9e0dccc6c4be4276895bead4a09f453. Clean Go proxy/checksum-database consumer passed; go mod verify: all modules verified.",
+      "head": "6d4d580bf9e0dccc6c4be4276895bead4a09f453",
+      "completed_at": "2026-10-27T04:02:45.004442Z"
     },
     {
       "id": "github-release",
-      "status": "not_started",
-      "evidence": "Expected HardGuard25 1.3.9 from reviewed notes after explicit authorization. No draft, release object or manual assets uploaded.",
-      "head": null
+      "status": "completed",
+      "evidence": "GitHub Release 425017983, HardGuard25 1.3.9, published 2026-10-27T03:54:33Z, latest, neither draft nor prerelease: https://github.com/snapsynapse/hardguard25/releases/tag/v1.3.9. Notes match reviewed bytes; no manual assets expected; standard source archives available.",
+      "head": "6d4d580bf9e0dccc6c4be4276895bead4a09f453",
+      "completed_at": "2026-10-27T04:02:45.004442Z"
+    },
+    {
+      "id": "release-workflow",
+      "status": "completed",
+      "evidence": "Release run 40446747542 passed verify, preflight, publish-npm, publish-pypi and tag-go; no publisher reruns or credential changes.",
+      "head": "6d4d580bf9e0dccc6c4be4276895bead4a09f453",
+      "completed_at": "2026-10-27T04:02:45.004442Z"
+    },
+    {
+      "id": "maintenance-closeout",
+      "status": "completed",
+      "evidence": "Published-state documentation and release record reconciled after independent package, source, provenance, consumer, tag, GitHub and hosted-byte checks. Closeout commit is separate from the immutable release commit.",
+      "head": "6d4d580bf9e0dccc6c4be4276895bead4a09f453",
+      "completed_at": "2026-10-27T04:02:45.004442Z"
     }
   ]
 }

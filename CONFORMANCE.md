@@ -2,7 +2,7 @@
 
 Report date: 2026-10-26
 
-Prepared 1.3.9 maintenance candidate; package publication remains pending. Published packages remain at 1.3.8.
+Published release 1.3.9. Local checks, exact-head CI and independent registry consumers passed; immutable evidence is recorded in `ops/releases/1.3.9.json`.
 
 Fixture version: `1.3.9`
 
@@ -10,9 +10,9 @@ Fixture version: `1.3.9`
 
 | Runtime | Package version | Fixture coverage | Status |
 |---|---:|---|---|
-| JavaScript | 1.3.9 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, packed TypeScript consumer | Passing locally |
-| Python | 1.3.9 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, exact wheel and sdist consumer | Passing locally |
-| Go | module package | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure | Passing locally |
+| JavaScript | 1.3.9 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, packed TypeScript consumer | Passing locally and in CI |
+| Python | 1.3.9 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, exact wheel and sdist consumer | Passing locally and in CI |
+| Go | module package | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure | Passing locally and in CI |
 
 ## Check Digit Profile
 
