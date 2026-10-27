@@ -12,7 +12,7 @@ PyPI Trusted Publishing is configured and verified for this project. The 1.3.8 r
 - Workflow filename: `release.yml`
 - Environment: `pypi`
 
-PyPI displayed this exact publisher identity on 2026-10-03. GitHub environment `pypi` exists and the workflow job declares the same environment.
+PyPI displayed this exact publisher identity on 2026-10-03 and it was freshly reconfirmed in the authenticated management UI on 2026-10-26 (America/Denver). GitHub environment `pypi` exists and the workflow job declares the same environment.
 
 ## Activation and verification
 

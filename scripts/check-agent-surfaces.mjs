@@ -132,7 +132,7 @@ const agents = JSON.parse(fs.readFileSync('docs/agents.json', 'utf8'));
 assert.equal(agents.schema_version, '1.0', 'agents.json: unexpected schema version');
 assert.equal(agents.name, 'HardGuard25', 'agents.json: unexpected name');
 assert.equal(agents.type, 'open-standard', 'agents.json: unexpected type');
-assert.equal(agents.version, '1.3.8', 'agents.json: version must match the prepared release');
+assert.equal(agents.version, '1.3.9', 'agents.json: version must match the prepared release');
 assert.equal(agents.maintenance_status, 'maintenance-only', 'agents.json: maintenance posture must remain explicit');
 assert.equal(agents.canonical_url, 'https://hardguard25.com/', 'agents.json: canonical URL must use the bare HTTPS origin');
 assert.equal(agents.repository, 'https://github.com/snapsynapse/hardguard25', 'agents.json: unexpected repository');

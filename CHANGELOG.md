@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 1.3.9 -- 2026-10-26
+
+Prepared release candidate; not yet tagged or published.
+
 ### Changed
 - Clarified ASCII-only case folding and lookup identifiers versus authentication secrets across user and agent guidance; corrected executable specification and API examples.
 - Required repository and browser validation before Pages deployment, pinned workflow actions to commit hashes, and made existing release artifacts fail closed pending reconciliation.

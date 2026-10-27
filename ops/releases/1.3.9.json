@@ -1,0 +1,135 @@
+{
+  "schema_version": "1.0",
+  "repository": "https://github.com/snapsynapse/hardguard25",
+  "profile": "other",
+  "authority": "R2",
+  "start_head": "4eb0cff123ccb528c0931772e2a74654c0bddb3b",
+  "candidate_head": null,
+  "candidate_version": "1.3.9",
+  "updated_at": "2026-10-27T03:51:05.387882Z",
+  "steps": [
+    {
+      "id": "fix-diff-review",
+      "status": "completed",
+      "evidence": "Reviewed all 45 fix/report paths; no blocking finding. Independent workflow and runtime/generator passes retained in audits/security-documentation-review-2026-10-26.md.",
+      "head": "4eb0cff123ccb528c0931772e2a74654c0bddb3b",
+      "completed_at": "2026-10-27T03:36:51.543149Z"
+    },
+    {
+      "id": "fix-commit-push",
+      "status": "completed",
+      "evidence": "Signed commit 4eb0cff123ccb528c0931772e2a74654c0bddb3b pushed to origin/main; remote tip matched and GitHub verified SSH signature. This R2 delivery was explicitly authorized separately from R1 release preparation.",
+      "head": "4eb0cff123ccb528c0931772e2a74654c0bddb3b",
+      "completed_at": "2026-10-27T03:36:51.543149Z"
+    },
+    {
+      "id": "fix-exact-head-ci",
+      "status": "completed",
+      "evidence": "Test 40444447405, Accessibility 40444447283 and Pages 40444447421 all succeeded on this commit, including minimum-runtimes and Windows artifact checks in Test.",
+      "head": "4eb0cff123ccb528c0931772e2a74654c0bddb3b",
+      "completed_at": "2026-10-27T03:36:51.543149Z"
+    },
+    {
+      "id": "fix-pages-delivery",
+      "status": "completed",
+      "evidence": "Successful deployment 7349599684 identifies this commit. Nine hosted files independently matched Git source bytes; production search checked two sitemap pages with zero defects/infrastructure failures.",
+      "head": "4eb0cff123ccb528c0931772e2a74654c0bddb3b",
+      "completed_at": "2026-10-27T03:36:51.543149Z"
+    },
+    {
+      "id": "documentation-check",
+      "status": "completed",
+      "evidence": "High-level source/doc audit and deterministic documentation gates passed. Review dates and candidate-versus-published labels refreshed in the local 1.3.9 preparation; no new blocking semantic issue.",
+      "head": null,
+      "completed_at": "2026-10-27T03:36:51.543149Z"
+    },
+    {
+      "id": "candidate-version-availability",
+      "status": "completed",
+      "evidence": "Fresh 2026-10-27T03:44:39Z registry reads: npm, PyPI and Go proxy 1.3.9 all HTTP 404. Remote v1.3.9 and go/v1.3.9 absent. Recheck before tagging.",
+      "head": null,
+      "completed_at": "2026-10-27T03:36:51.543149Z"
+    },
+    {
+      "id": "candidate-working-tree",
+      "status": "ready",
+      "evidence": "Reviewed preparation fingerprint sha256:5dd0cd0bb7e5226a96e234a4be01865f270d500cb0fff58affec23b39a08d3e7. Sorted changed/untracked paths excluding this state file; each path plus NUL plus raw SHA-256 content digest. 28 paths.",
+      "head": null
+    },
+    {
+      "id": "candidate-local-verification",
+      "status": "completed",
+      "evidence": "Final npm run verify passed: 469 parity cases, 77 JS tests, 47 Python tests, Go, release-tag, metadata/docs/agent gates and clean npm/TypeScript/wheel/sdist consumers. Ten browser tests passed. Actionlint, search, numeric guidance and diff checks pass. Sandboxed recheck could not resolve PyPI for isolated build dependencies; network-enabled rerun passed fully.",
+      "head": null,
+      "completed_at": "2026-10-27T03:51:05.387882Z"
+    },
+    {
+      "id": "siteline-deployed-fixes",
+      "status": "completed",
+      "evidence": "Stored/retrieved result hardguard25-com-v2-1a10577de1abe3156ddd7244-20261027; scanned 2026-10-27T03:32:35.719Z; scanner 2.1.2/rubric 2.4.0; C/77 from resource-enable cap despite all four pillars 100 and nine core passes. Scope reconciliation retained in 1.3.9-preparation.md; passive standards are not full conformance.",
+      "head": "4eb0cff123ccb528c0931772e2a74654c0bddb3b",
+      "completed_at": "2026-10-27T03:36:51.543149Z"
+    },
+    {
+      "id": "release-notes",
+      "status": "ready",
+      "evidence": "ops/releases/1.3.9-notes.md and the 1.3.9 changelogs are prepared; package/spec/guide/site/skill/citation versions propagated together.",
+      "head": null
+    },
+    {
+      "id": "candidate-commit-push",
+      "status": "ready",
+      "evidence": "Owner explicitly authorized staging, commit and push of the 1.3.9 candidate, followed by exact-head CI and release; publisher confirmation precedes commit.",
+      "head": null
+    },
+    {
+      "id": "candidate-exact-head-ci",
+      "status": "not_started",
+      "evidence": "Run after the authorized candidate commit/push; prior fix-head CI does not satisfy this gate.",
+      "head": null
+    },
+    {
+      "id": "candidate-pages-assessment",
+      "status": "not_started",
+      "evidence": "After candidate deployment, verify intended bytes and reconcile the then-live Siteline result; a cached scan of the fix commit is historical.",
+      "head": null
+    },
+    {
+      "id": "publisher-configuration-preflight",
+      "status": "completed",
+      "evidence": "Authenticated Chrome inspection explicitly authorized after Comet host-policy failure. PyPI displays one GitHub publisher: snapsynapse/hardguard25, release.yml, environment pypi. npm connection status Valid: same repository/workflow, blank environment, npm publish and stage allowed, dist-tag unchecked. Read-only inspection; no settings changed. GitHub pypi environment exists; repository Actions secrets empty.",
+      "head": null,
+      "completed_at": "2026-10-27T03:51:05.387882Z"
+    },
+    {
+      "id": "signed-tag-v1.3.9",
+      "status": "not_started",
+      "evidence": "Owner explicitly authorized signed tag/release after candidate exact-head CI passes and publishers are confirmed. No tag created yet.",
+      "head": null
+    },
+    {
+      "id": "npm-publication",
+      "status": "not_started",
+      "evidence": "Expected hardguard25@1.3.9 through the existing tag workflow; verify identity/provenance and clean consumer independently.",
+      "head": null
+    },
+    {
+      "id": "pypi-publication",
+      "status": "not_started",
+      "evidence": "Expected hardguard25==1.3.9 through the pypi OIDC environment; verify wheel/sdist hashes and provenance independently.",
+      "head": null
+    },
+    {
+      "id": "go-module-tag",
+      "status": "not_started",
+      "evidence": "Expected go/v1.3.9 after both publishers succeed; existing-tag identity must match the release commit; verify Go proxy origin.",
+      "head": null
+    },
+    {
+      "id": "github-release",
+      "status": "not_started",
+      "evidence": "Expected HardGuard25 1.3.9 from reviewed notes after explicit authorization. No draft, release object or manual assets uploaded.",
+      "head": null
+    }
+  ]
+}

@@ -2,16 +2,16 @@
 
 Report date: 2026-10-26
 
-Local maintenance candidate based on 1.3.8; these working-tree changes are not published.
+Prepared 1.3.9 maintenance candidate; package publication remains pending. Published packages remain at 1.3.8.
 
-Fixture version: `1.3.8`
+Fixture version: `1.3.9`
 
 ## Implementations
 
 | Runtime | Package version | Fixture coverage | Status |
 |---|---:|---|---|
-| JavaScript | 1.3.8 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, packed TypeScript consumer | Passing locally |
-| Python | 1.3.8 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, exact wheel and sdist consumer | Passing locally |
+| JavaScript | 1.3.9 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, packed TypeScript consumer | Passing locally |
+| Python | 1.3.9 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, exact wheel and sdist consumer | Passing locally |
 | Go | module package | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure | Passing locally |
 
 ## Check Digit Profile

@@ -72,9 +72,9 @@ CI (`.github/workflows/`) additionally runs:
 - `pages.yml` (push to main): requires the canonical and browser verifiers to pass on the deployment commit before publishing `docs/`, including `.well-known`, then verifies production search surfaces.
 - `accessibility.yml` (relevant PRs and main pushes, release tags, weekly production schedule, and manual runs): executes Playwright/axe checks against the landing page and static generator without adding dependencies to the reference libraries.
 
-## Current state (as of 2026-10-03)
+## Current state (as of 2026-10-26)
 
-- Latest release line: 1.3.8 (published and verified). Exact-head CI, signed tags, GitHub Release, npm, PyPI, Go proxy, provenance, and deployed-site evidence are recorded in `ops/releases/1.3.8.json`.
+- Prepared release line: 1.3.9 (local candidate; not tagged or published). Preparation and delivery evidence live in `ops/releases/1.3.9.json`. Version 1.3.8 remains the published package line; its historical evidence is retained in `ops/releases/1.3.8.json`.
 - The 1.3.5 stabilization pass fixed Go non-ASCII lookup truncation, aligned Python length validation and runtime version metadata, added shared Unicode rejection vectors, and hardened release-version and rerun checks.
 - Release 1.3.8 pins exact Unicode White_Space behavior across runtimes, strengthens production-generator and package-artifact verification, and adds bounded agent-discovery surfaces.
 - Release 1.3.8 adds deterministic production entropy checks, cross-runtime public-API parity, exact package inventories, and expanded agent-discovery surfaces.
