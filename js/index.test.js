@@ -197,6 +197,29 @@ test('generate()', async (t) => {
       globalThis.crypto.getRandomValues = original;
     }
   });
+
+  await t.test('bounds entropy batches and refills across the Web Crypto quota', () => {
+    const original = globalThis.crypto.getRandomValues;
+    let calls = 0;
+    globalThis.crypto.getRandomValues = (buffer) => {
+      assert.ok(buffer.length <= 65536, 'each entropy request must fit the Web Crypto quota');
+      buffer.fill(0);
+      // Include rejected bytes so a full batch cannot satisfy the payload.
+      for (let i = 0; i < buffer.length; i += 2) buffer[i] = 255;
+      calls++;
+      return buffer;
+    };
+    try {
+      for (const length of [54614, 65537, 70000]) {
+        const value = generate(length, { checkDigit: true });
+        assert.strictEqual(value, '0'.repeat(length + 1));
+        assert.strictEqual(verifyCheckDigit(value), true);
+      }
+      assert.ok(calls > 3, 'quota-sized generation must refill after rejection');
+    } finally {
+      globalThis.crypto.getRandomValues = original;
+    }
+  });
 });
 
 test('validate()', async (t) => {
@@ -496,6 +519,7 @@ test('Expanded conformance vectors', async (t) => {
       assert.strictEqual(validate(input), false, `validate should reject ${JSON.stringify(input)}`);
       assert.throws(() => normalize(input), /Invalid character/);
       assert.throws(() => checkDigit(input), /Invalid character/);
+      assert.strictEqual(verifyCheckDigit(input), false);
     }
   });
 

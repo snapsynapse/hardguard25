@@ -44,6 +44,7 @@ function javascriptTranscript(inputs) {
 const inputs = new Set([
   ...vectors.normalize.map((entry) => entry.input),
   ...vectors.normalize_rejection,
+  ...vectors.non_ascii_rejection,
   ...vectors.validate.map((entry) => entry.input),
   ...vectors.separators.map((entry) => entry.input),
   ...vectors.unicode_whitespace.map((whitespace) => `AC${whitespace}DF`),
@@ -76,7 +77,7 @@ const cases = [...inputs];
 const expected = javascriptTranscript(cases);
 assert.ok(
   fs.readFileSync(path.join(root, 'CONFORMANCE.md'), 'utf8').includes(`contains ${cases.length} deterministic cases`),
-  'CONFORMANCE.md must report the current cross-runtime case count'
+  `CONFORMANCE.md must report ${cases.length} deterministic cases`
 );
 
 function run(command, args, options = {}) {

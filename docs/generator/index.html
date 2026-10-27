@@ -94,14 +94,14 @@
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
   }
-  input[type="number"], .separator-field input[type="text"] {
+  input[type="number"], .separator-field select {
     background: var(--surface); border: 1px solid var(--border); color: var(--text);
     border-radius: var(--radius); padding: 10px 14px; font-size: 16px;
     font-family: var(--font); width: 100px; outline: none; transition: border-color 0.15s;
   }
-  .separator-field input[type="text"] { width: 60px; text-align: center; }
-  input[type="number"]:focus, .separator-field input[type="text"]:focus { border-color: var(--accent); }
-  :is(input, button):focus-visible {
+  .separator-field select { min-width: 130px; }
+  input[type="number"]:focus, .separator-field select:focus { border-color: var(--accent); }
+  :is(input, button, select):focus-visible {
     outline: 3px solid var(--accent-hover);
     outline-offset: 3px;
   }
@@ -235,7 +235,12 @@
     </div>
     <div class="field separator-field">
       <label for="separator">Separator</label>
-      <input type="text" id="separator" value="-" maxlength="1">
+      <select id="separator">
+        <option value="-">Hyphen (-)</option>
+        <option value="_">Underscore (_)</option>
+        <option value=".">Dot (.)</option>
+        <option value=" ">Space</option>
+      </select>
     </div>
     <fieldset class="field">
       <legend>Check digit</legend>
@@ -390,7 +395,8 @@ function computeCheckDigit(code) {
 
 function formatCode(code) {
   const groupSize = parseInt(document.getElementById('groupSize').value) || 0;
-  const sep = document.getElementById('separator').value || '-';
+  const selected = document.getElementById('separator').value;
+  const sep = ['-', '_', '.', ' '].includes(selected) ? selected : '-';
   if (groupSize <= 0) return code;
   const groups = [];
   for (let i = 0; i < code.length; i += groupSize) {

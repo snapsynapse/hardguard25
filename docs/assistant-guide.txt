@@ -4,11 +4,11 @@
 identifier: hardguard25-assistant-guide
 profile: human-verifiable-assistant-guide
 profile-version: 0.7.1
-guide-version: 1.3.8+guide.20261003
+guide-version: 1.3.8+guide.20261026
 applies-to: hardguard25 1.3.8
 canonical-url: https://hardguard25.com/.well-known/assistant-guide.txt
 repository-url: https://github.com/snapsynapse/hardguard25
-last-reviewed: 2026-10-03
+last-reviewed: 2026-10-26
 recommended-verifier: https://guidecheck.org/verify
 [/assistant-guide-metadata]
 
@@ -21,8 +21,7 @@ HardGuard25 release: 1.3.8
 
 ## Task scope
 
-Help a user add HardGuard25 identifiers to an existing project. This plain-text guide avoids presentation tricks that
-could change what the assistant sees.
+Help a user add HardGuard25 lookup identifiers to an existing project.
 
 Serve it as text/plain; charset=utf-8, with X-Content-Type-Options: nosniff where supported. Keep it printable ASCII
 plus line feeds. Plain text does not remove text-based prompt injection risk, and conformance is not safety. This guide
@@ -82,7 +81,7 @@ implementation plan and wait for approval before installing packages or changing
 
 ## Normal package commands
 
-The assistant may need to adapt commands for the user's project, but the normal installation commands are:
+Use the project's existing package manager. Normal installation commands:
 Literal
 ```text
 npm install hardguard25
@@ -114,13 +113,14 @@ with modulo 25 directly. Accept byte values less than 225, then use byte % 25.
 
 ## Length defaults
 
+These lengths apply to lookup identifiers, not bearer or authentication secrets.
+
 - 8 characters for large operational systems where IDs are not security tokens.
 - 16 characters for internal cross-system identifiers.
-- 20 characters for public tokens or cross-organization identifiers.
+- 20 characters for public lookup identifiers or cross-organization identifiers.
 - 22 characters for long-lived, internet-scale identifiers.
 
-Shorter IDs can fit small inventories, ticket queues, classrooms, labels, or temporary codes. Explain the collision
-tradeoff before choosing them.
+Explain collision tradeoffs before choosing shorter IDs.
 
 ## Check digit guidance
 
@@ -135,12 +135,14 @@ common transcription mistakes.
 Implementations should:
 1. Remove the Unicode White_Space code points pinned by the specification wherever they appear.
 2. Remove punctuation separators: hyphens, underscores, and dots.
-3. Uppercase all letters.
+3. Uppercase ASCII letters a-z only.
 4. Reject any character outside the HardGuard25 alphabet.
 5. Reject empty and separator-only input because it has no canonical form.
 
 The pinned set is U+0009-U+000D, U+0020, U+0085, U+00A0, U+1680, U+2000-U+200A, U+2028, U+2029,
 U+202F, U+205F, and U+3000. Do not substitute a language-specific whitespace class. U+200B and U+FEFF are invalid.
+
+Non-ASCII letters and Unicode case expansions are invalid; only ASCII a-z is case folded.
 
 The normalizer must be idempotent: normalizing an already normalized ID returns the same ID.
 Validation returns false for empty and separator-only input. Check digit calculation rejects an empty payload.

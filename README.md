@@ -15,6 +15,7 @@
 
 HardGuard25 is a 25-character alphabet designed to exclude common visual confusables, including patterns relevant to dyslexia-sensitive workflows. Use it where humans read, type, print, or say an identifier out loud.
 
+Literal
 ```
 0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y
 ```
@@ -39,7 +40,7 @@ HardGuard25 is stable and maintenance-only. Routine work is limited to security,
 
 ## Use Cases
 
-HardGuard25 is not just for tokens. It's for any identifier a human will touch.
+HardGuard25 is for identifiers people handle directly.
 
 | Domain | Examples |
 |--------|----------|
@@ -47,12 +48,12 @@ HardGuard25 is not just for tokens. It's for any identifier a human will touch.
 | **Ticketing & Reservations** | Booking references, event tickets, support tickets |
 | **Logistics & Shipping** | Tracking numbers, parcel IDs, container codes |
 | **Manufacturing & Inventory** | Serial numbers, SKUs, asset tags, bin locations |
-| **Software & Licensing** | License keys, activation codes, API tokens |
+| **Software & Licensing** | License IDs, activation references, API request IDs |
 | **Healthcare & Legal** | Patient IDs, case numbers, specimen labels |
 | **Promotions & Loyalty** | Promo codes, referral codes, vouchers, gift cards |
 | **Education** | Student IDs, course codes, exam identifiers |
 | **IoT & Hardware** | Device IDs, firmware version tags, sensor labels |
-| **Short Links & Codes** | URL shorteners, QR payloads, one-time passcodes |
+| **Short Links & Codes** | Short-link IDs, QR payloads, lookup codes |
 
 If it gets printed on a label, read over the phone, entered by hand, or scanned by OCR, HardGuard25 is a candidate alphabet.
 
@@ -60,10 +61,12 @@ If it gets printed on a label, read over the phone, entered by hand, or scanned 
 
 ### JavaScript
 
+Literal
 ```bash
 npm install hardguard25
 ```
 
+Literal
 ```js
 import { generate, validate, normalize, checkDigit } from 'hardguard25';
 
@@ -76,16 +79,19 @@ checkDigit("AC3H7PUW");              // "N"
 
 ### Python
 
+Literal
 ```bash
 pip install hardguard25
 ```
 
 To install the latest unreleased code directly from GitHub:
 
+Literal
 ```bash
 pip install "git+https://github.com/snapsynapse/hardguard25.git#subdirectory=python"
 ```
 
+Literal
 ```python
 from hardguard25 import generate, validate, normalize, check_digit
 
@@ -98,10 +104,12 @@ check_digit("AC3H7PUW")              # "N"
 
 ### Go
 
+Literal
 ```bash
 go get github.com/snapsynapse/hardguard25/go
 ```
 
+Literal
 ```go
 import "github.com/snapsynapse/hardguard25/go"
 
@@ -117,6 +125,7 @@ ok, _ = hardguard25.VerifyCheckDigit("AC3H7PUWN")
 
 The alphabet is the standard. If you just need the character set, use it directly:
 
+Literal
 ```
 0123456789ACDFGHJKMNPRUWY
 ```
@@ -136,12 +145,14 @@ The JavaScript package includes TypeScript declarations for its named and defaul
 If you want ChatGPT, Claude, Codex, or another coding assistant to help add HardGuard25 to a project, use the plain-text guide at https://hardguard25.com/.well-known/assistant-guide.txt.
 
 The guide is published as human-verifiable plain text and has a SHA-256 sidecar at https://hardguard25.com/.well-known/assistant-guide.txt.sha256. To verify a downloaded copy:
+Literal
 ```bash
 curl -sSLO https://hardguard25.com/.well-known/assistant-guide.txt
 curl -sSLO https://hardguard25.com/.well-known/assistant-guide.txt.sha256
 shasum -a 256 -c assistant-guide.txt.sha256
 ```
 Copy this into your assistant:
+Literal
 ```text
 You are helping me implement HardGuard25 identifiers from https://github.com/snapsynapse/hardguard25.
 Explain each command or code change before making it. Ask for my approval before
@@ -158,6 +169,8 @@ approval before installing packages or changing persistent data.
 ```
 ## Choosing a Payload Length
 
+These lengths apply to lookup identifiers, not bearer or authentication secrets.
+
 Each character carries `log2(25) = 4.64` bits of entropy.
 
 | Length | Bits | Possible Strings | Typical Use |
@@ -167,9 +180,9 @@ Each character carries `log2(25) = 4.64` bits of entropy.
 | 6 | 27.9 | 244,140,625 | Medium businesses |
 | 7 | 32.5 | 6.1 billion | Large catalogs |
 | 8 | 37.2 | 152.6 billion | Large systems |
-| 12 | 55.7 | 5.96 × 10¹⁶ | Internal tokens |
+| 12 | 55.7 | 5.96 × 10¹⁶ | Internal identifiers |
 | 16 | 74.3 | 2.33 × 10²² | Cross-system IDs |
-| 20 | 92.9 | 9.09 × 10²⁷ | Public tokens |
+| 20 | 92.9 | 9.09 × 10²⁷ | Public lookup identifiers |
 | 22 | 102.2 | 5.68 × 10³⁰ | Internet-scale |
 
 These values are possible payload strings, not safe random issuance counts. Random issuance must account for birthday collisions. An appended check digit is derived from the payload and does not add random entropy.
@@ -177,7 +190,7 @@ These values are possible payload strings, not safe random issuance counts. Rand
 Recommended defaults:
 
 - 16 for internal systems up to millions of IDs
-- 20 for public tokens or cross-org use
+- 20 for public lookup identifiers or cross-org use
 - 22 for long-lived, internet-scale identifiers
 
 ## Check Digit
@@ -188,7 +201,7 @@ API contract across JavaScript, Python, and Go:
 
 - `normalize(...)` removes separator characters (`-`, `_`, `.`, and the Unicode White_Space set pinned in the specification), uppercases, and returns canonical form
 - `validate(...)` applies normalization first, then checks the canonical regex
-- `checkDigit(...)` accepts canonical or lowercase ungrouped payload input and uppercases it before computing the checksum
+- `checkDigit(...)` accepts canonical or lowercase ungrouped payload input and folds ASCII a-z before computing the checksum
 - verify helpers accept canonical, lowercase, and grouped input, normalize it, then compare the trailing check character
 - Empty and separator-only inputs are not canonical: normalization and check-digit calculation reject them, while validation returns `false`
 

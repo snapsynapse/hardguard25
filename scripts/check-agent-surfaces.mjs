@@ -145,6 +145,9 @@ assert.deepEqual(
 );
 assert.equal(agents.execution.hosted_agent_api, false, 'agents.json: must not claim a hosted agent API');
 assert.equal(agents.execution.side_effects, 'none', 'agents.json: browser generator must declare no side effects');
+assert.equal(agents.normalization_contract.case_folding,
+  'ASCII a-z to A-Z only; other non-ASCII letters are invalid',
+  'agents.json: case folding must preserve the ASCII identifier boundary');
 assert.deepEqual(
   agents.normalization_contract.explicitly_invalid_nearby_code_points,
   ['U+200B', 'U+FEFF'],

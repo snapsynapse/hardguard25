@@ -1,6 +1,8 @@
 # Conformance Report
 
-Report date: 2026-10-03
+Report date: 2026-10-26
+
+Local maintenance candidate based on 1.3.8; these working-tree changes are not published.
 
 Fixture version: `1.3.8`
 
@@ -43,4 +45,4 @@ CI runs equivalent checks on GitHub Actions for pull requests and pushes to `mai
 
 Current repository verification independently computes namespace sizes, rounded payload entropy, and birthday-collision thresholds before checking every published guidance mirror. It also rejects the known stale values corrected after 1.3.7. Runtime behavior vectors in 1.3.8 pin the exact Unicode White_Space set and adjacent rejected code points.
 
-The canonical verifier also compares JavaScript, Python, and Go public-API transcripts across shared vectors, every ASCII insertion boundary, Unicode separator boundaries, and a fixed-seed generated corpus. The current parity corpus contains 459 deterministic cases. Package verification enforces exact npm, wheel, and sdist inventories, metadata, source bytes, and license bytes.
+The canonical verifier also compares JavaScript, Python, and Go public-API transcripts across shared vectors, non-ASCII rejection including case expansions, every ASCII insertion boundary, Unicode separator boundaries, and a fixed-seed generated corpus. The current parity corpus contains 469 deterministic cases. Package verification enforces exact npm, wheel, and sdist inventories, metadata, source bytes, and license bytes.

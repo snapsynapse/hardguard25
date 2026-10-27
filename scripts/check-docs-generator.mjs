@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
+import { normalize, verifyCheckDigit } from '../js/index.js';
 
 const html = fs.readFileSync(new URL('../docs/generator/index.html', import.meta.url), 'utf8');
 const conformance = JSON.parse(
@@ -98,5 +99,18 @@ for (const vector of conformance.check_digit) {
 context.updateStats(16);
 assert.equal(element('permutations').textContent, '2.33e+22');
 assert.equal(element('bitsEntropy').textContent, '74.3 bits');
+
+for (const separator of ['-', '_', '.', ' ', '/', '0', '<', 'ff', '\u200b', '\ufeff', '']) {
+  element('separator').value = separator;
+  for (const group of ['0', '1', '4', '16']) {
+    element('groupSize').value = group;
+    for (const payload of ['ACDF0G7H', 'ac3h7puw']) {
+      const raw = payload + context.computeCheckDigit(payload);
+      const formatted = context.formatCode(raw);
+      assert.equal(normalize(formatted), normalize(raw), 'formatting must preserve canonical identity');
+      assert.equal(verifyCheckDigit(formatted), true, 'formatting must preserve checksum validity');
+    }
+  }
+}
 
 console.log('docs generator conformance check passed');

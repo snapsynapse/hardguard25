@@ -60,6 +60,8 @@ Design principle: when a letter and a digit compete for the same visual slot, th
 
 ## Entropy and Recommended Lengths
 
+These lengths apply to lookup identifiers, not bearer or authentication secrets.
+
 Bits per character = log2(25) = 4.64.
 
 | Length | Bits | Namespace Size | Typical Use |
@@ -69,9 +71,9 @@ Bits per character = log2(25) = 4.64.
 | 6 | 27.9 | 244,140,625 | Medium businesses |
 | 7 | 32.5 | 6.1 billion | Large catalogs |
 | 8 | 37.2 | 152.6 billion | Large systems |
-| 12 | 55.7 | 5.96 x 10^16 | Internal tokens |
+| 12 | 55.7 | 5.96 x 10^16 | Internal identifiers |
 | 16 | 74.3 | 2.33 x 10^22 | Cross-system IDs |
-| 20 | 92.9 | 9.09 x 10^27 | Public tokens |
+| 20 | 92.9 | 9.09 x 10^27 | Public lookup identifiers |
 | 22 | 102.2 | 5.68 x 10^30 | Internet-scale |
 
 These values are possible payload strings, not safe random issuance counts. Random issuance must account for birthday collisions. An appended check digit is derived from the payload and does not add random entropy.
@@ -79,7 +81,7 @@ These values are possible payload strings, not safe random issuance counts. Rand
 Recommended defaults:
 
 - 16 for internal systems up to millions of IDs
-- 20 for public tokens or cross-org use
+- 20 for public lookup identifiers or cross-org use
 - 22 for long-lived, internet-scale identifiers
 
 ## Collision Guidance
@@ -99,10 +101,12 @@ Birthday-bound approximation: for alphabet size N and length L, the probability 
 
 1. Remove the pinned Unicode White_Space set wherever it appears
 2. Collapse punctuation separators (hyphens, underscores, and dots)
-3. Uppercase fold all letters
+3. Uppercase ASCII letters a-z only
 4. Reject any character outside the alphabet
 
 For cross-runtime consistency, Unicode White_Space means exactly U+0009-U+000D, U+0020, U+0085, U+00A0, U+1680, U+2000-U+200A, U+2028, U+2029, U+202F, U+205F, and U+3000. Language-specific supersets such as ECMAScript `\s` or Python `str.isspace()` do not define this contract. Format characters and nearby non-members, including U+200B and U+FEFF, are invalid rather than separators.
+
+Case folding applies only to ASCII a-z. Reject all other non-ASCII input after removing the pinned separators.
 
 A normalizer must be idempotent: `normalize(normalize(x)) === normalize(x)`.
 
@@ -173,19 +177,18 @@ Blocking conformance tests must inject deterministic byte streams through the pr
 
 ## Test Vectors
 
-Use these to verify cross-language consistency. These are 16-character IDs generated from the same seed sequence then mapped to HardGuard25 via rejection sampling.
+These complete byte streams and outputs match `conformance/vectors.json`. Accept bytes below 225, map modulo 25, and stop at the stated payload length.
+Literal
+```text
+Input bytes (hex): 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15 16 17 18
+HardGuard25-16: 0123456789ACDFGH
 
+Input bytes (hex): e1 e2 e3 ff 19 1a 1b 1c 1d 1e 1f 20 21 22 23 24 25
+HardGuard25-13: 0123456789ACD
+
+Input bytes (hex): 6a 9f 12 88 58 31 d2 44 9b 07 6c 48 2f 5e e1 b3 20 19 1a
+HardGuard25-16: 69MCFYAM578UUN47
 ```
-Input bytes (hex): 6a 9f 12 88 58 31 d2 44 9b 07 6c 48 2f 5e e1 b3 ...
-HardGuard25-16:    AC0G7HJK2MNPR3UW
-
-Input bytes (hex): 3e 1a 77 c4 9d 20 11 55 cb 4a e0 f8 5c 13 a2 6d ...
-HardGuard25-16:    D7H2GJ0KMW1PRUYA
-
-Input bytes (hex): b0 45 f2 1c 8e 09 33 4c 6a 70 56 11 d1 a7 2e 90 ...
-HardGuard25-16:    0CNG5J7KM2PRUWAH
-```
-
 Additional conformance vectors for normalization, validation, checksum calculation, and checksum verification live in `conformance/vectors.json`. All runtime implementations should consume the same fixture data in tests.
 
 ## Accessibility Notes
@@ -212,7 +215,7 @@ flowchart TD
     B -->|Error resistance| C[HardGuard25\n25 chars, 4.64 bits/char]
     B -->|Institutional legitimacy| D[Canadian Postal\n30 chars]
     B -->|Shorter strings, same entropy| E[Base32 family\n32 chars]
-    C --> F[Small biz: 4-5 chars\nMedium: 6-7 chars\nLarge: 8+ chars\nPublic tokens: 16-22 chars]
+    C --> F[Small biz: 4-5 chars\nMedium: 6-7 chars\nLarge: 8+ chars\nPublic lookup identifiers: 16-22 chars]
     D --> F
     E --> F
 ```

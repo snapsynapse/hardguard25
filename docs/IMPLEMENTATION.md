@@ -10,44 +10,51 @@ Before adding HardGuard25 to a project, make these decisions explicitly:
 - How many IDs may be generated over the lifetime of the system?
 - Is the ID public, internal, temporary, or long-lived?
 ## Alphabet
+Literal
 ```text
 0123456789ACDFGHJKMNPRUWY
 ```
 Regex:
+Literal
 ```text
 ^[0-9ACDFGHJKMNPRUWY]+$
 ```
 Excluded characters:
+Literal
 ```text
 B E I L O Q S T V X Z
 ```
 Rule: when a letter and a digit compete for the same visual slot, the digit wins.
 ## Length selection
+
+These lengths apply to lookup identifiers, not bearer or authentication secrets.
 Each character carries `log2(25) = 4.64` bits of entropy.
 | Length | Bits | Possible strings | Typical use |
 |-------:|-----:|-----------:|-------------|
 | 4 | 18.6 | 390,625 | Small inventory, ticket queues |
 | 6 | 27.9 | 244 million | Medium operational systems |
 | 8 | 37.2 | 152.6 billion | Large operational systems |
-| 12 | 55.7 | 5.96 x 10^16 | Internal tokens |
+| 12 | 55.7 | 5.96 x 10^16 | Internal identifiers |
 | 16 | 74.3 | 2.33 x 10^22 | Cross-system IDs |
-| 20 | 92.9 | 9.09 x 10^27 | Public tokens |
+| 20 | 92.9 | 9.09 x 10^27 | Public lookup identifiers |
 | 22 | 102.2 | 5.68 x 10^30 | Long-lived internet-scale IDs |
 These values are possible payload strings, not safe random issuance counts. Random issuance must account for birthday collisions. An appended check digit is derived from the payload and does not add random entropy.
 Recommended defaults:
 - Use 8 for operational IDs that are not security tokens and do not need internet-scale collision resistance.
 - Use 16 for internal cross-system identifiers.
-- Use 20 for public tokens or cross-organization identifiers.
+- Use 20 for public lookup identifiers or cross-organization identifiers.
 - Use 22 for long-lived, internet-scale identifiers.
 ## Check digit
 Use the optional Mod-25 weighted check digit when IDs are manually entered, read over the phone, printed on labels, copied from paper, or handled by support staff.
 Do not use the check digit for security. It catches common transcription mistakes; it does not prove authenticity.
 ## Storage and display
 Store and transmit canonical IDs:
+Literal
 ```text
 ACDF0G7HJ2KMNP3R
 ```
 Display grouped IDs for humans:
+Literal
 ```text
 ACDF-0G7H-J2KM-NP3R
 ```
@@ -56,16 +63,20 @@ Accept lowercase and grouped input only when it normalizes cleanly to canonical 
 Normalize at input boundaries:
 1. Remove the Unicode White_Space set pinned in the specification wherever it appears.
 2. Remove punctuation separators: hyphens, underscores, and dots.
-3. Uppercase all letters.
+3. Uppercase ASCII letters a-z only.
 4. Reject anything outside the HardGuard25 alphabet.
+Non-ASCII letters and Unicode case expansions are invalid; only ASCII a-z is case folded.
+
 The normalizer must be idempotent: `normalize(normalize(x)) === normalize(x)`.
 Empty and separator-only input has no canonical form and must be rejected. Validation returns false for those inputs, and check-digit calculation rejects an empty payload.
 ## JavaScript
 Install:
+Literal
 ```bash
 npm install hardguard25
 ```
 Use:
+Literal
 ```js
 import { generate, validate, normalize, checkDigit, verifyCheckDigit } from 'hardguard25';
 
@@ -80,10 +91,12 @@ verifyCheckDigit(manualEntryId);
 The npm package includes TypeScript declarations for all named exports and the default export.
 ## Python
 Install:
+Literal
 ```bash
 pip install hardguard25
 ```
 Use:
+Literal
 ```python
 from hardguard25 import generate, validate, normalize, check_digit, verify_check_digit
 
@@ -97,10 +110,12 @@ verify_check_digit(manual_entry_id)
 ```
 ## Go
 Install:
+Literal
 ```bash
 go get github.com/snapsynapse/hardguard25/go
 ```
 Use:
+Literal
 ```go
 import "github.com/snapsynapse/hardguard25/go"
 
@@ -134,15 +149,18 @@ Algorithm:
 - UI, email, PDF, label, and support views display grouped IDs when helpful.
 ## Assistant guide
 For ChatGPT, Claude, Codex, or another local coding assistant, use the plain-text assistant guide:
+Literal
 ```text
 https://hardguard25.com/.well-known/assistant-guide.txt
 ```
 That file includes a copy-paste prompt, approval checklist, and safety guidance for adding HardGuard25 to an existing project.
 The guide is published as human-verifiable plain text. Its SHA-256 sidecar is:
+Literal
 ```text
 https://hardguard25.com/.well-known/assistant-guide.txt.sha256
 ```
 To verify a downloaded copy:
+Literal
 ```bash
 curl -sSLO https://hardguard25.com/.well-known/assistant-guide.txt
 curl -sSLO https://hardguard25.com/.well-known/assistant-guide.txt.sha256

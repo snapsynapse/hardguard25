@@ -322,6 +322,7 @@ class TestConformanceValidation:
     def test_rejects_non_ascii_lookalikes_in_every_parser(self):
         for input_str in CONFORMANCE["non_ascii_rejection"]:
             assert not hardguard25.validate(input_str)
+            assert not hardguard25.verify_check_digit(input_str)
             with pytest.raises(ValueError):
                 hardguard25.normalize(input_str)
             with pytest.raises(ValueError):

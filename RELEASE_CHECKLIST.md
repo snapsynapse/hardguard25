@@ -25,6 +25,10 @@ npm run verify
 
 Pushing a `vX.Y.Z` tag triggers `.github/workflows/release.yml`, which verifies version strings match the tag, then publishes to npm and PyPI through their configured OIDC trusted publishers without passing registry tokens, and pushes the `go/vX.Y.Z` tag for Go consumers. PyPI publication uses the `pypi` GitHub environment documented in `docs/PYPI_TRUSTED_PUBLISHING.md`.
 
+Existing npm or PyPI artifacts stop their publishing job. Before recovering a partial release, independently reconcile registry content and provenance with the reviewed commit. Rerun a publishing job only when its artifacts are genuinely absent. If a failed job already uploaded artifacts, stop and prepare a separately authorized recovery for the remaining downstream steps; reconciliation does not bypass the existing-artifact guard. An existing Go tag must peel to the release commit; a mismatch fails. Do not move an existing release tag to recover.
+
+Pages runs the canonical verifier and browser suite before deploying the same commit. Deployment cannot proceed when either check fails. Its post-deployment search check remains a separate hosted acceptance step.
+
 - Push the `vX.Y.Z` git tag and confirm the Release workflow passes.
 - Confirm GitHub Pages deploy completed.
 - Confirm `https://hardguard25.com/` and `https://hardguard25.com/generator/` load after deploy.

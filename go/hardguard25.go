@@ -105,6 +105,15 @@ func isUnicodeWhitespace(r rune) bool {
 	}
 }
 
+func uppercaseASCII(input string) string {
+	return strings.Map(func(r rune) rune {
+		if r >= 'a' && r <= 'z' {
+			return r - ('a' - 'A')
+		}
+		return r
+	}, input)
+}
+
 // Normalize processes a HardGuard25 ID by:
 // - Removing the Unicode White_Space set
 // - Collapsing separators (hyphens, underscores, dots)
@@ -125,7 +134,7 @@ func Normalize(input string) (string, error) {
 	}, input)
 
 	// Convert to uppercase
-	normalized = strings.ToUpper(normalized)
+	normalized = uppercaseASCII(normalized)
 	if normalized == "" {
 		return "", fmt.Errorf("input must contain at least one identifier character")
 	}
@@ -147,7 +156,7 @@ func CheckDigit(code string) (byte, error) {
 	if code == "" {
 		return 0, fmt.Errorf("code must not be empty")
 	}
-	code = strings.ToUpper(code)
+	code = uppercaseASCII(code)
 
 	sum := 0
 	for i, ch := range code {

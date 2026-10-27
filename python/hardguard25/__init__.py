@@ -22,6 +22,7 @@ ALPHABET_SET = frozenset(ALPHABET)
 
 # Dictionary mapping each character to its 0-24 index
 _CHAR_TO_INDEX: Dict[str, int] = {char: idx for idx, char in enumerate(ALPHABET)}
+_ASCII_UPPER = str.maketrans("abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 # Compiled regex pattern for validation
 _REGEX = re.compile(r"^[0-9ACDFGHJKMNPRUWY]+$")
@@ -117,7 +118,7 @@ def normalize(input_str: str) -> str:
     normalized = _SEPARATOR_REGEX.sub("", input_str)
 
     # Convert to uppercase
-    normalized = normalized.upper()
+    normalized = normalized.translate(_ASCII_UPPER)
 
     # Check for invalid characters
     if not _REGEX.match(normalized):
@@ -145,7 +146,7 @@ def check_digit(code: str) -> str:
     if not code:
         raise ValueError("code must not be empty")
 
-    upper_code = code.upper()
+    upper_code = code.translate(_ASCII_UPPER)
     try:
         weighted_sum = sum(
             _CHAR_TO_INDEX[char] * (i + 1)

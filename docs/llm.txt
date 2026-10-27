@@ -33,14 +33,16 @@ When a letter and a digit compete for the same visual slot, the digit always win
 
 ## Entropy
 
+These lengths apply to lookup identifiers, not bearer or authentication secrets.
+
 Each character provides 4.64 bits of entropy (log2 25).
 
 - 4 chars: 390,625 possible strings (small inventory, tickets)
 - 6 chars: 244 million (medium businesses)
 - 8 chars: 152 billion (large systems)
-- 12 chars: 59.6 quadrillion (internal tokens)
+- 12 chars: 59.6 quadrillion (internal identifiers)
 - 16 chars: 2.33 x 10^22 (cross-system identifiers)
-- 20 chars: 9.09 x 10^27 (public tokens)
+- 20 chars: 9.09 x 10^27 (public lookup identifiers)
 
 These values are possible payload strings, not safe random issuance counts. Random issuance must account for birthday collisions. An appended check digit is derived from the payload and does not add random entropy.
 
@@ -48,11 +50,13 @@ These values are possible payload strings, not safe random issuance counts. Rand
 
 1. Remove the exact Unicode White_Space set pinned in the specification wherever it appears
 2. Remove punctuation separators (hyphens, underscores, dots)
-3. Uppercase all letters
+3. Uppercase ASCII letters a-z only
 4. Reject characters outside the alphabet
 5. Reject empty and separator-only input
 
 The pinned set is U+0009-U+000D, U+0020, U+0085, U+00A0, U+1680, U+2000-U+200A, U+2028, U+2029, U+202F, U+205F, and U+3000. Language-specific whitespace supersets do not define the contract. U+200B and U+FEFF are invalid.
+
+Non-ASCII letters and Unicode case expansions are invalid; only ASCII a-z is case folded.
 
 Validation returns false for empty and separator-only input. Check digit calculation rejects an empty payload.
 

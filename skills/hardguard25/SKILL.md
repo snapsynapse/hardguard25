@@ -6,12 +6,11 @@ metadata:
   source: https://github.com/snapsynapse/hardguard25
   skill_bundle: hardguard25
   file_role: skill
-  version: 8
-  version_date: 2026-10-03
-  previous_version: 7
+  version: 9
+  version_date: 2026-10-26
+  previous_version: 8
   change_summary: >
-    Pin normalization to the specification's exact Unicode White_Space set and
-    reject nearby format characters consistently across runtimes.
+    Clarify ASCII-only case folding and the lookup-identifier security boundary.
 ---
 
 # HardGuard25
@@ -20,6 +19,7 @@ An open standard for human-safe identifiers.
 
 ## The Alphabet
 
+Literal
 ```
 0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y
 ```
@@ -48,14 +48,16 @@ Rule: when a letter and a digit compete, the digit wins.
 
 ## Quick Reference: Length Selection
 
+These lengths apply to lookup identifiers, not bearer or authentication secrets.
+
 | Length | Possible Strings | Use For |
 |-------:|-----------:|---------|
 | 4 | 390,625 | Small inventory, tickets |
 | 6 | 244 million | Medium businesses |
 | 8 | 152 billion | Large systems |
-| 12 | 59.6 quadrillion | Internal tokens |
+| 12 | 59.6 quadrillion | Internal identifiers |
 | 16 | 2.33 x 10^22 | Cross-system IDs |
-| 20 | 9.09 x 10^27 | Public tokens |
+| 20 | 9.09 x 10^27 | Public lookup identifiers |
 
 Each character = 4.64 bits of entropy (log2 25).
 
@@ -64,6 +66,7 @@ These values are possible payload strings, not safe random issuance counts. Rand
 ## Generating IDs
 
 ### JavaScript
+Literal
 ```js
 import { generate, validate, normalize, checkDigit, verifyCheckDigit } from 'hardguard25';
 
@@ -77,6 +80,7 @@ verifyCheckDigit("AC3H7PUWN");       // true
 The npm package includes TypeScript declarations for named and default imports.
 
 ### Python
+Literal
 ```python
 from hardguard25 import generate, validate, normalize, check_digit, verify_check_digit
 
@@ -89,6 +93,7 @@ verify_check_digit("AC3H7PUWN")      # True
 ```
 
 ### Go
+Literal
 ```go
 import "github.com/snapsynapse/hardguard25/go"
 
@@ -104,6 +109,7 @@ ok, _ = hardguard25.VerifyCheckDigit("AC3H7PUWN")
 
 If the user doesn't need a library, they can use the character set directly in any language:
 
+Literal
 ```
 ALPHABET = "0123456789ACDFGHJKMNPRUWY"
 ```
@@ -114,11 +120,13 @@ Generate by picking random indices (0-24) from a CSPRNG. Use rejection sampling:
 
 1. Remove the exact Unicode White_Space set pinned in the specification wherever it appears
 2. Remove punctuation separators (hyphens, underscores, dots)
-3. Uppercase all letters
+3. Uppercase ASCII letters a-z only
 4. Reject characters outside the alphabet
 5. Reject empty and separator-only input
 
 The pinned set is U+0009-U+000D, U+0020, U+0085, U+00A0, U+1680, U+2000-U+200A, U+2028, U+2029, U+202F, U+205F, and U+3000. Language-specific whitespace supersets do not define the contract. U+200B and U+FEFF are invalid.
+
+Non-ASCII letters and Unicode case expansions are invalid; only ASCII a-z is case folded.
 
 Normalizer must be idempotent: `normalize(normalize(x)) === normalize(x)`.
 Validation returns false for empty and separator-only input. Check digit calculation rejects an empty payload.

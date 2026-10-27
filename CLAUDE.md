@@ -67,9 +67,9 @@ npm run verify
 Hosted-site accessibility changes also require `npm ci`, a local Chromium installation through Playwright, and `npm run verify:browser` from the repository root.
 
 CI (`.github/workflows/`) additionally runs:
-- `test.yml` (push to main + PRs): installs the pinned development and build tools, then runs the canonical repository verifier across runtime, documentation, metadata, benchmark-protocol, and installed-artifact checks.
-- `release.yml` (on `vX.Y.Z` tag push): verifies package, runtime, spec, conformance, docs, and skill versions match the tag, re-runs the full preflight suite, then publishes to npm and PyPI through OIDC trusted publishing, and tags the Go submodule. PyPI uses the dedicated `pypi` GitHub environment. Publication steps are rerun-safe.
-- `pages.yml` (push to main): deploys `docs/` to GitHub Pages, includes the tracked `.well-known` directory, then retries the production search-indexing contract until the deployment is live.
+- `test.yml` (push to main + PRs): installs locked npm tools and resolves Python test/build requirements at run time, then runs the canonical repository verifier. The inputs are deterministic; the Python toolchain is not pinned.
+- `release.yml` (on `vX.Y.Z` tag push): verifies versions and the full preflight suite, publishes through OIDC, and tags Go. PyPI uses the `pypi` environment. Existing npm/PyPI artifacts stop publication for identity reconciliation; an existing Go tag is accepted only at the release commit.
+- `pages.yml` (push to main): requires the canonical and browser verifiers to pass on the deployment commit before publishing `docs/`, including `.well-known`, then verifies production search surfaces.
 - `accessibility.yml` (relevant PRs and main pushes, release tags, weekly production schedule, and manual runs): executes Playwright/axe checks against the landing page and static generator without adding dependencies to the reference libraries.
 
 ## Current state (as of 2026-10-03)

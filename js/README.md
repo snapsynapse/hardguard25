@@ -1,13 +1,17 @@
 # hardguard25
 
+HardGuard25 identifiers are lookup values, not bearer or authentication secrets.
+
 JavaScript reference implementation of HardGuard25, an open standard for human-safe identifiers.
 
+Literal
 ```
 0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y
 ```
 
 ## Install
 
+Literal
 ```bash
 npm install hardguard25
 ```
@@ -16,6 +20,7 @@ Requires Node.js 22+ when used in Node. Browser use requires `crypto.getRandomVa
 
 ## Quickstart
 
+Literal
 ```js
 import { generate, validate, normalize, checkDigit, verifyCheckDigit } from 'hardguard25';
 

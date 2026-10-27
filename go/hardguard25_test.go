@@ -554,6 +554,9 @@ func TestExpandedConformance(t *testing.T) {
 
 	t.Run("NonASCIIRejection", func(t *testing.T) {
 		for _, input := range fixture.NonASCIIRejection {
+			if verified, _ := VerifyCheckDigit(input); verified {
+				t.Errorf("VerifyCheckDigit(%q) should reject non-ASCII input", input)
+			}
 			if Validate(input) {
 				t.Errorf("Validate(%q) should reject non-ASCII input", input)
 			}

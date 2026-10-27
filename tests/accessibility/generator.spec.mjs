@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { normalize, verifyCheckDigit } from '../../js/index.js';
 
 const wcagTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
 
@@ -82,6 +83,28 @@ test.describe('generator accessibility', () => {
       .evaluate((element) => getComputedStyle(element).transitionDuration);
 
     expect(transitionDuration).toBe('0s');
+  });
+
+  test('separator choices preserve canonical IDs in display and clipboard', async ({ page }) => {
+    const separator = page.getByLabel('Separator', { exact: true });
+    const codes = page.getByRole('button', { name: /^Copy code / });
+    await page.getByLabel('Quantity').fill('2');
+    await page.getByLabel('Mod-25').check();
+    for (const choice of ['-', '_', '.', ' ']) {
+      await separator.selectOption(choice);
+      await separator.focus();
+      await expect(separator).toBeFocused();
+      await page.getByRole('button', { name: 'Generate', exact: true }).click();
+      const displayed = await codes.allTextContents();
+      for (const value of displayed) expect(verifyCheckDigit(value)).toBe(true);
+      await codes.first().click();
+      await expect(page.getByRole('status', { name: 'Copy status' })).toContainText('Copied:');
+      expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(displayed[0]);
+      await page.getByRole('button', { name: 'Copy All', exact: true }).click();
+      await expect(page.getByRole('status', { name: 'Copy status' })).toHaveText('Copied 2 codes');
+      const copied = await page.evaluate(() => navigator.clipboard.readText());
+      expect(copied.split('\n').map(normalize)).toEqual(displayed.map(normalize));
+    }
   });
 
   test('rejects invalid payload lengths without generating and recovers', async ({ page }) => {

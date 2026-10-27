@@ -48,7 +48,7 @@ function fillRandomBytes(bytes) {
  * // '3KMN7FUA9CD1'
  *
  * const idWithCheck = generate(12, { checkDigit: true });
- * // '3KMN7FUA9CD1K' (length 13)
+ * // '3KMN7FUA9CD1Y' (length 13)
  */
 export function generate(length, options = {}) {
   if (!Number.isInteger(length) || length < 1) {
@@ -62,7 +62,7 @@ export function generate(length, options = {}) {
   while (result.length < targetLength) {
     // Generate random bytes - allocate enough for rejection sampling
     // Since we accept ~88% of bytes (225/256), we need slightly more
-    const needed = Math.ceil((targetLength - result.length) * 1.2);
+    const needed = Math.min(65536, Math.ceil((targetLength - result.length) * 1.2));
     const bytes = new Uint8Array(needed);
 
     fillRandomBytes(bytes);
@@ -126,7 +126,8 @@ export function normalize(input) {
   }
 
   // Remove punctuation separators and the pinned Unicode White_Space set.
-  let normalized = input.replace(/[-_.]/g, '').replace(UNICODE_WHITESPACE, '').toUpperCase();
+  const normalized = input.replace(/[-_.]/g, '').replace(UNICODE_WHITESPACE, '')
+    .replace(/[a-z]/g, (char) => char.toUpperCase());
 
   if (normalized.length === 0) {
     throw new Error('HardGuard25: Input must contain at least one identifier character');
@@ -151,7 +152,7 @@ export function normalize(input) {
  * @returns {string} Single character check digit
  *
  * @example
- * checkDigit('3KMN7FUA9CD1'); // 'K'
+ * checkDigit('3KMN7FUA9CD1'); // 'Y'
  */
 export function checkDigit(code) {
   if (typeof code !== 'string' || code.length === 0) {
@@ -160,7 +161,7 @@ export function checkDigit(code) {
 
   let sum = 0;
   for (let i = 0; i < code.length; i++) {
-    const char = code[i].toUpperCase();
+    const char = code[i].replace(/[a-z]/, (letter) => letter.toUpperCase());
     if (!CHAR_TO_INDEX.has(char)) {
       throw new Error(`HardGuard25: Invalid character '${char}' in code`);
     }
@@ -178,7 +179,7 @@ export function checkDigit(code) {
  * @returns {boolean} True if check digit matches
  *
  * @example
- * verifyCheckDigit('3KMN7FUA9CD1K'); // true (assuming K is correct)
+ * verifyCheckDigit('3KMN7FUA9CD1Y'); // true
  * verifyCheckDigit('3KMN7FUA9CD1Z'); // false (Z is wrong)
  */
 export function verifyCheckDigit(codeWithCheck) {

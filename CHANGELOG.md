@@ -3,10 +3,14 @@
 ## Unreleased
 
 ### Changed
+- Clarified ASCII-only case folding and lookup identifiers versus authentication secrets across user and agent guidance; corrected executable specification and API examples.
+- Required repository and browser validation before Pages deployment, pinned workflow actions to commit hashes, and made existing release artifacts fail closed pending reconciliation.
 - Reconciled the repository to the verified 1.3.8 published state and recorded immutable release, registry, provenance, deployment, and GitHub configuration evidence.
 - Updated the release-version checker to accept the explicit current-published marker after release closeout.
 
 ### Security
+- Rejected Unicode case expansions consistently across runtimes, constrained generator separators to preserve canonical identity, and capped JavaScript entropy batches at the Web Crypto quota.
+- Added regressions for Unicode parser parity, generator formatting, entropy refills, and Go release-tag identity.
 - Removed the legacy `PYPI_API_TOKEN` repository secret after the 1.3.8 OIDC publication and provenance attestations were verified.
 
 ## 1.3.8 -- 2026-10-03

@@ -21,7 +21,7 @@ The activation configuration is:
 1. The `publish-pypi` job grants `id-token: write` and retains read-only repository contents access.
 2. The job targets the `pypi` GitHub environment.
 3. The publish action receives no password input.
-4. `packages-dir: python/dist` and `skip-existing: true` remain explicit.
+4. `packages-dir: python/dist` and `skip-existing: false` remain explicit. An existing artifact fails publication. Reconcile content and provenance before recovery; rerun a publishing job only if its artifacts are absent. If upload completed before a job failed, prepare a separately authorized recovery for downstream steps rather than rerunning that publisher.
 
 For each authorized release:
 
