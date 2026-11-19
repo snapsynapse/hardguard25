@@ -132,6 +132,8 @@ Use a Mod-25 weighted checksum appended as the last character of the ID.
 3. The check digit is the alphabet character at index `sum % 25`.
 4. Append the check digit as the last character.
 
+Implementations must preserve exact modulo-25 arithmetic for every supported payload length. Reducing the running sum and positional weight modulo 25 at each step is equivalent to the formula and avoids integer overflow or floating-point precision loss. The reference JavaScript and Go lookup collections exposed for inspection are detached snapshots; changing them does not change the standard or the internal validation/checksum tables.
+
 ### Verification
 
 To verify, normalize the full input, strip the last character, recompute the check digit, and compare. A valid ID with check digit has `length >= 2` after normalization.

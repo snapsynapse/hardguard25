@@ -3,7 +3,9 @@ export interface GenerateOptions {
 }
 
 export const ALPHABET: string;
+/** Detached compatibility snapshot; mutation cannot alter canonical operations. */
 export const ALPHABET_SET: ReadonlySet<string>;
+/** Detached compatibility snapshot; mutation cannot alter canonical operations. */
 export const CHAR_TO_INDEX: ReadonlyMap<string, number>;
 
 export function generate(length: number, options?: GenerateOptions): string;

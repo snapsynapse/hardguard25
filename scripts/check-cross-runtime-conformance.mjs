@@ -41,6 +41,52 @@ function javascriptTranscript(inputs) {
   }));
 }
 
+// Specification oracle: do not derive expected results from a production runtime.
+// Exact BigInt summation deliberately differs from the bounded runtime algorithm.
+const oracleAlphabet = '0123456789ACDFGHJKMNPRUWY';
+const oracleSeparators = new Set(['-', '_', '.', ...expectedWhitespace]);
+function oracleUpperASCII(char) {
+  const code = char.codePointAt(0);
+  return code >= 97 && code <= 122 ? String.fromCharCode(code - 32) : char;
+}
+
+function oracleNormalize(input) {
+  let result = '';
+  for (const char of input) {
+    if (oracleSeparators.has(char)) continue;
+    const upper = oracleUpperASCII(char);
+    if (!oracleAlphabet.includes(upper)) throw new Error('excluded character');
+    result += upper;
+  }
+  if (!result) throw new Error('empty canonical value');
+  return result;
+}
+
+function oracleCheckDigit(input) {
+  if (!input) throw new Error('empty payload');
+  let total = 0n;
+  let position = 1n;
+  for (const char of input) {
+    const index = oracleAlphabet.indexOf(oracleUpperASCII(char));
+    if (index < 0) throw new Error('excluded character');
+    total += BigInt(index) * position++;
+  }
+  return oracleAlphabet[Number(total % 25n)];
+}
+
+function oracleTranscript(inputs) {
+  return inputs.map((input) => {
+    const normalized = outcome(() => oracleNormalize(input));
+    return {
+      normalize: normalized,
+      validate: normalized.ok,
+      checkDigit: outcome(() => oracleCheckDigit(input)),
+      verify: normalized.ok && normalized.value.length >= 2
+        && oracleCheckDigit(normalized.value.slice(0, -1)) === normalized.value.slice(-1),
+    };
+  });
+}
+
 const inputs = new Set([
   ...vectors.normalize.map((entry) => entry.input),
   ...vectors.normalize_rejection,
@@ -74,7 +120,8 @@ for (let caseIndex = 0; caseIndex < 256; caseIndex++) {
 }
 
 const cases = [...inputs];
-const expected = javascriptTranscript(cases);
+const expected = oracleTranscript(cases);
+assert.deepEqual(javascriptTranscript(cases), expected, 'JavaScript public API must match the specification oracle');
 assert.ok(
   fs.readFileSync(path.join(root, 'CONFORMANCE.md'), 'utf8').includes(`contains ${cases.length} deterministic cases`),
   `CONFORMANCE.md must report ${cases.length} deterministic cases`
@@ -122,7 +169,7 @@ json.dump(rows, sys.stdout, ensure_ascii=False)
 `;
 
 const pythonObserved = run(python, ['-c', pythonSource, path.join(root, 'python')]);
-assert.deepEqual(pythonObserved, expected, 'Python public API transcript must match JavaScript');
+assert.deepEqual(pythonObserved, expected, 'Python public API must match the specification oracle');
 
 const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'hardguard25-cross-runtime-'));
 try {
@@ -175,9 +222,9 @@ func main() {
 }
 `);
   const goObserved = run('go', ['run', '.'], { cwd: temp });
-  assert.deepEqual(goObserved, expected, 'Go public API transcript must match JavaScript');
+  assert.deepEqual(goObserved, expected, 'Go public API must match the specification oracle');
 } finally {
   fs.rmSync(temp, { recursive: true, force: true });
 }
 
-console.log(`cross-runtime public API parity passed (${cases.length} deterministic cases)`);
+console.log(`cross-runtime public API specification oracle and parity passed (${cases.length} deterministic cases)`);
