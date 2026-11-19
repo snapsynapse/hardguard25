@@ -2,7 +2,7 @@
 
 Report date: 2026-11-18
 
-Published release 1.3.9 has historical local, exact-head CI and independent registry-consumer evidence in `ops/releases/1.3.9.json`. The current unreleased maintenance candidate extends the checks below; its local results are recorded in `audits/security-code-review-2026-11-18.md`. The 1.3.10 candidate is being prepared for release; publication has not run.
+Release 1.3.10 has local, exact-head CI and published npm/PyPI consumer evidence in `ops/releases/1.3.10.json`; the Go tag is pushed and proxy indexing is tracked separately. Historical 1.3.9 evidence remains in `ops/releases/1.3.9.json`.
 
 Fixture version: `1.3.10`
 
@@ -10,9 +10,9 @@ Fixture version: `1.3.10`
 
 | Runtime | Package version | Fixture coverage | Status |
 |---|---:|---|---|
-| JavaScript | 1.3.10 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, packed TypeScript consumer | Candidate passes locally; release CI pending |
-| Python | 1.3.10 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, exact wheel and sdist consumer | Candidate passes locally; release CI pending |
-| Go | module package | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure | Candidate passes locally; release CI pending |
+| JavaScript | 1.3.10 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, packed TypeScript consumer | Published candidate passed local and CI checks |
+| Python | 1.3.10 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, exact wheel and sdist consumer | Published candidate passed local and CI checks |
+| Go | module package | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure | Published candidate passed local and CI checks |
 
 ## Check Digit Profile
 

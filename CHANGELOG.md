@@ -4,7 +4,7 @@
 
 ## 1.3.10 -- 2026-11-18
 
-Maintenance hardening candidate. Publication and consumer verification remain pending.
+Maintenance hardening release. npm and PyPI publication and clean consumers verified; Go tag pushed.
 
 ### Fixed
 - Preserve exact Mod-25 checksums at long payload lengths across JavaScript, Python and Go, including 32-bit Go, without changing the checksum formula or adding a length mandate.

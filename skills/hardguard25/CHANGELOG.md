@@ -3,6 +3,7 @@
 ## Unreleased
 
 ## 1.3.10 -- 2026-11-18
+Released as v1.3.10; publication evidence is in `ops/releases/1.3.10.json`.
 - MANIFEST.yaml: Advanced the parent-release-coupled bundle version and date. The skill content and file hashes are unchanged.
 
 ## 1.3.9 -- 2026-10-26
