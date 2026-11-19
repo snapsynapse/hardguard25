@@ -7,6 +7,7 @@
 - Isolate internal JavaScript and Go validation/checksum lookups from mutations of exported inspection snapshots.
 - Decode sitemap entities once, validate every entry structurally, refuse unauthorized URLs and redirect hops before transport, and distinguish incomplete collection from observed deployment defects.
 - Add independent specification oracles, compact long-input vectors, lookup-isolation checks, executed Linux/386 regressions and search failure/redirect matrices.
+- Add independent specification oracles, compact long-input vectors, lookup-isolation checks and executed Linux/386 regressions.
 
 ## 1.3.9 -- 2026-10-26
 
