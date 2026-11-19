@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "repository": "https://github.com/snapsynapse/hardguard25",
+  "profile": "other",
+  "authority": "R2",
+  "candidate_version": "1.3.10",
+  "candidate_head": "9a76e7e94680da3b9e89410b073278e8ad62fa47",
+  "updated_at": "2026-11-19T06:05:40.776596+00:00",
+  "steps": [
+    {
+      "id": "release-commit-and-tag",
+      "status": "completed",
+      "evidence": "PR #12 merged as 9a76e7e; signed annotated v1.3.10 tag points to that commit."
+    },
+    {
+      "id": "candidate-ci-and-pages",
+      "status": "completed",
+      "evidence": "Test 44467577499, Accessibility 44467577518 and Pages 44467577588 passed on tagged commit; Pages production search verification passed."
+    },
+    {
+      "id": "artifact-preflight",
+      "status": "completed",
+      "evidence": "Release run 44468122032 version check and preflight passed; retained artifact digest sha256:8567a68b48faddfe56c24b946c356bbd3caec337a950c5a81e4f0622605e0cea; manifest sha256 53a55b18232471c1bc32e89a031cff2df14d23b598ffe692e5f4823ca8feb00c."
+    },
+    {
+      "id": "pypi-publication",
+      "status": "completed",
+      "evidence": "PyPI published wheel sha256 9c7cef7a281dcbe277c6ec6a39be532d12589ddeb9889e92793a3db9e2373118 and sdist sha256 f5695b5194aabbdb5ef5886fb549b9165d996a2e0b95ac86c6b35e0db1c46f98, both matching preflight. Clean Python 3.10 registry consumer passed."
+    },
+    {
+      "id": "npm-publication",
+      "status": "completed",
+      "evidence": "Original run npm job failed before upload due missing ./ path; recovery run 44468975904 published original tarball through the same trusted workflow. Registry sha256 fea8fc3120d1cf6365102cd26dde32bb2a04a52a23a3a046b5bb54d5ff14678e matches preflight. Clean npm registry consumer passed; signed provenance reported by npm."
+    },
+    {
+      "id": "go-tag",
+      "status": "completed",
+      "evidence": "go/v1.3.10 pushed at tagged release commit 9a76e7e."
+    },
+    {
+      "id": "go-proxy",
+      "status": "unknown",
+      "evidence": "Go proxy returned 404 shortly after tag push; indexing is pending and not counted as verified."
+    },
+    {
+      "id": "github-release",
+      "status": "completed",
+      "evidence": "https://github.com/snapsynapse/hardguard25/releases/tag/v1.3.10 created from reviewed notes."
+    }
+  ]
+}
