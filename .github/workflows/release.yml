@@ -4,12 +4,14 @@ on:
   push:
     tags:
       - "v[0-9]*"
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   verify:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -20,6 +22,7 @@ jobs:
           node scripts/check-release-versions.mjs "$TAG_VERSION"
 
   preflight:
+    if: github.event_name == 'push'
     needs: verify
     outputs:
       manifest-sha256: ${{ steps.manifest.outputs.sha256 }}
@@ -55,6 +58,7 @@ jobs:
           retention-days: 7
 
   publish-npm:
+    if: github.event_name == 'push'
     needs: preflight
     runs-on: ubuntu-latest
     permissions:
@@ -78,9 +82,10 @@ jobs:
         run: |
           node scripts/check-release-artifacts.mjs verify release-artifacts
           node scripts/check-npm-release.mjs "${GITHUB_REF_NAME#v}"
-          npm publish "release-artifacts/hardguard25-${GITHUB_REF_NAME#v}.tgz" --ignore-scripts
+          npm publish "./release-artifacts/hardguard25-${GITHUB_REF_NAME#v}.tgz" --ignore-scripts
 
   publish-pypi:
+    if: github.event_name == 'push'
     needs: preflight
     runs-on: ubuntu-latest
     environment: pypi
@@ -113,6 +118,7 @@ jobs:
           skip-existing: false
 
   tag-go:
+    if: github.event_name == 'push'
     needs: [publish-npm, publish-pypi]
     runs-on: ubuntu-latest
     permissions:
@@ -129,3 +135,35 @@ jobs:
           fi
           git tag "$GO_TAG" "$GITHUB_SHA"
           git push origin "$GO_TAG"
+
+  recover-npm-1-3-10:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: 9a76e7e94680da3b9e89410b073278e8ad62fa47
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+      - name: Install npm for OIDC trusted publishing
+        run: npm install -g npm@11.5.1
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: release-artifacts
+          path: release-artifacts/
+          run-id: 44468122032
+          github-token: ${{ github.token }}
+      - name: Verify original artifact and publish npm
+        env:
+          HG25_TAG_COMMIT: 9a76e7e94680da3b9e89410b073278e8ad62fa47
+          HG25_EXPECTED_MANIFEST_SHA256: 53a55b18232471c1bc32e89a031cff2df14d23b598ffe692e5f4823ca8feb00c
+        run: |
+          node --input-type=module -e 'import { verifyReleaseManifest } from "./scripts/check-release-artifacts.mjs"; verifyReleaseManifest(process.cwd(), "release-artifacts", process.env.HG25_TAG_COMMIT, process.env.HG25_EXPECTED_MANIFEST_SHA256)'
+          node scripts/check-npm-release.mjs 1.3.10
+          npm publish ./release-artifacts/hardguard25-1.3.10.tgz --ignore-scripts
