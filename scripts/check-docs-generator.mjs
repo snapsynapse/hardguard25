@@ -114,3 +114,4 @@ for (const separator of ['-', '_', '.', ' ', '/', '0', '<', 'ff', '\u200b', '\uf
 }
 
 console.log('docs generator conformance check passed');
+await import('./check-generator-state.mjs');
