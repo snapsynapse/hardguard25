@@ -101,6 +101,7 @@ export function checkWorkflows(workflows) {
   assert.deepEqual(needs(pages['verify-search']), ['deploy']);
   const tests = workflows['test.yml'].jobs;
   assert.deepEqual(commands(step(tests.repository, 'Run canonical repository verifier')), ['npm run verify']);
+  assert.equal(tests['minimum-runtimes']['runs-on'], 'ubuntu-24.04', 'Python 3.9 compatibility must use a supported runner image');
   const go386 = step(tests['minimum-runtimes'], 'Execute 32-bit checksum and lookup regressions');
   assert.equal(go386.env?.GOARCH, '386');
   assert.equal(go386['working-directory'], 'go');

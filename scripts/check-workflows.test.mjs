@@ -7,6 +7,7 @@ test('workflow policy accepts current structure and rejects protection removal',
   const current = readWorkflows();
   checkWorkflows(current);
   const mutations = [
+    value => { value['test.yml'].jobs['minimum-runtimes']['runs-on'] = 'ubuntu-latest'; },
     value => { value['release.yml'].jobs['publish-npm'].steps.unshift({ name: 'Bypass', run: 'npm publish ./js' }); },
     value => { value['release.yml'].jobs['publish-npm'].steps.find(s => s.name === 'Verify and publish exact npm artifact').shell = 'bash +e {0}'; },
     value => { const steps = value['release.yml'].jobs.preflight.steps; steps.unshift(steps.pop()); },
