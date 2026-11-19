@@ -13,8 +13,12 @@ import (
 const Alphabet = "0123456789ACDFGHJKMNPRUWY"
 
 var (
-	// AlphabetSet is a lookup map for fast character validation.
+	// AlphabetSet is a compatibility snapshot of the alphabet membership map.
+	// Mutating it does not change validation or normalization behavior.
 	AlphabetSet map[byte]bool
+
+	// alphabetSet is private canonical validation state.
+	alphabetSet map[byte]bool
 
 	// charToIndex maps each alphabet character to its index.
 	charToIndex map[byte]int
@@ -23,8 +27,10 @@ var (
 func init() {
 	// Initialize AlphabetSet
 	AlphabetSet = make(map[byte]bool)
+	alphabetSet = make(map[byte]bool)
 	for i := 0; i < len(Alphabet); i++ {
 		AlphabetSet[Alphabet[i]] = true
+		alphabetSet[Alphabet[i]] = true
 	}
 
 	// Initialize charToIndex
@@ -141,7 +147,7 @@ func Normalize(input string) (string, error) {
 
 	// Validate characters
 	for _, ch := range normalized {
-		if ch > unicode.MaxASCII || !AlphabetSet[byte(ch)] {
+		if ch > unicode.MaxASCII || !alphabetSet[byte(ch)] {
 			return "", fmt.Errorf("invalid character in input: %c", ch)
 		}
 	}
@@ -167,7 +173,8 @@ func CheckDigit(code string) (byte, error) {
 		if !ok {
 			return 0, fmt.Errorf("invalid character in code: %c", ch)
 		}
-		sum += idx * (i + 1)
+		// Bound intermediate values on both 32-bit and 64-bit architectures.
+		sum = (sum + idx*((i%25)+1)) % 25
 	}
 
 	checksumIndex := sum % 25

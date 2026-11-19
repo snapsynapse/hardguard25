@@ -148,10 +148,9 @@ def check_digit(code: str) -> str:
 
     upper_code = code.translate(_ASCII_UPPER)
     try:
-        weighted_sum = sum(
-            _CHAR_TO_INDEX[char] * (i + 1)
-            for i, char in enumerate(upper_code)
-        )
+        weighted_sum = 0
+        for i, char in enumerate(upper_code):
+            weighted_sum = (weighted_sum + _CHAR_TO_INDEX[char] * ((i % 25) + 1)) % 25
     except KeyError as e:
         raise ValueError(f"invalid character in code: {e}")
 

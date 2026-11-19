@@ -18,7 +18,7 @@ Literal
 pip install hardguard25
 ```
 
-Requires Python 3.9+.
+Installed wheels require Python 3.9+. Building from source requires Python 3.10+ and setuptools 84.1.0 or newer.
 
 ## Quickstart
 

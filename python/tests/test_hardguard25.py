@@ -16,6 +16,17 @@ CONFORMANCE = json.loads(
 )
 
 
+def test_repeated_checksums_match_exact_integer_oracle():
+    alphabet = "0123456789ACDFGHJKMNPRUWY"
+    for vector in CONFORMANCE["checksum_repeated"]:
+        character, count = vector["character"], vector["count"]
+        expected = alphabet[(alphabet.index(character) * count * (count + 1) // 2) % 25]
+        assert vector["digit"] == expected
+        payload = character * count
+        assert hardguard25.check_digit(payload) == expected
+        assert hardguard25.verify_check_digit(payload + expected)
+
+
 def install_entropy_sequence(monkeypatch, values):
     remaining = list(values)
 

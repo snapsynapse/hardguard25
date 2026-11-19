@@ -130,6 +130,8 @@ Use a Mod-25 weighted checksum appended as the last character of the ID.
 1. Assign each character in the alphabet an index 0-24 based on its position in the ordered alphabet: `0=0, 1=1, ..., 9=9, A=10, C=11, D=12, F=13, G=14, H=15, J=16, K=17, M=18, N=19, P=20, R=21, U=22, W=23, Y=24`.
 2. Compute a weighted sum: `sum = sum of (index[i] * (i + 1))` for each character position i (0-indexed).
 3. The check digit is the alphabet character at index `sum % 25`.
+
+Implementations must preserve exact modulo-25 arithmetic for every supported payload length. Reducing the running sum and positional weight modulo 25 at each step is equivalent to the formula and avoids integer overflow or floating-point precision loss. The reference JavaScript and Go lookup collections exposed for inspection are detached snapshots; changing them does not change the standard or the internal validation/checksum tables.
 4. Append the check digit as the last character.
 
 ### Verification

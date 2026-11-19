@@ -1,7 +1,9 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { checkRuntimeErrors } from './runtime-errors.mjs';
 
 const wcagTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
+checkRuntimeErrors(test, expect);
 
 for (const width of [320, 390, 768]) {
   test(`landing keeps overflow local and focus visible at ${width}px`, async ({ page }) => {

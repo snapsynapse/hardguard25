@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import { npmPayloadFiles, snapshotNpmPayload, verifyNpmPayload } from './check-npm-payload.mjs';
 
 const root = process.cwd();
 const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'hardguard25-packed-'));
@@ -19,19 +20,25 @@ function run(command, args, cwd = root) {
 }
 
 try {
-  const expectedFiles = ['LICENSE', 'README.md', 'index.d.ts', 'index.js', 'package.json'];
-  const packReport = JSON.parse(run('npm', ['pack', '--json', '--pack-destination', temp], path.join(root, 'js')));
+  const expectedFiles = npmPayloadFiles;
+  const snapshot = snapshotNpmPayload(path.join(root, 'js'));
+  assert.deepEqual(snapshot.get('LICENSE'), fs.readFileSync(path.join(root, 'LICENSE')));
+  const output = process.env.HG25_RELEASE_ARTIFACTS ? path.resolve(process.env.HG25_RELEASE_ARTIFACTS) : temp;
+  fs.mkdirSync(output, { recursive: true });
+  const packReport = JSON.parse(run('npm', ['pack', '--json', '--pack-destination', output], path.join(root, 'js')));
   assert.equal(packReport.length, 1, 'npm pack must produce exactly one artifact');
   assert.deepEqual(
     packReport[0].files.map((entry) => entry.path).sort(),
     expectedFiles,
     'npm tarball inventory must match the declared release surface'
   );
-  const tarball = path.join(temp, packReport[0].filename);
+  const tarball = path.join(output, packReport[0].filename);
   const consumer = path.join(temp, 'consumer');
   fs.mkdirSync(consumer);
   fs.writeFileSync(path.join(consumer, 'package.json'), JSON.stringify({ private: true, type: 'module' }));
   run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund', tarball], consumer);
+  const installed = path.join(consumer, 'node_modules', 'hardguard25');
+  verifyNpmPayload(installed, snapshot);
 
   fs.writeFileSync(path.join(consumer, 'runtime.mjs'), `
     import hardguard25, * as named from 'hardguard25';
@@ -41,6 +48,8 @@ try {
     if (hardguard25.checkDigit !== named.checkDigit) process.exit(1);
   `);
   run(process.execPath, ['runtime.mjs'], consumer);
+  fs.copyFileSync(path.join(root, 'scripts/check-installed-conformance.mjs'), path.join(consumer, 'conformance.mjs'));
+  run(process.execPath, ['conformance.mjs', path.join(root, 'conformance/vectors.json')], consumer);
 
   fs.writeFileSync(path.join(consumer, 'consumer.ts'), `
     import hardguard25, { ALPHABET, ALPHABET_SET, CHAR_TO_INDEX, generate, validate, normalize, checkDigit, verifyCheckDigit } from 'hardguard25';
@@ -60,7 +69,6 @@ try {
   assert.ok(fs.existsSync(tsc), 'TypeScript compiler must be installed with npm ci');
   run(process.execPath, [tsc, '--noEmit', '--strict', '--target', 'ES2022', '--module', 'NodeNext', '--moduleResolution', 'NodeNext', 'consumer.ts'], consumer);
 
-  const installed = path.join(consumer, 'node_modules', 'hardguard25');
   for (const required of expectedFiles) {
     assert.ok(fs.existsSync(path.join(installed, required)), `npm artifact missing ${required}`);
   }

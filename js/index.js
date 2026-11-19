@@ -9,7 +9,9 @@ const ALPHABET = '0123456789ACDFGHJKMNPRUWY';
  * Set of valid HardGuard25 characters for quick membership testing
  * @type {Set<string>}
  */
-const ALPHABET_SET = new Set(ALPHABET);
+// Exported collections are compatibility snapshots; canonical operations use private state.
+const INTERNAL_ALPHABET_SET = new Set(ALPHABET);
+const ALPHABET_SET = new Set(INTERNAL_ALPHABET_SET);
 
 // Unicode White_Space property, pinned explicitly for cross-runtime parity.
 // ECMAScript \s also matches U+FEFF and omits U+0085, so it cannot define
@@ -20,10 +22,11 @@ const UNICODE_WHITESPACE = /[\u0009-\u000D\u0020\u0085\u00A0\u1680\u2000-\u200A\
  * Map from character to its index (0-24) in the alphabet
  * @type {Map<string, number>}
  */
-const CHAR_TO_INDEX = new Map();
+const INTERNAL_CHAR_TO_INDEX = new Map();
 for (let i = 0; i < ALPHABET.length; i++) {
-  CHAR_TO_INDEX.set(ALPHABET[i], i);
+  INTERNAL_CHAR_TO_INDEX.set(ALPHABET[i], i);
 }
+const CHAR_TO_INDEX = new Map(INTERNAL_CHAR_TO_INDEX);
 
 function fillRandomBytes(bytes) {
   if (typeof globalThis !== 'undefined' && globalThis.crypto?.getRandomValues) {
@@ -135,7 +138,7 @@ export function normalize(input) {
 
   // Check for invalid characters
   for (const char of normalized) {
-    if (!ALPHABET_SET.has(char)) {
+    if (!INTERNAL_ALPHABET_SET.has(char)) {
       throw new Error(`HardGuard25: Invalid character '${char}' in input`);
     }
   }
@@ -162,10 +165,11 @@ export function checkDigit(code) {
   let sum = 0;
   for (let i = 0; i < code.length; i++) {
     const char = code[i].replace(/[a-z]/, (letter) => letter.toUpperCase());
-    if (!CHAR_TO_INDEX.has(char)) {
+    if (!INTERNAL_CHAR_TO_INDEX.has(char)) {
       throw new Error(`HardGuard25: Invalid character '${char}' in code`);
     }
-    sum += CHAR_TO_INDEX.get(char) * (i + 1);
+    // Reduce both operands so every intermediate remains exact for all string lengths.
+    sum = (sum + INTERNAL_CHAR_TO_INDEX.get(char) * ((i % 25) + 1)) % 25;
   }
 
   return ALPHABET[sum % 25];

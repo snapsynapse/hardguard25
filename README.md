@@ -84,6 +84,8 @@ Literal
 pip install hardguard25
 ```
 
+Installed Python wheels support Python 3.9+. Source builds, including installation directly from GitHub, require Python 3.10+ and setuptools 84.1.0 or newer.
+
 To install the latest unreleased code directly from GitHub:
 
 Literal

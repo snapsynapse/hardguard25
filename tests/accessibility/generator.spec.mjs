@@ -1,8 +1,10 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { normalize, verifyCheckDigit } from '../../js/index.js';
+import { checkRuntimeErrors } from './runtime-errors.mjs';
 
 const wcagTags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
+checkRuntimeErrors(test, expect);
 
 test.describe('generator accessibility', () => {
   test.use({
@@ -198,5 +200,114 @@ test.describe('generator accessibility', () => {
     await expect(page.locator('#bitsEntropy')).toHaveText('74.3 bits');
     expect((await codes.first().textContent()).replaceAll('-', '')).toHaveLength(17);
     await expect(page.getByText(/adds no random entropy/)).toBeVisible();
+  });
+
+  test('preserves an entire batch on secure-randomness failure and recovers', async ({ page }) => {
+    const codes = page.getByRole('button', { name: /^Copy code / });
+    const generate = page.getByRole('button', { name: 'Generate', exact: true });
+    await page.getByLabel('Quantity').fill('2');
+    await generate.click();
+    const previous = await codes.allTextContents();
+    const count = await page.locator('#generated').textContent();
+    await page.evaluate(() => {
+      window.__originalRandom = crypto.getRandomValues.bind(crypto);
+      let calls = 0;
+      crypto.getRandomValues = buffer => {
+        if (++calls === 2) throw new Error('Injected entropy failure');
+        return buffer.fill(10);
+      };
+    });
+    await generate.click();
+    expect(await codes.allTextContents()).toEqual(previous);
+    await expect(page.locator('#generated')).toHaveText(count);
+    await expect(page.locator('#generationError')).toBeVisible();
+    await expect(page.getByRole('status', { name: 'Generation status' })).toContainText('Generation failed');
+    await page.evaluate(() => { crypto.getRandomValues = window.__originalRandom; });
+    await generate.click();
+    await expect(page.locator('#generationError')).toBeHidden();
+    await expect(page.locator('#generated')).toHaveText('4');
+  });
+
+  test('keeps current formatting, accessible names and copied text aligned', async ({ page }) => {
+    await page.getByLabel('Quantity').fill('2');
+    await page.getByRole('button', { name: 'Generate', exact: true }).click();
+    const codes = page.getByRole('button', { name: /^Copy code / });
+    const canonical = (await codes.allTextContents()).map(normalize);
+    await page.getByRole('button', { name: 'Lowercase', exact: true }).click();
+    await page.getByLabel('Group every N').fill('3');
+    await page.getByLabel('Separator', { exact: true }).selectOption('.');
+    const displayed = await codes.allTextContents();
+    expect(displayed.map(normalize)).toEqual(canonical);
+    for (const chip of await codes.all()) {
+      await expect(chip).toHaveAttribute('aria-label', 'Copy code ' + await chip.textContent());
+    }
+    await page.getByRole('button', { name: 'Copy All', exact: true }).click();
+    await expect(page.getByRole('status', { name: 'Copy status' })).toHaveText('Copied 2 codes');
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(displayed.join('\n'));
+  });
+
+  test('announces unavailable or denied clipboard access with manual recovery', async ({ page }) => {
+    await page.getByLabel('Quantity').fill('1');
+    await page.getByRole('button', { name: 'Generate', exact: true }).click();
+    const displayed = await page.getByRole('button', { name: /^Copy code / }).textContent();
+    for (const unavailable of [false, true]) {
+      await page.evaluate(missing => {
+        Object.defineProperty(navigator, 'clipboard', {
+          configurable: true,
+          value: missing ? undefined : { writeText: () => Promise.reject(new Error('Clipboard denied')) },
+        });
+      }, unavailable);
+      await page.getByRole('button', { name: 'Copy All', exact: true }).click();
+      const manual = page.getByLabel('Select and copy these codes manually');
+      await expect(manual).toBeVisible();
+      await expect(manual).toHaveValue(displayed);
+      await expect(manual).toBeFocused();
+      await expect(page.getByRole('status', { name: 'Copy status' })).toContainText('Copy failed');
+    }
+    const results = await new AxeBuilder({ page }).withTags(wcagTags).analyze();
+    expect(results.violations).toEqual([]);
+    await page.evaluate(() => { delete navigator.clipboard; });
+    await page.getByRole('button', { name: 'Copy All', exact: true }).click();
+    await expect(page.locator('#manualCopy')).toBeHidden();
+  });
+
+  test('ignores stale clipboard completions after clear or regeneration', async ({ page }) => {
+    for (const action of ['clear', 'regenerate']) {
+      await page.getByLabel('Quantity').fill('2');
+      await page.getByRole('button', { name: 'Generate', exact: true }).click();
+      await page.evaluate(() => {
+        Object.defineProperty(navigator, 'clipboard', {
+          configurable: true,
+          value: { writeText: () => new Promise(resolve => { window.__finishCopy = resolve; }) },
+        });
+      });
+      await page.getByRole('button', { name: 'Copy All', exact: true }).click();
+      if (action === 'clear') await page.getByRole('button', { name: 'Clear', exact: true }).click();
+      else {
+        await page.getByLabel('Quantity').fill('1');
+        await page.getByRole('button', { name: 'Generate', exact: true }).click();
+      }
+      await page.evaluate(() => window.__finishCopy());
+      await expect(page.getByRole('status', { name: 'Copy status' })).toBeEmpty();
+      await expect(page.locator('#manualCopy')).toBeHidden();
+    }
+  });
+
+  test('generation and copying use no network or persistent storage', async ({ page }) => {
+    const requests = [];
+    await page.route('**/*', route => { requests.push(route.request().url()); return route.abort(); });
+    await page.evaluate(() => {
+      window.__privacyCalls = [];
+      const forbidden = name => () => { window.__privacyCalls.push(name); throw new Error(name); };
+      for (const key of ['localStorage', 'sessionStorage', 'indexedDB', 'caches']) {
+        Object.defineProperty(window, key, { configurable: true, get: forbidden(key) });
+      }
+      navigator.sendBeacon = forbidden('sendBeacon');
+    });
+    await page.getByRole('button', { name: 'Generate', exact: true }).click();
+    await page.getByRole('button', { name: 'Copy All', exact: true }).click();
+    await expect(page.getByRole('status', { name: 'Copy status' })).toContainText('Copied');
+    expect(requests).toEqual([]);
+    expect(await page.evaluate(() => window.__privacyCalls)).toEqual([]);
   });
 });

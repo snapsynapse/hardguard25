@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+### Fixed
+- Preserve exact Mod-25 checksums at long payload lengths across JavaScript, Python and Go, including 32-bit Go, without changing the checksum formula or adding a length mandate.
+- Isolate internal JavaScript and Go validation/checksum lookups from mutations of exported inspection snapshots.
+- Decode sitemap entities once, validate every entry structurally, refuse unauthorized URLs and redirect hops before transport, and distinguish incomplete collection from observed deployment defects.
+- Publish generator batches atomically, announce entropy and clipboard failures, provide manual-copy recovery, and synchronize displayed, copied and accessible code representations after settings changes.
+- Correct the GitHub star link's accessible name and validate it with axe 4.14.
+- Require authoritative npm version absence before publication and use patched setuptools >=84.1.0 for Python source builds. Source builds now require Python 3.10+; installed wheels retain Python 3.9+ runtime support.
+
+### Changed
+- Retain the exact artifacts validated in preflight for hash-checked publication, using reviewed hash-pinned Python build tools and job-scoped publisher authority.
+- Add independent specification oracles, compact long-input vectors, lookup-isolation checks, stateful generator/privacy evals, search failure/redirect matrices, artifact mutation tests and parsed workflow contract gates.
+- Add CI execution for 32-bit Go and the oldest supported Python build backend; preserve dependency-free runtime packages and the stable maintenance-only posture.
+
 ## 1.3.9 -- 2026-10-26
 
 Released as v1.3.9; publication independently verified across GitHub, npm, PyPI and Go.
