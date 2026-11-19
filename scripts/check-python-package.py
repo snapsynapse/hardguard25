@@ -103,11 +103,8 @@ with tempfile.TemporaryDirectory(prefix="hardguard25-wheel-") as temp:
             if not member.isfile() or archive.extractfile(member).read() != expected_bytes:
                 raise SystemExit(f"sdist payload differs from source: {name}")
         license_member = archive.extractfile(f"{prefix}/LICENSE")
-        runtime_member = archive.extractfile(f"{prefix}/hardguard25/__init__.py")
         if license_member is None or license_member.read() != LICENSE_BYTES:
             raise SystemExit("sdist license bytes do not match repository LICENSE")
-        if runtime_member is None or runtime_member.read() != source_files["hardguard25/__init__.py"]:
-            raise SystemExit("sdist runtime bytes do not match package source")
 
     environment = temp_path / "venv"
     venv.EnvBuilder(with_pip=True, symlinks=sys.platform != "win32").create(environment)

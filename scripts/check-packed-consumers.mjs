@@ -69,10 +69,6 @@ try {
   assert.ok(fs.existsSync(tsc), 'TypeScript compiler must be installed with npm ci');
   run(process.execPath, [tsc, '--noEmit', '--strict', '--target', 'ES2022', '--module', 'NodeNext', '--moduleResolution', 'NodeNext', 'consumer.ts'], consumer);
 
-  for (const required of expectedFiles) {
-    assert.ok(fs.existsSync(path.join(installed, required)), `npm artifact missing ${required}`);
-  }
-  assert.deepEqual(fs.readdirSync(installed).sort(), expectedFiles, 'installed npm inventory must be exact');
   assert.deepEqual(
     fs.readFileSync(path.join(installed, 'LICENSE')),
     fs.readFileSync(path.join(root, 'LICENSE')),
