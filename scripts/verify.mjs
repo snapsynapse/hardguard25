@@ -15,6 +15,8 @@ const steps = [
   ['release versions', process.execPath, ['scripts/check-release-versions.mjs'], root],
   ['project metadata', process.execPath, ['scripts/check-project-metadata.mjs'], root],
   ['benchmark protocol', process.execPath, ['scripts/check-benchmark-protocol.mjs'], root],
+  ['workflow contracts', process.execPath, ['scripts/check-workflows.mjs'], root],
+  ['release and artifact regressions', process.execPath, ['--test', 'scripts/check-workflows.test.mjs', 'scripts/check-npm-release.test.mjs', 'scripts/check-npm-payload.test.mjs', 'scripts/check-release-artifacts.test.mjs'], root],
   ['release tag identity', process.execPath, ['--test', 'scripts/check-go-release-tag.test.mjs'], root],
   ['cross-runtime conformance', process.execPath, ['scripts/check-cross-runtime-conformance.mjs'], root],
   ['JavaScript tests', 'npm', ['test'], path.join(root, 'js')],

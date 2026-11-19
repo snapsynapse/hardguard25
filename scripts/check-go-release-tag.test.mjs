@@ -26,3 +26,22 @@ test('Go release tag identity rejects mismatches and malformed remote evidence',
   assert.throws(() => checkGoReleaseTag('', '--upload-pack=bad', commit));
   assert.throws(() => checkGoReleaseTag('', tag, 'short-sha'));
 });
+
+test('Go tag CLI rejects failed transport even with matching partial stdout', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const path = await import('node:path');
+  const { spawnSync } = await import('node:child_process');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'hardguard25-git-'));
+  try {
+    // This CLI transport fixture runs on Unix; parser cases remain portable.
+    if (process.platform === 'win32') return;
+    fs.writeFileSync(path.join(root, 'git'), `#!/bin/sh\nprintf '%s\\n' '${commit}\t${ref}'\nexit 1\n`, { mode: 0o755 });
+    const result = spawnSync(process.execPath, ['scripts/check-go-release-tag.mjs', tag, commit], {
+      encoding: 'utf8', env: { ...process.env, PATH: root + path.delimiter + process.env.PATH },
+    });
+    assert.equal(result.status, 1);
+    assert.equal(result.stdout.trim(), '');
+    assert.ok(result.stderr.length > 0);
+  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});
