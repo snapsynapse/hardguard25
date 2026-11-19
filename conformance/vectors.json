@@ -352,5 +352,37 @@
       "length": 16,
       "output": "69MCFYAM578UUN47"
     }
+  ],
+  "checksum_repeated": [
+    {
+      "character": "Y",
+      "count": 25,
+      "digit": "0"
+    },
+    {
+      "character": "Y",
+      "count": 26,
+      "digit": "Y"
+    },
+    {
+      "character": "Y",
+      "count": 13376,
+      "digit": "Y"
+    },
+    {
+      "character": "Y",
+      "count": 13377,
+      "digit": "U"
+    },
+    {
+      "character": "Y",
+      "count": 13378,
+      "digit": "N"
+    },
+    {
+      "character": "W",
+      "count": 28000001,
+      "digit": "W"
+    }
   ]
 }

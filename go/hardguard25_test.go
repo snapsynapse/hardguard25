@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math/big"
 	"os"
 	"path/filepath"
 	"strings"
@@ -27,7 +28,12 @@ type conformanceFixture struct {
 		Digit string `json:"digit"`
 	} `json:"check_digit"`
 	CheckDigitRejection []string `json:"check_digit_rejection"`
-	Verify              []struct {
+	ChecksumRepeated    []struct {
+		Character string `json:"character"`
+		Count     int    `json:"count"`
+		Digit     string `json:"digit"`
+	} `json:"checksum_repeated"`
+	Verify []struct {
 		Input string `json:"input"`
 		Valid bool   `json:"valid"`
 	} `json:"verify"`
@@ -55,6 +61,56 @@ type conformanceFixture struct {
 		Length   int    `json:"length"`
 		Output   string `json:"output"`
 	} `json:"deterministic_generation"`
+}
+
+func TestExportedLookupSnapshotCannotChangeCanonicalBehavior(t *testing.T) {
+	original := AlphabetSet
+	defer func() {
+		delete(original, 'O')
+		original['A'] = true
+		AlphabetSet = original
+	}()
+	AlphabetSet['O'] = true
+	delete(AlphabetSet, 'A')
+	if Validate("O") {
+		t.Fatal("exported snapshot must not admit O")
+	}
+	if _, err := Normalize("O"); err == nil {
+		t.Fatal("Normalize must reject O")
+	}
+	if got, err := Normalize("a"); err != nil || got != "A" {
+		t.Fatalf("Normalize(a) = %q, %v", got, err)
+	}
+	if !Validate("A") {
+		t.Fatal("exported snapshot must not remove A")
+	}
+	AlphabetSet = map[byte]bool{'O': true}
+	if Validate("O") || !Validate("A") {
+		t.Fatal("replacing exported snapshot must not change canonical behavior")
+	}
+}
+
+func TestRepeatedChecksumsMatchExactIntegerOracle(t *testing.T) {
+	const alphabet = "0123456789ACDFGHJKMNPRUWY"
+	for _, vector := range loadConformanceFixture(t).ChecksumRepeated {
+		n := big.NewInt(int64(vector.Count))
+		sum := new(big.Int).Mul(n, new(big.Int).Add(n, big.NewInt(1)))
+		sum.Mul(sum, big.NewInt(int64(strings.Index(alphabet, vector.Character))))
+		sum.Div(sum, big.NewInt(2))
+		sum.Mod(sum, big.NewInt(25))
+		expected := alphabet[sum.Int64()]
+		if vector.Digit != string(expected) {
+			t.Fatal("shared vector disagrees with exact arithmetic")
+		}
+		payload := strings.Repeat(vector.Character, vector.Count)
+		got, err := CheckDigit(payload)
+		if err != nil || got != expected {
+			t.Fatalf("CheckDigit(%d copies of %s) = %q, %v; want %q", vector.Count, vector.Character, got, err, expected)
+		}
+		if valid, err := VerifyCheckDigit(payload + string(expected)); err != nil || !valid {
+			t.Fatalf("VerifyCheckDigit(%d copies of %s) = %v, %v", vector.Count, vector.Character, valid, err)
+		}
+	}
 }
 
 func loadConformanceFixture(t *testing.T) conformanceFixture {

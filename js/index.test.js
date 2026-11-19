@@ -20,6 +20,41 @@ const conformance = JSON.parse(
   fs.readFileSync(path.join(__dirname, '..', 'conformance', 'vectors.json'), 'utf8')
 );
 
+test('exported lookup snapshots cannot change canonical behavior', () => {
+  const members = [...ALPHABET_SET];
+  const indexes = [...CHAR_TO_INDEX];
+  try {
+    ALPHABET_SET.add('O');
+    ALPHABET_SET.delete('A');
+    CHAR_TO_INDEX.set('A', 25);
+    CHAR_TO_INDEX.set('O', 0);
+    assert.strictEqual(validate('O'), false);
+    assert.throws(() => normalize('O'));
+    assert.strictEqual(normalize('a'), 'A');
+    assert.strictEqual(validate('A'), true);
+    assert.strictEqual(checkDigit('A'), 'A');
+    assert.throws(() => checkDigit('O'));
+  } finally {
+    ALPHABET_SET.clear();
+    for (const member of members) ALPHABET_SET.add(member);
+    CHAR_TO_INDEX.clear();
+    for (const [char, index] of indexes) CHAR_TO_INDEX.set(char, index);
+  }
+});
+
+test('repeated checksum vectors match an independent closed-form integer oracle', () => {
+  const alphabet = '0123456789ACDFGHJKMNPRUWY';
+  for (const { character, count, digit } of conformance.checksum_repeated) {
+    const n = BigInt(count);
+    const index = BigInt(alphabet.indexOf(character));
+    const expected = alphabet[Number((index * n * (n + 1n) / 2n) % 25n)];
+    assert.strictEqual(digit, expected, 'shared vector must match exact integer arithmetic');
+    const payload = character.repeat(count);
+    assert.strictEqual(checkDigit(payload), expected, `${count} copies of ${character}`);
+    assert.strictEqual(verifyCheckDigit(payload + expected), true);
+  }
+});
+
 function withCryptoBytes(bytes, callback) {
   const original = globalThis.crypto.getRandomValues;
   const remaining = [...bytes];
