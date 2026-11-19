@@ -1,6 +1,6 @@
 # HardGuard25 Specification
 
-**Version:** 1.3.9
+**Version:** 1.3.10
 **Date:** October 2026
 **Author:** Sam Rogers -- Snap Synapse
 **Spec License:** Creative Commons Attribution 4.0 International (CC BY 4.0)
