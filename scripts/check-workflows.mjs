@@ -33,7 +33,10 @@ export function checkWorkflows(workflows) {
     assert.equal(workflow.defaults?.run?.shell, undefined, 'workflow shell override is not allowed');
     assert.equal(workflow.on?.pull_request_target, undefined, 'no privileged untrusted PR workflow');
     for (const [id, job] of Object.entries(workflow.jobs)) {
-      assert.equal(job.if, undefined, 'validation/publication jobs must be unconditional');
+      const expectedIf = name === 'release.yml'
+        ? (id === 'recover-npm-1-3-10' ? "github.event_name == 'workflow_dispatch'" : "github.event_name == 'push'")
+        : undefined;
+      assert.equal(job.if, expectedIf, 'jobs must be gated to their release trigger');
       assert.equal(job.defaults?.run?.shell, undefined, 'job shell override is not allowed');
       for (const value of job.steps) {
         assert.equal(value.shell, undefined, 'step shell override is not allowed');
@@ -41,7 +44,9 @@ export function checkWorkflows(workflows) {
         if (name === 'release.yml') assert.equal(value.if, undefined, 'release steps must be unconditional');
       }
       for (const value of job.steps) if (value.uses) assert.match(value.uses, /^[\w.-]+\/[\w./-]+@[0-9a-f]{40}$/, `${name}/${id}: full action SHA required`);
-      const allowed = name === 'release.yml' && ['publish-npm', 'publish-pypi'].includes(id)
+      const allowed = name === 'release.yml' && id === 'recover-npm-1-3-10'
+        ? { contents: 'read', actions: 'read', 'id-token': 'write' }
+        : name === 'release.yml' && ['publish-npm', 'publish-pypi'].includes(id)
         ? { contents: 'read', 'id-token': 'write' }
         : name === 'release.yml' && id === 'tag-go' ? { contents: 'write' }
           : name === 'pages.yml' && id === 'deploy' ? { contents: 'read', pages: 'write', 'id-token': 'write' }
@@ -50,7 +55,9 @@ export function checkWorkflows(workflows) {
       assert.equal(job['continue-on-error'], undefined);
     }
   }
-  const release = workflows['release.yml'].jobs;
+  const releaseWorkflow = workflows['release.yml'];
+  assert.ok(Object.hasOwn(releaseWorkflow.on, 'workflow_dispatch'));
+  const release = releaseWorkflow.jobs;
   assert.deepEqual(needs(release.preflight), ['verify']);
   const build = step(release.preflight, 'Build and verify exact release artifacts');
   assert.deepEqual(commands(build), ['npm run verify']);
@@ -81,7 +88,20 @@ export function checkWorkflows(workflows) {
   assert.deepEqual(commands(step(release['publish-npm'], 'Verify and publish exact npm artifact')), [
     'node scripts/check-release-artifacts.mjs verify release-artifacts',
     'node scripts/check-npm-release.mjs "${GITHUB_REF_NAME#v}"',
-    'npm publish "release-artifacts/hardguard25-${GITHUB_REF_NAME#v}.tgz" --ignore-scripts',
+    'npm publish "./release-artifacts/hardguard25-${GITHUB_REF_NAME#v}.tgz" --ignore-scripts',
+  ]);
+  const recovery = release['recover-npm-1-3-10'];
+  assert.equal(recovery.steps[0].with?.ref, '9a76e7e94680da3b9e89410b073278e8ad62fa47');
+  const recoveryDownload = transfer(recovery, 'download-artifact');
+  assert.equal(recoveryDownload.with['run-id'], 44468122032);
+  assert.equal(recoveryDownload.with['github-token'], '${{ github.token }}');
+  const recoveryPublish = step(recovery, 'Verify original artifact and publish npm');
+  assert.equal(recoveryPublish.env?.HG25_TAG_COMMIT, '9a76e7e94680da3b9e89410b073278e8ad62fa47');
+  assert.equal(recoveryPublish.env?.HG25_EXPECTED_MANIFEST_SHA256, '53a55b18232471c1bc32e89a031cff2df14d23b598ffe692e5f4823ca8feb00c');
+  assert.deepEqual(commands(recoveryPublish), [
+    'node --input-type=module -e \'import { verifyReleaseManifest } from "./scripts/check-release-artifacts.mjs"; verifyReleaseManifest(process.cwd(), "release-artifacts", process.env.HG25_TAG_COMMIT, process.env.HG25_EXPECTED_MANIFEST_SHA256)\'',
+    'node scripts/check-npm-release.mjs 1.3.10',
+    'npm publish ./release-artifacts/hardguard25-1.3.10.tgz --ignore-scripts',
   ]);
   assert.equal(release['publish-pypi'].environment, 'pypi');
   assert.deepEqual(commands(step(release['publish-pypi'], 'Verify exact Python artifacts and select publication files')), [
