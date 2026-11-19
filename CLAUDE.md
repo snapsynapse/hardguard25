@@ -74,7 +74,7 @@ CI (`.github/workflows/`) additionally runs:
 
 ## Current state (as of 2026-11-18)
 
-- Latest release line: 1.3.10 (npm/PyPI and clean consumers verified; Go proxy indexing pending). Signed tag, exact-head CI, GitHub Release, npm/PyPI hashes and deployed-site evidence are recorded in `ops/releases/1.3.10.json`. Historical 1.3.9 evidence remains in `ops/releases/1.3.9.json`. Historical release records remain unchanged.
+- Latest release line: 1.3.10 (npm/PyPI and Go proxy verified with clean consumers). Signed tag, exact-head CI, GitHub Release, npm/PyPI hashes and deployed-site evidence are recorded in `ops/releases/1.3.10.json`. Historical 1.3.9 evidence remains in `ops/releases/1.3.9.json`. Historical release records remain unchanged.
 - The 1.3.5 stabilization pass fixed Go non-ASCII lookup truncation, aligned Python length validation and runtime version metadata, added shared Unicode rejection vectors, and hardened release-version and rerun checks.
 - Release 1.3.8 pins exact Unicode White_Space behavior across runtimes, strengthens production-generator and package-artifact verification, and adds bounded agent-discovery surfaces.
 - Release 1.3.8 adds deterministic production entropy checks, cross-runtime public-API parity, exact package inventories, and expanded agent-discovery surfaces.

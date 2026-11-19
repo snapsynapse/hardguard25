@@ -5,7 +5,7 @@
   "authority": "R2",
   "candidate_version": "1.3.10",
   "candidate_head": "9a76e7e94680da3b9e89410b073278e8ad62fa47",
-  "updated_at": "2026-11-19T06:05:40.776596+00:00",
+  "updated_at": "2026-11-19T06:14:35.416643+00:00",
   "steps": [
     {
       "id": "release-commit-and-tag",
@@ -39,13 +39,18 @@
     },
     {
       "id": "go-proxy",
-      "status": "unknown",
-      "evidence": "Go proxy returned 404 shortly after tag push; indexing is pending and not counted as verified."
+      "status": "completed",
+      "evidence": "Go proxy v1.3.10.info returned 200 with Origin.Hash 9a76e7e94680da3b9e89410b073278e8ad62fa47 and Ref refs/tags/go/v1.3.10. Clean GOPROXY=direct module lookup also resolved the same tag and commit."
     },
     {
       "id": "github-release",
       "status": "completed",
       "evidence": "https://github.com/snapsynapse/hardguard25/releases/tag/v1.3.10 created from reviewed notes."
+    },
+    {
+      "id": "closeout-ci-and-pages",
+      "status": "completed",
+      "evidence": "Closeout main commit d9e66c79f76d2c644db05c13a8bbdf321177d13b passed Test 44470016725 and Pages 44470016669 including deployed search verification. One-time npm recovery job removed; normal npm tarball path fix retained."
     }
   ]
 }
