@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 1.3.10 -- 2026-11-18
+- MANIFEST.yaml: Advanced the parent-release-coupled bundle version and date. The skill content and file hashes are unchanged.
+
 ## 1.3.9 -- 2026-10-26
 Released as v1.3.9; publication independently verified across GitHub, npm, PyPI and Go.
 - SKILL.md: Clarified ASCII-only case folding and lookup identifiers versus authentication secrets; file version advanced from 8 to 9.

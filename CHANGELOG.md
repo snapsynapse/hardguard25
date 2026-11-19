@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 1.3.10 -- 2026-11-18
+
+Maintenance hardening candidate. Publication and consumer verification remain pending.
+
 ### Fixed
 - Preserve exact Mod-25 checksums at long payload lengths across JavaScript, Python and Go, including 32-bit Go, without changing the checksum formula or adding a length mandate.
 - Isolate internal JavaScript and Go validation/checksum lookups from mutations of exported inspection snapshots.
