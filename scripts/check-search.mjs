@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 // Upstream: portfolio-search-indexing-audit contract v3.
+// Decoder backport: upstream asset v7 (2026-11-08); local contract/adaptations retained.
 // Vendored repository script. Adapt locally and retain contractVersion.
 'use strict';
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { decode, parseSitemap } from './search-sitemap.mjs';
 
 const CONFIG_ARG = process.argv.find(value => value.startsWith('--config='));
 const JSON_OUTPUT = process.argv.includes('--json');
@@ -51,11 +53,6 @@ const today = new Date().toISOString().slice(0, 10);
 const sitemapUrls = new Set();
 const entries = [];
 
-function decode(value) {
-    return String(value || '').replace(/&amp;/g, '&').replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
-}
-
 function routeFile(pathname) {
     if (pathname === '/') return path.join(OUTPUT, 'index.html');
     const relative = pathname.replace(/^\//, '');
@@ -80,26 +77,21 @@ function parseSitemapFile(relative, seen = new Set()) {
         report('infrastructure', `cannot read sitemap ${path.relative(ROOT, file)}: ${error.message}`);
         return;
     }
-    if (/<sitemapindex\b/i.test(xml)) {
-        for (const match of xml.matchAll(/<sitemap>[\s\S]*?<loc>([^<]+)<\/loc>[\s\S]*?<\/sitemap>/gi)) {
+    let parsed;
+    try { parsed = parseSitemap(xml); }
+    catch (error) { report('defect', `${relative}: ${error.message}`); return; }
+    for (const error of parsed.errors) report('defect', `${relative}: ${error}`);
+    for (const entry of parsed.entries) {
+        if (parsed.kind === 'sitemapindex') {
             let child;
-            try { child = new URL(decode(match[1])); }
-            catch { report('defect', `${relative}: invalid child sitemap URL ${decode(match[1])}`); continue; }
-            if (child.origin !== origin.origin) {
-                report('defect', `${relative}: child sitemap uses noncanonical origin ${child.href}`);
+            try { child = new URL(entry.loc); }
+            catch { report('defect', `${relative}: invalid child sitemap URL ${entry.loc}`); continue; }
+            if (child.origin !== origin.origin || child.username || child.password || child.hash || child.search) {
+                report('defect', `${relative}: noncanonical child sitemap ${entry.loc}`);
                 continue;
             }
             parseSitemapFile(child.pathname.replace(/^\//, ''), seen);
-        }
-        return;
-    }
-    for (const match of xml.matchAll(/<url>([\s\S]*?)<\/url>/gi)) {
-        const block = match[1];
-        entries.push({
-            loc: decode(block.match(/<loc>([^<]+)<\/loc>/i)?.[1]),
-            lastmod: decode(block.match(/<lastmod>([^<]+)<\/lastmod>/i)?.[1]),
-            source: relative
-        });
+        } else entries.push({ ...entry, source: relative });
     }
 }
 
