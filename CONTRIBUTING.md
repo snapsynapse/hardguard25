@@ -4,6 +4,8 @@ HardGuard25 is an open standard plus small reference implementations. Contributi
 
 ## Development
 
+Python source builds require Python 3.10+; installed wheels retain Python 3.9+ runtime support. The package verifier checks the oldest supported patched setuptools backend (84.1.0) and the reviewed release backend (84.2.1) with hash-pinned build requirements.
+
 Run all suites before opening a pull request:
 
 Literal
