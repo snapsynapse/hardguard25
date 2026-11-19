@@ -261,6 +261,8 @@
   <p class="control-note" id="checkDigitNote">The optional check digit adds one character after the payload. It detects common entry errors but adds no random entropy.</p>
   <p class="control-note">Generation happens locally with the browser Web Crypto API. This page does not send or store generated codes.</p>
 
+  <p class="field-error" id="generationError" hidden></p>
+
   <div class="actions">
     <button type="button" class="btn" onclick="generate()">Generate</button>
     <button type="button" class="btn btn-secondary" onclick="clearOutput()">Clear</button>
@@ -285,6 +287,10 @@
     <button type="button" class="btn btn-secondary copy-all" onclick="copyAll()" id="copyAllBtn" style="display:none;">Copy All</button>
     <p class="placeholder" id="placeholder">Codes will appear here</p>
     <div class="codes" id="codesContainer"></div>
+    <div id="manualCopy" hidden>
+      <label for="manualCopyText">Select and copy these codes manually</label>
+      <textarea id="manualCopyText" rows="5" readonly style="width:100%;"></textarea>
+    </div>
     <p id="resultsStatus" class="sr-only" role="status" aria-live="polite" aria-label="Generation status" hidden></p>
   </div>
 
@@ -344,6 +350,9 @@ for (let i = 0; i < ALPHABET.length; i++) CHAR_TO_INDEX[ALPHABET[i]] = i;
 let useUpper = true;
 let totalGenerated = 0;
 let allCodes = [];
+let outputRevision = 0;
+let copyAttempt = 0;
+let toastRevision = 0;
 
 function getCharset() {
   return useUpper ? ALPHABET : ALPHABET.toLowerCase();
@@ -358,11 +367,8 @@ function setCase(c, btn) {
   btn.classList.add('active');
   btn.setAttribute('aria-pressed', 'true');
   document.getElementById('charsetDisplay').textContent = getCharset().split('').join(' ');
-  const chips = document.querySelectorAll('.code-chip');
-  chips.forEach(chip => {
-    chip.textContent = useUpper ? chip.textContent.toUpperCase() : chip.textContent.toLowerCase();
-  });
   allCodes = allCodes.map(c => useUpper ? c.toUpperCase() : c.toLowerCase());
+  refreshFormatting();
 }
 
 // Rejection sampling: accept bytes < 225 (25*9), then % 25
@@ -458,20 +464,34 @@ function generate() {
   const placeholder = document.getElementById('placeholder');
   const copyAllBtn = document.getElementById('copyAllBtn');
 
+  const nextCodes = [];
+  try {
+    for (let i = 0; i < qty; i++) {
+      let raw = generateCode(length);
+      if (withCheck) raw += computeCheckDigit(raw);
+      nextCodes.push(raw);
+    }
+  } catch {
+    const message = 'Generation failed. Secure randomness is unavailable. Previous results were kept. Try again in a browser with Web Crypto enabled.';
+    const error = document.getElementById('generationError');
+    error.textContent = message;
+    error.hidden = false;
+    resultsStatus.hidden = false;
+    resultsStatus.textContent = message;
+    return;
+  }
+
+  document.getElementById('generationError').hidden = true;
+  resetCopyState();
   placeholder.style.display = 'none';
   copyAllBtn.style.display = 'block';
   container.innerHTML = '';
-  allCodes = [];
-
-  for (let i = 0; i < qty; i++) {
-    let raw = generateCode(length);
-    if (withCheck) raw += computeCheckDigit(raw);
-    allCodes.push(raw);
+  allCodes = nextCodes;
+  for (const raw of allCodes) {
     const chip = document.createElement('button');
     chip.type = 'button';
     chip.className = 'code-chip';
-    chip.textContent = formatCode(raw);
-    chip.setAttribute('aria-label', 'Copy code ' + chip.textContent);
+    setChipText(chip, raw);
     chip.addEventListener('click', () => copyOne(chip));
     container.appendChild(chip);
   }
@@ -505,23 +525,67 @@ function updateStats(validatedLength) {
   document.getElementById('generated').textContent = totalGenerated;
 }
 
+function resetCopyState() {
+  outputRevision++;
+  toastRevision++;
+  document.getElementById('manualCopy').hidden = true;
+  document.getElementById('manualCopyText').value = '';
+  const toast = document.getElementById('toast');
+  toast.textContent = '';
+  toast.classList.remove('show');
+}
+
+function setChipText(chip, raw) {
+  chip.textContent = formatCode(raw);
+  chip.setAttribute('aria-label', 'Copy code ' + chip.textContent);
+  chip.classList.remove('copied');
+}
+
+function refreshFormatting() {
+  resetCopyState();
+  document.querySelectorAll('.code-chip').forEach((chip, index) => setChipText(chip, allCodes[index]));
+}
+
+async function copyText(text, message, chip) {
+  const revision = outputRevision;
+  const attempt = ++copyAttempt;
+  try {
+    if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') throw new Error('Clipboard unavailable');
+    await navigator.clipboard.writeText(text);
+    if (revision !== outputRevision || attempt !== copyAttempt) return;
+    document.getElementById('manualCopy').hidden = true;
+    document.getElementById('manualCopyText').value = '';
+    if (chip) {
+      chip.classList.add('copied');
+      chip.copyFeedbackAttempt = attempt;
+      setTimeout(() => { if (chip.copyFeedbackAttempt === attempt) chip.classList.remove('copied'); }, 1200);
+    }
+    showToast(message);
+  } catch {
+    if (revision !== outputRevision || attempt !== copyAttempt) return;
+    const manual = document.getElementById('manualCopyText');
+    manual.value = text;
+    document.getElementById('manualCopy').hidden = false;
+    showToast('Copy failed. Select and copy the codes below.');
+    manual.focus();
+    manual.select();
+  }
+}
+
 function copyOne(chip) {
   const text = chip.textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    chip.classList.add('copied');
-    showToast('Copied: ' + text);
-    setTimeout(() => chip.classList.remove('copied'), 1200);
-  });
+  return copyText(text, 'Copied: ' + text, chip);
 }
 
 function copyAll() {
-  const formatted = allCodes.map(c => formatCode(c));
-  navigator.clipboard.writeText(formatted.join('\n')).then(() => {
-    showToast('Copied ' + allCodes.length + ' codes');
-  });
+  const displayed = Array.from(document.querySelectorAll('.code-chip'), chip => chip.textContent);
+  if (displayed.length === 0) return Promise.resolve();
+  return copyText(displayed.join('\n'), 'Copied ' + displayed.length + ' codes');
 }
 
 function clearOutput() {
+  resetCopyState();
+  document.getElementById('generationError').hidden = true;
   document.getElementById('codesContainer').innerHTML = '';
   document.getElementById('placeholder').style.display = 'block';
   document.getElementById('copyAllBtn').style.display = 'none';
@@ -541,9 +605,10 @@ function toggleRationale(button) {
 
 function showToast(msg) {
   const t = document.getElementById('toast');
+  const revision = ++toastRevision;
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 1500);
+  setTimeout(() => { if (revision === toastRevision) t.classList.remove('show'); }, 1500);
 }
 
 updateStats();
@@ -552,6 +617,8 @@ document.getElementById('codeLength').addEventListener('input', () => {
   updateStats();
 });
 document.getElementById('quantity').addEventListener('input', () => clearFieldError('quantity'));
+document.getElementById('groupSize').addEventListener('input', refreshFormatting);
+document.getElementById('separator').addEventListener('change', refreshFormatting);
 </script>
 
 </body>
