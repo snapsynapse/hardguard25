@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+Security audit remediation; see `audits/security-audit-2026-11-22.md`. Runtime behavior is unchanged except for error message text.
+
+### Security
+- Report invalid input by code point (`U+XXXX`) in JavaScript, Python and Go and never echo the caller's input, so logged validation failures cannot carry pasted secrets or injected log lines; shared `rejection_messages` vectors enforce the contract across runtimes.
+- Add a hashed meta Content Security Policy to the landing page and generator, move inline handlers and style attributes into the hashed script and style blocks, and verify the policy hashes and the absence of inline attributes in CI.
+- Publish `/.well-known/security.txt`, extend `SECURITY.md` with an acknowledgement window, the supported-version boundary and provenance verification guidance, and align the plugin manifest contact.
+- Stop persisting the workflow token in checkouts that do not push, disable npm lifecycle scripts for repository tooling through `.npmrc`, add Dependabot coverage for the hash-pinned Python build locks, and add weekly read-only Scorecard and deployed-surface audit workflows with workflow-contract checks.
+
+### Changed
+- State the exact Mod-25 check digit detection profile: every single substitution is detected except at positions that are multiples of 5 (4 of 24 pass) and at position 25 and every 25th position after it (all pass); every adjacent transposition of distinct characters is detected. Recommend payloads of 24 characters or fewer when the check digit is enabled, and pin known undetected substitutions in shared vectors so runtimes agree on misses as well as hits.
+- Document that the generation length is trusted configuration with no library maximum, across the specification, adoption and implementation guides, briefings, skill and assistant guide.
+- Require `docs/agents.json` to carry a last-updated date no older than the briefing review date.
+
 ## 1.3.10 -- 2026-11-18
 
 Maintenance hardening release. npm and PyPI publication and clean consumers verified; Go tag pushed.

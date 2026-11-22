@@ -46,6 +46,17 @@ On 2026-11-18, fetched main and origin/main both identified `76b8c37f46427ee9af9
 
 This queue reconciles the temporary handoffs dated 2026-10-11, 2026-11-08 and 2026-11-13 (last updated 2026-11-17). Stable maintenance posture already lives in `INTENT.md`; no strategic change was needed. All three temporary handoffs were deleted after verifying this transfer; handoffs/ is empty. Remaining delivery and deferred work stay open here.
 
+## 2026-11-22 security audit remediation
+
+Status: implemented locally on `security/audit-2026-11-22-fixes` from `origin/main` `8f490ee`; not committed, pushed, merged or released in the audit session. Findings and the quarterly checklist are in `audits/security-audit-2026-11-22.md`.
+
+Repository changes cover HG-01, HG-02, HG-05, HG-06, HG-07, HG-09 (workflow and `.npmrc` parts), HG-10 and HG-13, and the Dependabot, Scorecard and surfaces-workflow parts of HG-04. The error message change is the only runtime behavior change and needs a patch release to reach registries.
+
+Owner actions outside the repository, none performed by an agent:
+- GitHub (HG-03, HG-04): tag ruleset for `v*` and `go/v*` blocking update and deletion; required reviewer and `v*` tag policy on the `pypi` environment; repository-level `sha_pinning_required`; `allowed_actions` set to selected (GitHub, verified creators, `pypa/gh-action-pypi-publish`, `ossf/scorecard-action`); CodeQL default setup; two-factor and vigilant-mode confirmation; then update `.github/repository-settings.json`.
+- Registrar (HG-08): `CAA 0 issue "letsencrypt.org"` and `_dmarc TXT "v=DMARC1; p=reject"`.
+- First Scorecard run requires the repository to allow `ossf/scorecard-action` if `allowed_actions` is narrowed.
+
 ## Audit mitigation candidate
 
 The complete discovery and remediation evidence is in `audits/security-code-review-2026-11-18.md`. All thirteen findings have implemented local mitigations. Sam approved source builds requiring Python >=3.10 with patched setuptools >=84.1.0 while installed wheels retain runtime >=3.9. Actual Python 3.10 minimum-backend builds and clean Python 3.9 installed-wheel conformance pass. Both complete build-tool lockfiles are hash-pinned and advisory-clean at the final check; no owner compatibility decision remains open.

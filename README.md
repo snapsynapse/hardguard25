@@ -197,7 +197,7 @@ Recommended defaults:
 
 ## Check Digit
 
-All three libraries include an optional Mod-25 weighted check digit, adapted from ISO 7064-style weighted checksums, that catches many single-character substitution errors and most adjacent transpositions in current conformance profiles. Enable it when IDs are manually entered.
+All three libraries include an optional Mod-25 weighted check digit, adapted from ISO 7064-style weighted checksums. Enable it when IDs are manually entered. It detects every single-character substitution except at positions that are multiples of 5, where substitutions between characters whose alphabet indices agree modulo 5 pass (4 of 24 at each such position), and at position 25 and every 25th position after it, where nothing is detected. It detects every adjacent transposition of two distinct characters. Keep the payload at 24 characters or fewer when the check digit is enabled. See the detection profile in [SPEC.md](SPEC.md#properties).
 
 API contract across JavaScript, Python, and Go:
 
@@ -206,6 +206,8 @@ API contract across JavaScript, Python, and Go:
 - `checkDigit(...)` accepts canonical or lowercase ungrouped payload input and folds ASCII a-z before computing the checksum
 - verify helpers accept canonical, lowercase, and grouped input, normalize it, then compare the trailing check character
 - Empty and separator-only inputs are not canonical: normalization and check-digit calculation reject them, while validation returns `false`
+- Error messages name the first offending character as a code point such as `U+200B` and never echo the caller's input, so a logged validation failure cannot carry a pasted secret
+- The requested generation length is trusted configuration; the libraries impose no maximum, so bound it at your own boundary if callers can choose it
 
 ## Why Not Crockford Base32?
 

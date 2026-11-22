@@ -32,6 +32,14 @@ _SEPARATOR_REGEX = re.compile(
 )
 
 
+def _describe_code_point(text: str) -> str:
+    """Return the first non-alphabet character of ``text`` as ``U+XXXX``."""
+    for char in text:
+        if char not in ALPHABET_SET:
+            return f"U+{ord(char):04X}"
+    return "U+FFFD"
+
+
 def generate(length: int, *, check_digit: bool = False) -> str:
     """
     Generate a random HardGuard25 identifier.
@@ -120,9 +128,13 @@ def normalize(input_str: str) -> str:
     # Convert to uppercase
     normalized = normalized.translate(_ASCII_UPPER)
 
-    # Check for invalid characters
+    # Check for invalid characters. Report the first offending code point,
+    # never the caller's input, so logs cannot receive pasted secrets or
+    # injected lines through this message.
+    if not normalized:
+        raise ValueError("input must contain at least one identifier character")
     if not _REGEX.match(normalized):
-        raise ValueError(f"invalid characters in input: {input_str}")
+        raise ValueError(f"invalid character {_describe_code_point(normalized)} in input")
 
     return normalized
 
@@ -151,8 +163,8 @@ def check_digit(code: str) -> str:
         weighted_sum = 0
         for i, char in enumerate(upper_code):
             weighted_sum = (weighted_sum + _CHAR_TO_INDEX[char] * ((i % 25) + 1)) % 25
-    except KeyError as e:
-        raise ValueError(f"invalid character in code: {e}")
+    except KeyError:
+        raise ValueError(f"invalid character {_describe_code_point(upper_code)} in code") from None
 
     return ALPHABET[weighted_sum % 25]
 

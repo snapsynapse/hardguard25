@@ -28,6 +28,12 @@ for (let i = 0; i < ALPHABET.length; i++) {
 }
 const CHAR_TO_INDEX = new Map(INTERNAL_CHAR_TO_INDEX);
 
+// Error messages name the offending code point, never the caller's input,
+// so validation failures cannot leak pasted secrets or inject log lines.
+function describeCodePoint(char) {
+  return `U+${char.codePointAt(0).toString(16).toUpperCase().padStart(4, '0')}`;
+}
+
 function fillRandomBytes(bytes) {
   if (typeof globalThis !== 'undefined' && globalThis.crypto?.getRandomValues) {
     globalThis.crypto.getRandomValues(bytes);
@@ -139,7 +145,7 @@ export function normalize(input) {
   // Check for invalid characters
   for (const char of normalized) {
     if (!INTERNAL_ALPHABET_SET.has(char)) {
-      throw new Error(`HardGuard25: Invalid character '${char}' in input`);
+      throw new Error(`HardGuard25: Invalid character ${describeCodePoint(char)} in input`);
     }
   }
 
@@ -166,7 +172,7 @@ export function checkDigit(code) {
   for (let i = 0; i < code.length; i++) {
     const char = code[i].replace(/[a-z]/, (letter) => letter.toUpperCase());
     if (!INTERNAL_CHAR_TO_INDEX.has(char)) {
-      throw new Error(`HardGuard25: Invalid character '${char}' in code`);
+      throw new Error(`HardGuard25: Invalid character ${describeCodePoint(char)} in code`);
     }
     // Reduce both operands so every intermediate remains exact for all string lengths.
     sum = (sum + INTERNAL_CHAR_TO_INDEX.get(char) * ((i % 25) + 1)) % 25;

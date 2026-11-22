@@ -48,6 +48,16 @@
       "contains": []
     },
     {
+      "path": ".well-known/security.txt",
+      "contentTypes": [
+        "text/plain"
+      ],
+      "contains": [
+        "Contact: mailto:info@snapsynapse.com",
+        "Policy: https://github.com/snapsynapse/hardguard25/blob/main/SECURITY.md"
+      ]
+    },
+    {
       "path": ".well-known/assistant-guide.txt",
       "contentTypes": [
         "text/plain"

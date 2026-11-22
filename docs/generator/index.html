@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-/LL/vPvdelcR3h+FCwGA+V1fKCYHdr6NDJn2dJc22kU='; style-src 'sha256-xkiH0WiVpdDh2pNHRhCmyvbKdg+jueur57sw6oXkJv8='; img-src 'self' data:; manifest-src 'self'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <title>HardGuard25 Generator -- Interactive Demo</title>
 <meta name="description" content="Generate human-friendly unique IDs using the HardGuard25 alphabet. 25 unambiguous characters, less confusion.">
 <link rel="canonical" href="https://hardguard25.com/generator/">
@@ -149,9 +150,14 @@
   .code-chip:hover { border-color: var(--accent); background: rgba(108, 140, 255, 0.1); }
   .code-chip.copied { border-color: var(--green); background: rgba(78, 203, 113, 0.1); }
   .copy-all {
+    display: none;
     position: absolute; top: 12px; right: 12px; font-size: 12px;
     padding: 6px 12px; border-radius: 6px;
   }
+  #manualCopyText { width: 100%; }
+  .rationale-intro { color: var(--text-dim); font-size: 14px; line-height: 1.6; margin-bottom: 12px; }
+  .rationale-footnote { color: var(--text-dim); font-size: 13px; margin-top: 16px; line-height: 1.5; }
+  .rationale-link { color: var(--accent); }
   .toast {
     position: fixed; bottom: 30px; left: 50%;
     transform: translateX(-50%) translateY(20px);
@@ -252,8 +258,8 @@
     <fieldset class="field">
       <legend>Case</legend>
       <div class="case-toggle" role="group" aria-label="Letter case">
-        <button type="button" class="active" data-case="upper" aria-pressed="true" aria-label="Uppercase" onclick="setCase('upper', this)">ABC</button>
-        <button type="button" data-case="lower" aria-pressed="false" aria-label="Lowercase" onclick="setCase('lower', this)">abc</button>
+        <button type="button" class="active" id="caseUpper" data-case="upper" aria-pressed="true" aria-label="Uppercase">ABC</button>
+        <button type="button" id="caseLower" data-case="lower" aria-pressed="false" aria-label="Lowercase">abc</button>
       </div>
     </fieldset>
   </div>
@@ -264,8 +270,8 @@
   <p class="field-error" id="generationError" hidden></p>
 
   <div class="actions">
-    <button type="button" class="btn" onclick="generate()">Generate</button>
-    <button type="button" class="btn btn-secondary" onclick="clearOutput()">Clear</button>
+    <button type="button" class="btn" id="generateBtn">Generate</button>
+    <button type="button" class="btn btn-secondary" id="clearBtn">Clear</button>
   </div>
 
   <div class="stats">
@@ -284,23 +290,23 @@
   </div>
 
   <div class="output-area" id="outputArea" role="region" aria-label="Generated codes">
-    <button type="button" class="btn btn-secondary copy-all" onclick="copyAll()" id="copyAllBtn" style="display:none;">Copy All</button>
+    <button type="button" class="btn btn-secondary copy-all" id="copyAllBtn">Copy All</button>
     <p class="placeholder" id="placeholder">Codes will appear here</p>
     <div class="codes" id="codesContainer"></div>
     <div id="manualCopy" hidden>
       <label for="manualCopyText">Select and copy these codes manually</label>
-      <textarea id="manualCopyText" rows="5" readonly style="width:100%;"></textarea>
+      <textarea id="manualCopyText" rows="5" readonly></textarea>
     </div>
     <p id="resultsStatus" class="sr-only" role="status" aria-live="polite" aria-label="Generation status" hidden></p>
   </div>
 
   <div class="rationale" id="rationale">
-    <button type="button" class="rationale-header" aria-expanded="false" aria-controls="rationaleBody" onclick="toggleRationale(this)">
+    <button type="button" class="rationale-header" id="rationaleToggle" aria-expanded="false" aria-controls="rationaleBody">
       <span>Why these 25 characters?</span>
       <span class="rationale-arrow" aria-hidden="true">&#9660;</span>
     </button>
     <div class="rationale-body" id="rationaleBody" hidden>
-      <p style="color:var(--text-dim); font-size:14px; line-height:1.6; margin-bottom:12px;">
+      <p class="rationale-intro">
         Standard alphanumeric codes use 36 characters (0-9, A-Z). That creates problems when humans read, transcribe, or dictate codes aloud. HardGuard25 keeps all 10 digits and 15 carefully chosen letters, removing 11 sources of confusion. When a letter and a digit compete for the same visual slot, the digit always wins.
       </p>
       <div class="charset-display" id="charsetDisplay">0 1 2 3 4 5 6 7 8 9 A C D F G H J K M N P R U W Y</div>
@@ -322,9 +328,9 @@
           <tr><td class="char">X</td><td class="reason">Collides with multiplication operator; varies by locale</td></tr>
         </tbody>
       </table>
-      <p style="color:var(--text-dim); font-size:13px; margin-top:16px; line-height:1.5;">
+      <p class="rationale-footnote">
         Read the full specification on
-        <a href="https://github.com/snapsynapse/hardguard25" style="color:var(--accent);">GitHub</a>.
+        <a href="https://github.com/snapsynapse/hardguard25" class="rationale-link">GitHub</a>.
       </p>
     </div>
   </div>
@@ -619,6 +625,17 @@ document.getElementById('codeLength').addEventListener('input', () => {
 document.getElementById('quantity').addEventListener('input', () => clearFieldError('quantity'));
 document.getElementById('groupSize').addEventListener('input', refreshFormatting);
 document.getElementById('separator').addEventListener('change', refreshFormatting);
+// Controls are bound here, not in HTML attributes, so the page runs under a Content Security Policy
+// that allows only this hashed script block.
+const caseUpperButton = document.getElementById('caseUpper');
+const caseLowerButton = document.getElementById('caseLower');
+caseUpperButton.addEventListener('click', () => setCase('upper', caseUpperButton));
+caseLowerButton.addEventListener('click', () => setCase('lower', caseLowerButton));
+document.getElementById('generateBtn').addEventListener('click', () => generate());
+document.getElementById('clearBtn').addEventListener('click', () => clearOutput());
+document.getElementById('copyAllBtn').addEventListener('click', () => copyAll());
+const rationaleToggle = document.getElementById('rationaleToggle');
+rationaleToggle.addEventListener('click', () => toggleRationale(rationaleToggle));
 </script>
 
 </body>

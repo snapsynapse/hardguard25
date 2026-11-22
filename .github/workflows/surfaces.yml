@@ -1,0 +1,44 @@
+name: Surfaces
+
+# Weekly read-only audit between human reviews: dependency advisories for the locked build tools and npm
+# dev tooling, plus byte-level verification of the deployed search, agent-discovery and disclosure surfaces.
+on:
+  schedule:
+    - cron: "41 8 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: surfaces-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: "22"
+          cache: npm
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: "3.12"
+      - name: Install locked repository tools
+        run: |
+          npm ci
+          python -m pip install pip-audit
+      - name: Audit Python build locks
+        run: |
+          pip-audit --no-deps -r scripts/python-build-requirements.txt
+          pip-audit --no-deps -r scripts/python-build-minimum-requirements.txt
+      - name: Audit npm lockfile
+        run: npm audit --audit-level=low
+      - name: Verify deployed search surfaces
+        run: node scripts/check-production-search.mjs
+      - name: Verify deployed agent and disclosure surfaces
+        run: node scripts/check-production-surfaces.mjs

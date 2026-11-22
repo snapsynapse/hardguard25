@@ -353,8 +353,8 @@ test('normalize()', async (t) => {
 
   await t.test('throws on invalid characters', () => {
     assert.throws(() => normalize('3KMN7FUA!'), /Invalid character/);
-    assert.throws(() => normalize('3KMNBFUA'), /Invalid character.*B/);
-    assert.throws(() => normalize('3KMNEFUA'), /Invalid character.*E/);
+    assert.throws(() => normalize('3KMNBFUA'), /Invalid character U\+0042 in input/);
+    assert.throws(() => normalize('3KMNEFUA'), /Invalid character U\+0045 in input/);
   });
 
   await t.test('throws on completely invalid input', () => {
@@ -627,6 +627,41 @@ test('Integration', async (t) => {
       const digit = checkDigit(code);
       const withCheck = code + digit;
       assert.strictEqual(verifyCheckDigit(withCheck), true, 'Round-trip should succeed');
+    }
+  });
+});
+
+test('Rejection messages and checksum detection profile', async (t) => {
+  await t.test('errors name the offending code point and never echo the input', () => {
+    for (const vector of conformance.rejection_messages) {
+      for (const fn of [normalize, checkDigit]) {
+        let message = null;
+        assert.throws(() => fn(vector.input), (error) => {
+          message = error.message;
+          return true;
+        });
+        assert.ok(message.includes(vector.code_point), `${fn.name}: message must name ${vector.code_point}`);
+        assert.ok(!message.includes(vector.forbidden), `${fn.name}: message must not echo caller input`);
+      }
+      assert.strictEqual(validate(vector.input), false);
+      assert.strictEqual(verifyCheckDigit(vector.input), false);
+    }
+  });
+
+  await t.test('known blind spots are shared across runtimes', () => {
+    for (const vector of conformance.undetected_substitutions) {
+      assert.strictEqual(checkDigit(vector.code), vector.check_digit);
+      const index = vector.position - 1;
+      assert.notStrictEqual(vector.code[index], vector.substitute);
+      const mutated = vector.code.slice(0, index) + vector.substitute + vector.code.slice(index + 1);
+      assert.strictEqual(checkDigit(mutated), vector.check_digit, vector.note);
+      assert.strictEqual(verifyCheckDigit(mutated + vector.check_digit), true, vector.note);
+    }
+    for (const vector of conformance.detected_substitutions) {
+      const index = vector.position - 1;
+      const mutated = vector.code.slice(0, index) + vector.substitute + vector.code.slice(index + 1);
+      assert.notStrictEqual(checkDigit(mutated), vector.check_digit, vector.note);
+      assert.strictEqual(verifyCheckDigit(mutated + vector.check_digit), false, vector.note);
     }
   });
 });

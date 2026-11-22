@@ -384,5 +384,54 @@
       "count": 28000001,
       "digit": "W"
     }
+  ],
+  "rejection_messages": [
+    {
+      "input": "ACDF\u001bSECRETMARKER9",
+      "forbidden": "SECRETMARKER",
+      "code_point": "U+001B"
+    },
+    {
+      "input": "0000\u200b0000",
+      "forbidden": "0000",
+      "code_point": "U+200B"
+    },
+    {
+      "input": "ACDFŁPASTEDVALUE",
+      "forbidden": "PASTEDVALUE",
+      "code_point": "U+0141"
+    }
+  ],
+  "undetected_substitutions": [
+    {
+      "code": "07GR3AKY6FP29JW5DN18HU4CM",
+      "check_digit": "0",
+      "position": 25,
+      "substitute": "W",
+      "note": "weight 25 is 0 modulo 25; every substitution at position 25 is undetected"
+    },
+    {
+      "code": "ACDF0G7H",
+      "check_digit": "W",
+      "position": 5,
+      "substitute": "5",
+      "note": "weight 5; indices that agree modulo 5 are undetected"
+    },
+    {
+      "code": "ACDF0G7H",
+      "check_digit": "W",
+      "position": 5,
+      "substitute": "A",
+      "note": "weight 5; index 0 to index 10 is undetected"
+    }
+  ],
+  "detected_substitutions": [
+    {
+      "code": "ACDF0G7H",
+      "check_digit": "W",
+      "position": 5,
+      "substitute": "1",
+      "note": "weight 5; index 0 to index 1 is detected"
+    }
   ]
 }

@@ -31,8 +31,8 @@ dependencies: []
 files:
   - path: SKILL.md
     role: skill
-    version: 9
-    hash: sha256:c23b977cf661d0879fbcecbd1dd26d3b024faffef8662c3f40973dad0f35354a
+    version: 10
+    hash: sha256:21be52bf38bb6a0d2e3bddd47844ac73172623b46916aef0f0551f31a743f504
     note: Canonical skill definition with alphabet reference, code examples, and comparison matrix
   - path: PROJECT_CONTEXT.md
     role: reference

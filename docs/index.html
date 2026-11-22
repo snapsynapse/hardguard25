@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'sha256-7xaZ9EvcHzEiCKeq5v5OhNaRVYX0wIlAPFOKLAHxYQ4='; img-src 'self' data:; manifest-src 'self'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
   <title>HardGuard25 &mdash; An open standard for human-safe identifiers</title>
   <meta name="description" content="A 25-character ID alphabet that excludes common visual confusables in codes humans read, type, print, or say out loud.">
   <meta name="keywords" content="hardguard25, unambiguous IDs, human-readable identifiers, confusable characters, dyslexia-sensitive IDs, base-25 alphabet, check digit, mod-25, Crockford Base32 alternative, id generator, ticket codes, order numbers">
@@ -264,6 +264,8 @@
     h1 { font-size: 2.75rem; line-height: 1.15; letter-spacing: -0.02em; font-weight: 800; }
     h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: -0.01em; }
     h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .section-gap { margin-top: 2rem; }
+    .see-also { margin-top: 0.5rem; }
 
     p { margin-bottom: 1rem; }
     p:last-child { margin-bottom: 0; }
@@ -547,7 +549,7 @@
     </table>
     </div>
 
-    <h3 style="margin-top: 2rem;">Entropy and length</h3>
+    <h3 class="section-gap">Entropy and length</h3>
     <p>Each HardGuard25 character carries <code>log2(25) &approx; 4.64</code> bits of entropy. Pick a length for your risk profile:</p>
     <div class="table-scroll" role="region" aria-label="Payload namespace table" tabindex="0">
     <table>
@@ -659,7 +661,7 @@ s, _ := hardguard25.Normalize("ac3h-7puw")</pre>
       <div class="footer-meta">
         <p>HardGuard25 v1.3.10 &middot; <a href="https://creativecommons.org/licenses/by/4.0/" rel="license" target="_blank">CC BY 4.0</a> (spec) &middot; <a href="https://github.com/snapsynapse/hardguard25/blob/main/LICENSE" target="_blank" rel="noopener">MIT</a> (code)</p>
         <p>By <a href="https://linkedin.com/in/samrogers" target="_blank" rel="noopener author">Sam Rogers</a>, <a href="https://snapsynapse.com/" target="_blank" rel="noopener">Snap Synapse LLC</a>. Used by <a href="https://paice.work/" target="_blank" rel="noopener">PAICE.work</a> for human-readable identifiers in agent and person handoffs.</p>
-        <p style="margin-top: 0.5rem;">See also: <a href="https://gracefulboundaries.dev/" target="_blank" rel="noopener">Graceful Boundaries</a> &middot; <a href="https://knowledge-as-code.com/" target="_blank" rel="noopener">Knowledge as Code</a> &middot; <a href="https://skillprovenance.dev/" target="_blank" rel="noopener">Skill Provenance</a></p>
+        <p class="see-also">See also: <a href="https://gracefulboundaries.dev/" target="_blank" rel="noopener">Graceful Boundaries</a> &middot; <a href="https://knowledge-as-code.com/" target="_blank" rel="noopener">Knowledge as Code</a> &middot; <a href="https://skillprovenance.dev/" target="_blank" rel="noopener">Skill Provenance</a></p>
       </div>
       <div class="footer-links">
         <a href="/generator/">Generator</a>

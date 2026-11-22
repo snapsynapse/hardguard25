@@ -30,6 +30,10 @@ The human-factors benchmark protocol is retained but inactive. Do not collect pi
 
 New runtimes, package ecosystems, hosted APIs, registries, managed services, identifier capabilities, and feature expansion are not roadmap commitments. Each requires renewed owner authorization and a recorded rationale under `INTENT.md`.
 
+## Security Maintenance
+
+The 2026-11-22 audit (`audits/security-audit-2026-11-22.md`) defines the quarterly review checklist. Between reviews, Dependabot, Scorecard and the weekly surfaces workflow run unattended. Two items are recorded as optional, adoption-driven work rather than commitments: defensive registration of near-miss package names on npm, and a detached Sigstore signature for the assistant guide produced by the Pages workflow so agents can verify authorship rather than only integrity.
+
 ## Adoption Feedback
 
 `ADOPTION.md` provides the current migration and selection guidance. Expand it only when concrete adopter questions reveal a recurring gap. Adoption feedback may justify clarification or maintenance; it does not by itself authorize a new feature or stronger claim.

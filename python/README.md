@@ -36,7 +36,7 @@ check_digit("AC3H7PUW")           # "N"
 verify_check_digit("AC3H7PUWN")   # True
 ```
 
-Normalization removes the Unicode White_Space set pinned by the specification plus `-`, `_`, and `.`, and rejects empty or separator-only input. Validation returns `False` for invalid input, and check-digit calculation rejects an empty payload.
+Normalization removes the Unicode White_Space set pinned by the specification plus `-`, `_`, and `.`, and rejects empty or separator-only input. Validation returns `False` for invalid input, and check-digit calculation rejects an empty payload. Raised errors name the first offending character as a code point such as `U+200B` and never echo the input.
 
 ## API
 

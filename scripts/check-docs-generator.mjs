@@ -113,5 +113,30 @@ for (const separator of ['-', '_', '.', ' ', '/', '0', '<', 'ff', '\u200b', '\uf
   }
 }
 
+// Content Security Policy: both hosted pages must declare a meta CSP whose script and style
+// hashes match the inline blocks exactly, and must carry no inline handlers or style attributes.
+import crypto from 'node:crypto';
+function expectedPolicy(page) {
+  const source = fs.readFileSync(new URL(`../${page}`, import.meta.url), 'utf8');
+  const hash = (text) => `'sha256-${crypto.createHash('sha256').update(text).digest('base64')}'`;
+  const scripts = [...source.matchAll(/<script(?![^>]*type="application\/ld\+json")[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+  const styles = [...source.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]);
+  assert.ok(styles.length > 0, `${page}: expected an inline style block`);
+  assert.doesNotMatch(source, /\son[a-z]+="/i, `${page}: inline event handler attributes are not allowed under the CSP`);
+  assert.doesNotMatch(source, /\sstyle="/i, `${page}: inline style attributes are not allowed under the CSP`);
+  assert.doesNotMatch(source, /<(script|img|iframe)[^>]*\ssrc="https?:/i, `${page}: external resources are not allowed under the CSP`);
+  assert.doesNotMatch(source, /<link[^>]*rel="(stylesheet|preload|modulepreload|icon|manifest)"[^>]*href="https?:/i, `${page}: external fetched link resources are not allowed under the CSP`);
+  const parts = ["default-src 'none'"];
+  if (scripts.length > 0) parts.push(`script-src ${scripts.map(hash).join(' ')}`);
+  parts.push(`style-src ${styles.map(hash).join(' ')}`);
+  parts.push("img-src 'self' data:", "manifest-src 'self'", "base-uri 'none'", "form-action 'none'", 'upgrade-insecure-requests');
+  const declared = source.match(/<meta http-equiv="Content-Security-Policy" content="([^"]+)">/);
+  assert.ok(declared, `${page}: missing meta Content-Security-Policy`);
+  assert.equal(declared[1], parts.join('; '), `${page}: CSP hashes must match the inline script and style blocks`);
+  assert.ok(source.indexOf(declared[0]) < source.indexOf('<style'), `${page}: CSP meta must precede inline blocks`);
+}
+for (const page of ['docs/index.html', 'docs/generator/index.html']) expectedPolicy(page);
+console.log('hosted page Content Security Policy check passed');
+
 console.log('docs generator conformance check passed');
 await import('./check-generator-state.mjs');

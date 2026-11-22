@@ -115,6 +115,7 @@ A normalizer must be idempotent: `normalize(normalize(x)) === normalize(x)`.
 Reference implementations in JavaScript, Python, and Go must expose the same behavioral contract:
 
 - `normalize(x)` returns canonical uppercase form or errors on invalid characters
+- error messages for invalid input SHOULD name the first offending character as a code point in the form `U+XXXX` and MUST NOT echo the caller's input, so a validation failure written to a log cannot carry a pasted secret or an injected line
 - `validate(x)` applies normalization first and returns a boolean
 - `checkDigit(x)` accepts canonical or lowercase input and computes the checksum after uppercase folding
 - verification helpers accept canonical, lowercase, and grouped forms, normalize first, then compare the trailing check character
@@ -140,9 +141,16 @@ To verify, normalize the full input, strip the last character, recompute the che
 
 ### Properties
 
-- Catches many single-character substitution errors
-- Catches most adjacent transpositions in current conformance profiles
-- Adapted from ISO 7064-style weighted checksum principles
+The weights `(i + 1)` repeat modulo 25, and 25 is composite, so detection depends on position. Positions are 1-indexed.
+
+- Every single-character substitution is detected at a position whose weight is coprime to 25, which is every position that is not a multiple of 5.
+- At positions 5, 10, 15 and 20, and at later positions whose weight is a multiple of 5 other than 25, a substitution between two characters whose alphabet indices agree modulo 5 is undetected. That is 4 of the 24 possible substitutions at each such position; for example `0` and `5`, or `A` and `H`.
+- At position 25, and at every 25th position after it, the weight is 0 modulo 25 and no substitution is detected.
+- Every adjacent transposition of two distinct characters is detected.
+- The check digit is derived from the payload. It adds no entropy, proves no authenticity, and cannot detect every edit.
+- Adapted from ISO 7064-style weighted checksum principles.
+
+When the check digit is enabled, the payload SHOULD be 24 characters or fewer so that no position is unprotected. `conformance/vectors.json` records known undetected substitutions as well as detected ones; a conformant implementation must reproduce both.
 
 ## Human Formatting
 
@@ -160,6 +168,7 @@ To verify, normalize the full input, strip the last character, recompute the che
 - Map random bytes to the alphabet with unbiased rejection sampling
 - Do not use modulo 25 directly on raw random bytes; this introduces bias because 256 is not divisible by 25
 - Rejection sampling: accept byte values less than 225 (25 x 9), discard the rest, then compute `value % 25`
+- Treat the requested length as trusted configuration, never as user input. The reference implementations accept any positive length and impose no maximum; an application that lets a caller choose the length must bound it at its own boundary
 
 ### Validation
 
@@ -191,7 +200,7 @@ HardGuard25-13: 0123456789ACD
 Input bytes (hex): 6a 9f 12 88 58 31 d2 44 9b 07 6c 48 2f 5e e1 b3 20 19 1a
 HardGuard25-16: 69MCFYAM578UUN47
 ```
-Additional conformance vectors for normalization, validation, checksum calculation, and checksum verification live in `conformance/vectors.json`. All runtime implementations should consume the same fixture data in tests.
+Additional conformance vectors for normalization, validation, checksum calculation, checksum verification, known undetected substitutions, and rejection-message hygiene live in `conformance/vectors.json`. All runtime implementations should consume the same fixture data in tests.
 
 ## Accessibility Notes
 

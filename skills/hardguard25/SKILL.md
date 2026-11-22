@@ -6,11 +6,13 @@ metadata:
   source: https://github.com/snapsynapse/hardguard25
   skill_bundle: hardguard25
   file_role: skill
-  version: 9
-  version_date: 2026-10-26
-  previous_version: 8
+  version: 10
+  version_date: 2026-11-22
+  previous_version: 9
   change_summary: >
-    Clarify ASCII-only case folding and the lookup-identifier security boundary.
+    State the exact check-digit detection profile, the 24-character payload
+    recommendation, the code-point-only error message contract, and the
+    length-as-configuration boundary.
 ---
 
 # HardGuard25
@@ -130,6 +132,7 @@ Non-ASCII letters and Unicode case expansions are invalid; only ASCII a-z is cas
 
 Normalizer must be idempotent: `normalize(normalize(x)) === normalize(x)`.
 Validation returns false for empty and separator-only input. Check digit calculation rejects an empty payload.
+Rejection errors name the first offending code point (for example U+200B) and never echo the input. Generation length is trusted configuration with no library maximum; bound it before it reaches the library.
 
 ## Check Digit (Optional)
 
@@ -140,7 +143,7 @@ Mod-25 weighted checksum, appended as the last character.
 2. `sum = sum of (index[i] * (i + 1))` for each position i
 3. Check digit = alphabet character at `sum % 25`
 
-Catches many single-character substitution errors and most adjacent transpositions in current conformance profiles.
+Detection profile (positions 1-indexed): every single substitution is detected except at positions that are multiples of 5, where substitutions between characters whose indices agree modulo 5 pass (4 of 24), and at position 25 and every 25th position after it, where nothing is detected. Every adjacent transposition of distinct characters is detected. Keep the payload at 24 characters or fewer when the check digit is enabled. The check digit adds no entropy and proves no authenticity.
 
 ## Human Formatting
 

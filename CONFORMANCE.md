@@ -10,9 +10,9 @@ Fixture version: `1.3.10`
 
 | Runtime | Package version | Fixture coverage | Status |
 |---|---:|---|---|
-| JavaScript | 1.3.10 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, packed TypeScript consumer | Published candidate passed local and CI checks |
-| Python | 1.3.10 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure, exact wheel and sdist consumer | Published candidate passed local and CI checks |
-| Go | module package | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, production-generator rejection sampling and entropy failure | Published candidate passed local and CI checks |
+| JavaScript | 1.3.10 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, known undetected substitutions, rejection-message hygiene, production-generator rejection sampling and entropy failure, packed TypeScript consumer | Published candidate passed local and CI checks |
+| Python | 1.3.10 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, known undetected substitutions, rejection-message hygiene, production-generator rejection sampling and entropy failure, exact wheel and sdist consumer | Published candidate passed local and CI checks |
+| Go | module package | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, known undetected substitutions, rejection-message hygiene, production-generator rejection sampling and entropy failure | Published candidate passed local and CI checks |
 
 ## Check Digit Profile
 
@@ -24,6 +24,8 @@ The Mod-25 weighted check digit is a lightweight human-entry aid. Current vector
 | `0123456789` | `5` | 232 / 240 | n/a |
 | `123456789ACDF` | `N` | 304 / 312 | 12 / 12 |
 | `ACDFGHJKMNPRUWY` | `P` | 348 / 360 | 14 / 14 |
+
+The misses are structural, not random. Weights repeat modulo 25 and 25 is composite, so positions 5, 10, 15 and 20 (1-indexed) miss substitutions between characters whose indices agree modulo 5, and position 25 misses every substitution. `undetected_substitutions` and `detected_substitutions` vectors pin both behaviors so no runtime can silently diverge. `rejection_messages` vectors require every runtime's invalid-input error to name the offending code point and never echo the input.
 
 ## Local Verification Commands
 
