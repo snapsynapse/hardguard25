@@ -47,7 +47,12 @@ test('build locks require exact complete inventories and matching supported back
     value => { value[paths[1]] = value[paths[1]].replace(/^setuptools.*$/m, ''); },
     value => { value[paths[0]] = value[paths[0]].replace('build==', 'build>='); },
     value => { value[paths[0]] = value[paths[0]].replace(/ --hash=sha256:[0-9a-f]{64}/, ''); },
+    value => { value[paths[0]] = value[paths[0]].replace(/ --hash=sha256:([0-9a-f]{64})/, ' --hash=sha256:$1 --hash=md5:0123456789abcdef'); },
+    value => { value[paths[1]] = value[paths[1]].replace(/^setuptools==84\.1\.0/m, 'setuptools==84.2.1'); },
   ]) { const changed = { ...locks }; mutate(changed); assert.throws(() => checkBuildLocks(changed, project)); }
+  const twoHashes = { ...locks, [paths[0]]: locks[paths[0]].replace(/^(build==[\d.]+ --hash=sha256:[0-9a-f]{64})$/m, '$1 --hash=sha256:' + 'a'.repeat(64)) };
+  assert.notEqual(twoHashes[paths[0]], locks[paths[0]]);
+  checkBuildLocks(twoHashes, project);
   for (const version of ['68.0', '77.0.3', '82.0.1']) {
     assert.throws(() => checkBuildLocks(locks, project.replace(/setuptools>=[\d.]+/, `setuptools>=${version}`)));
   }

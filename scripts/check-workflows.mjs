@@ -136,7 +136,7 @@ export function checkBuildLocks(locks, pyproject) {
   for (const [file, contents] of Object.entries(locks)) {
     const rows = contents.split('\n').filter(row => row && !row.startsWith('#'));
     const entries = rows.map(row => {
-      const match = row.match(/^([\w-]+)==([\d.]+)(?: ; [^\n]+)? --hash=sha256:([0-9a-f]{64})$/);
+      const match = row.match(/^([\w-]+)==([\d.]+)(?: ; [^\n]+)?((?: --hash=sha256:[0-9a-f]{64})+)$/);
       assert.ok(match, `${file}: exact reviewed version/hash required`);
       return [match[1], match[2]];
     });
