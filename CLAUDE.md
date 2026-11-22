@@ -72,8 +72,9 @@ CI (`.github/workflows/`) additionally runs:
 - `pages.yml` (push to main): requires the canonical and browser verifiers to pass on the deployment commit before publishing `docs/`, including `.well-known`, then verifies production search surfaces.
 - `accessibility.yml` (relevant PRs and main pushes, release tags, weekly production schedule, and manual runs): executes Playwright/axe checks against the landing page and static generator without adding dependencies to the reference libraries.
 
-## Current state (as of 2026-11-18)
+## Current state (as of 2026-11-22)
 
+- Unreleased on `main`: the 2026-11-22 security audit remediation (`audits/security-audit-2026-11-22.md`). Invalid-input errors now name a code point and never echo input; the check digit detection profile is documented and vector-pinned; both hosted pages carry a hashed meta CSP; `security.txt`, Scorecard and weekly surfaces workflows exist. Owner actions on GitHub settings and DNS are listed in `ops/maintenance.md`. A patch release is needed to ship the error-message change.
 - Latest release line: 1.3.10 (npm/PyPI and Go proxy verified with clean consumers). Signed tag, exact-head CI, GitHub Release, npm/PyPI hashes and deployed-site evidence are recorded in `ops/releases/1.3.10.json`. Historical 1.3.9 evidence remains in `ops/releases/1.3.9.json`. Historical release records remain unchanged.
 - The 1.3.5 stabilization pass fixed Go non-ASCII lookup truncation, aligned Python length validation and runtime version metadata, added shared Unicode rejection vectors, and hardened release-version and rerun checks.
 - Release 1.3.8 pins exact Unicode White_Space behavior across runtimes, strengthens production-generator and package-artifact verification, and adds bounded agent-discovery surfaces.

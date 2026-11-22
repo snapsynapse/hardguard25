@@ -7,6 +7,7 @@
     "test:numeric-guidance": "node scripts/check-numeric-guidance.mjs",
     "test:search:production": "node scripts/check-production-search.mjs",
     "test:surfaces:production": "node scripts/check-production-surfaces.mjs",
+    "check:settings": "node scripts/check-repository-settings.mjs",
     "test:accessibility": "playwright test",
     "verify": "node scripts/verify.mjs",
     "verify:browser": "npm run test:accessibility"
