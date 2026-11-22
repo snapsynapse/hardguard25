@@ -10,4 +10,4 @@ colorama==0.4.6 ; os_name == "nt" --hash=sha256:4f1d9991f5acc0ca119f9d443620b77f
 tomli==2.3.0 ; python_version < "3.11" --hash=sha256:e95b1af3c5b07d9e643909b5abbec77cd9f1217e6d0bca72b0234736b9fb1f1b
 importlib-metadata==8.7.0 ; python_full_version < "3.10.2" --hash=sha256:e5dd1551894c77868a30651cef00984d50e1002d06942a7101d34870c5f02afd
 zipp==3.23.0 ; python_full_version < "3.10.2" --hash=sha256:071652d6115ed432f5ce1d34c336c0adfd6a884660d1e9712a256d3d3bd4b14e
-setuptools==84.1.0 --hash=sha256:5231689c6ac8156cd155cfb98c3fd6fb252c3e7e9bd3d78b64d3c55f132624c9
+setuptools==84.2.1 --hash=sha256:3ff8b3b5492a0aa66960f4419365a86b84e013070d4313e4d4a6894f5d64d6bc --hash=sha256:ca140b45d5325a9478f880e351484f62fef15f336462e449ca0c03c873d589c2
