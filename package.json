@@ -6,6 +6,7 @@
     "test:search": "node scripts/check-search.mjs",
     "test:numeric-guidance": "node scripts/check-numeric-guidance.mjs",
     "test:search:production": "node scripts/check-production-search.mjs",
+    "test:surfaces:production": "node scripts/check-production-surfaces.mjs",
     "test:accessibility": "playwright test",
     "verify": "node scripts/verify.mjs",
     "verify:browser": "npm run test:accessibility"

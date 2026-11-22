@@ -32,7 +32,7 @@ checkDigit("AC3H7PUW");              // "N"
 verifyCheckDigit("AC3H7PUWN");       // true
 ```
 
-Normalization removes the Unicode White_Space set pinned by the specification plus `-`, `_`, and `.`, and rejects empty or separator-only input. Validation returns `false` for invalid input, and check-digit calculation rejects an empty payload.
+Normalization removes the Unicode White_Space set pinned by the specification plus `-`, `_`, and `.`, and rejects empty or separator-only input. Validation returns `false` for invalid input, and check-digit calculation rejects an empty payload. Thrown errors name the first offending character as a code point such as `U+200B` and never echo the input.
 
 Generation uses `crypto.getRandomValues` and unbiased rejection sampling. HardGuard25 is an identifier alphabet, not an authentication, authorization, encryption, or global uniqueness protocol.
 

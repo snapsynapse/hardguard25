@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+- SKILL.md: Stated the exact check-digit detection profile, the 24-character payload recommendation when a check digit is used, the code-point-only rejection message contract, and the length-as-configuration boundary; file version advanced from 9 to 10.
+- MANIFEST.yaml: Refreshed the SKILL.md hash.
 
 ## 1.3.10 -- 2026-11-18
 Released as v1.3.10; publication evidence is in `ops/releases/1.3.10.json`.

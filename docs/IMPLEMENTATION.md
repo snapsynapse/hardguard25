@@ -47,6 +47,7 @@ Recommended defaults:
 ## Check digit
 Use the optional Mod-25 weighted check digit when IDs are manually entered, read over the phone, printed on labels, copied from paper, or handled by support staff.
 Do not use the check digit for security. It catches common transcription mistakes; it does not prove authenticity.
+It detects every single-character substitution except at positions that are multiples of 5, where substitutions between characters whose alphabet indices agree modulo 5 pass (4 of 24 at each such position), and at position 25 and every 25th position after it, where nothing is detected. It detects every adjacent transposition of two distinct characters. Keep the payload at 24 characters or fewer when the check digit is enabled.
 ## Storage and display
 Store and transmit canonical IDs:
 Literal
@@ -69,6 +70,8 @@ Non-ASCII letters and Unicode case expansions are invalid; only ASCII a-z is cas
 
 The normalizer must be idempotent: `normalize(normalize(x)) === normalize(x)`.
 Empty and separator-only input has no canonical form and must be rejected. Validation returns false for those inputs, and check-digit calculation rejects an empty payload.
+Rejection errors name the first offending character as a code point such as `U+200B` and never echo the input, so a logged failure cannot carry a pasted secret or an injected log line. Keep that property if you implement the alphabet yourself.
+Treat the generation length as trusted configuration. The libraries accept any positive length and impose no maximum; bound it at your own boundary if a caller can choose it.
 ## JavaScript
 Install:
 Literal

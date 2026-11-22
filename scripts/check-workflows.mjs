@@ -41,11 +41,17 @@ export function checkWorkflows(workflows) {
         if (name === 'release.yml') assert.equal(value.if, undefined, 'release steps must be unconditional');
       }
       for (const value of job.steps) if (value.uses) assert.match(value.uses, /^[\w.-]+\/[\w./-]+@[0-9a-f]{40}$/, `${name}/${id}: full action SHA required`);
+      for (const value of job.steps) {
+        if (!value.uses?.startsWith('actions/checkout@')) continue;
+        const keepsToken = name === 'release.yml' && id === 'tag-go';
+        assert.equal(value.with?.['persist-credentials'], keepsToken ? undefined : false, `${name}/${id}: checkout must not persist credentials unless the job pushes`);
+      }
       const allowed = name === 'release.yml' && ['publish-npm', 'publish-pypi'].includes(id)
         ? { contents: 'read', 'id-token': 'write' }
         : name === 'release.yml' && id === 'tag-go' ? { contents: 'write' }
           : name === 'pages.yml' && id === 'deploy' ? { contents: 'read', pages: 'write', 'id-token': 'write' }
-            : { contents: 'read' };
+            : name === 'scorecard.yml' && id === 'analysis' ? { contents: 'read', 'security-events': 'write', 'id-token': 'write' }
+              : { contents: 'read' };
       assert.deepEqual(job.permissions || workflow.permissions, allowed, `${name}/${id}: least privilege`);
       assert.equal(job['continue-on-error'], undefined);
     }
@@ -99,6 +105,16 @@ export function checkWorkflows(workflows) {
   assert.deepEqual(needs(pages.deploy), ['validate']);
   assert.deepEqual(commands(step(pages.validate, 'Verify the exact deployment commit')), ['npm run verify', 'npm run verify:browser']);
   assert.deepEqual(needs(pages['verify-search']), ['deploy']);
+  const surfaces = workflows['surfaces.yml'];
+  assert.ok(surfaces.on.schedule?.length === 1 && surfaces.on.workflow_dispatch !== undefined, 'surfaces.yml: weekly schedule and manual trigger required');
+  assert.deepEqual(surfaces.jobs.audit.steps.filter(s => s.run).map(s => s.name), [
+    'Install locked repository tools', 'Audit Python build locks', 'Audit npm lockfile', 'Verify deployed search surfaces', 'Verify deployed agent and disclosure surfaces',
+  ], 'surfaces.yml: read-only audit step allowlist');
+  for (const value of surfaces.jobs.audit.steps) assert.doesNotMatch(value.run || '', /(?:npm publish|git push|gh release|twine)/, 'surfaces.yml must stay read-only');
+  const scorecard = workflows['scorecard.yml'];
+  assert.ok(scorecard.on.schedule?.length === 1, 'scorecard.yml: weekly schedule required');
+  const scorecardStep = scorecard.jobs.analysis.steps.find(s => s.uses?.startsWith('ossf/scorecard-action@'));
+  assert.ok(scorecardStep && scorecardStep.with?.publish_results === true, 'scorecard.yml: results must be published to the Security tab');
   const tests = workflows['test.yml'].jobs;
   assert.deepEqual(commands(step(tests.repository, 'Run canonical repository verifier')), ['npm run verify']);
   assert.equal(tests['minimum-runtimes']['runs-on'], 'ubuntu-24.04', 'Python 3.9 compatibility must use a supported runner image');

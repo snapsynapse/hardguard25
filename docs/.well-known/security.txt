@@ -1,0 +1,5 @@
+Contact: mailto:info@snapsynapse.com
+Expires: 2027-11-22T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://hardguard25.com/.well-known/security.txt
+Policy: https://github.com/snapsynapse/hardguard25/blob/main/SECURITY.md

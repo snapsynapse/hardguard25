@@ -61,6 +61,21 @@ type conformanceFixture struct {
 		Length   int    `json:"length"`
 		Output   string `json:"output"`
 	} `json:"deterministic_generation"`
+	RejectionMessages []struct {
+		Input     string `json:"input"`
+		Forbidden string `json:"forbidden"`
+		CodePoint string `json:"code_point"`
+	} `json:"rejection_messages"`
+	UndetectedSubstitutions []substitutionVector `json:"undetected_substitutions"`
+	DetectedSubstitutions   []substitutionVector `json:"detected_substitutions"`
+}
+
+type substitutionVector struct {
+	Code       string `json:"code"`
+	CheckDigit string `json:"check_digit"`
+	Position   int    `json:"position"`
+	Substitute string `json:"substitute"`
+	Note       string `json:"note"`
 }
 
 func TestExportedLookupSnapshotCannotChangeCanonicalBehavior(t *testing.T) {
@@ -680,4 +695,65 @@ func TestExpandedConformance(t *testing.T) {
 			})
 		}
 	})
+}
+
+func TestRejectionMessagesNameCodePointAndNeverEchoInput(t *testing.T) {
+	fixture := loadConformanceFixture(t)
+	for _, vector := range fixture.RejectionMessages {
+		_, normalizeErr := Normalize(vector.Input)
+		_, checkErr := CheckDigit(vector.Input)
+		for name, err := range map[string]error{"Normalize": normalizeErr, "CheckDigit": checkErr} {
+			if err == nil {
+				t.Fatalf("%s(%q) should return an error", name, vector.Input)
+			}
+			if !strings.Contains(err.Error(), vector.CodePoint) {
+				t.Errorf("%s error %q must name %s", name, err.Error(), vector.CodePoint)
+			}
+			if strings.Contains(err.Error(), vector.Forbidden) {
+				t.Errorf("%s error %q must not echo caller input", name, err.Error())
+			}
+		}
+		if Validate(vector.Input) {
+			t.Errorf("Validate(%q) should be false", vector.Input)
+		}
+		if ok, _ := VerifyCheckDigit(vector.Input); ok {
+			t.Errorf("VerifyCheckDigit(%q) should be false", vector.Input)
+		}
+	}
+}
+
+func mutateAt(code string, position int, substitute string) string {
+	index := position - 1
+	return code[:index] + substitute + code[index+1:]
+}
+
+func TestKnownBlindSpotsAreSharedAcrossRuntimes(t *testing.T) {
+	fixture := loadConformanceFixture(t)
+	for _, vector := range fixture.UndetectedSubstitutions {
+		digit, err := CheckDigit(vector.Code)
+		if err != nil || string(digit) != vector.CheckDigit {
+			t.Fatalf("CheckDigit(%q) = %q, %v; want %q", vector.Code, string(digit), err, vector.CheckDigit)
+		}
+		if string(vector.Code[vector.Position-1]) == vector.Substitute {
+			t.Fatalf("vector %q does not change position %d", vector.Code, vector.Position)
+		}
+		mutated := mutateAt(vector.Code, vector.Position, vector.Substitute)
+		mutatedDigit, err := CheckDigit(mutated)
+		if err != nil || string(mutatedDigit) != vector.CheckDigit {
+			t.Errorf("%s: CheckDigit(%q) = %q, want undetected %q", vector.Note, mutated, string(mutatedDigit), vector.CheckDigit)
+		}
+		if ok, err := VerifyCheckDigit(mutated + vector.CheckDigit); err != nil || !ok {
+			t.Errorf("%s: VerifyCheckDigit(%q) = %v, %v; want true", vector.Note, mutated+vector.CheckDigit, ok, err)
+		}
+	}
+	for _, vector := range fixture.DetectedSubstitutions {
+		mutated := mutateAt(vector.Code, vector.Position, vector.Substitute)
+		mutatedDigit, err := CheckDigit(mutated)
+		if err != nil || string(mutatedDigit) == vector.CheckDigit {
+			t.Errorf("%s: CheckDigit(%q) = %q, %v; want a different digit", vector.Note, mutated, string(mutatedDigit), err)
+		}
+		if ok, _ := VerifyCheckDigit(mutated + vector.CheckDigit); ok {
+			t.Errorf("%s: VerifyCheckDigit(%q) should be false", vector.Note, mutated+vector.CheckDigit)
+		}
+	}
 }

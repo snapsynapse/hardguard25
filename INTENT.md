@@ -66,6 +66,10 @@ The following work requires renewed owner authorization and a recorded rationale
 
 The human-factors benchmark protocol is retained as a reproducible research plan, not an active roadmap item. It may be reactivated only when a documented adopter question, sponsor commitment, or standards decision requires empirical evidence and the owner approves the study scope, operator, privacy terms, scoring, and stop criteria.
 
+## Parked major-version questions
+
+- Check digit algorithm. The Mod-25 weighted checksum has a structural detection profile recorded in `SPEC.md` and pinned in `conformance/vectors.json`: positions whose weight is a multiple of 5 miss some substitutions and position 25 misses all of them. A Damm-style quasigroup check over 25 symbols would detect every single substitution and every adjacent transposition at any length. Changing the check digit algorithm is a design invariant change and a major version. It is recorded here from the 2026-11-22 security audit; it is not scheduled and requires renewed owner authorization before any work begins.
+
 ## Relationship to other PAICE standards
 
 - **GuideCheck**: HardGuard25 is the recommended alphabet for identifiers embedded in `assistant-guide.txt` artifacts when an ID must be human-readable.
@@ -87,6 +91,8 @@ Per `0_Across/Repo Standards.md`, the following deviations are recorded:
 - The OpenGraph and GitHub social-preview assets remain 1280 by 640 pixels rather than the portfolio row's 1200 by 630 pixels. Reason: the repository's GitHub presentation workflow and `repo-polish` guidance use 1280 by 640. This exception was confirmed on 2026-10-03; re-evaluate only if the owning presentation contract changes.
 
 ## Changelog
+
+- 2026-11-22 - Recorded the Damm-style check digit as a parked major-version question following the security audit; no change to the 1.x algorithm.
 
 - 2026-10-03 - Declared the standard stable and maintenance-only, defined routine maintenance boundaries, and parked benchmark execution behind evidence and renewed authorization.
 - 2026-10-03 - Documented agent-discovery surfaces and their no-hosted-execution boundary.

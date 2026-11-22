@@ -126,6 +126,8 @@ func uppercaseASCII(input string) string {
 // - Converting to uppercase
 // - Validating against the alphabet
 // Returns an error if the normalized string contains invalid characters.
+// Error messages name the offending code point, never the caller's input,
+// so validation failures cannot leak pasted secrets or inject log lines.
 func Normalize(input string) (string, error) {
 	// Remove punctuation separators and the pinned Unicode White_Space set.
 	normalized := strings.Map(func(r rune) rune {
@@ -148,7 +150,7 @@ func Normalize(input string) (string, error) {
 	// Validate characters
 	for _, ch := range normalized {
 		if ch > unicode.MaxASCII || !alphabetSet[byte(ch)] {
-			return "", fmt.Errorf("invalid character in input: %c", ch)
+			return "", fmt.Errorf("invalid character U+%04X in input", ch)
 		}
 	}
 
@@ -167,11 +169,11 @@ func CheckDigit(code string) (byte, error) {
 	sum := 0
 	for i, ch := range code {
 		if ch > unicode.MaxASCII {
-			return 0, fmt.Errorf("invalid character in code: %c", ch)
+			return 0, fmt.Errorf("invalid character U+%04X in code", ch)
 		}
 		idx, ok := charToIndex[byte(ch)]
 		if !ok {
-			return 0, fmt.Errorf("invalid character in code: %c", ch)
+			return 0, fmt.Errorf("invalid character U+%04X in code", ch)
 		}
 		// Bound intermediate values on both 32-bit and 64-bit architectures.
 		sum = (sum + idx*((i%25)+1)) % 25

@@ -11,6 +11,13 @@ updates:
       - dependency-name: "*"
         update-types:
           - version-update:semver-major
+  - package-ecosystem: pip
+    directory: /scripts
+    schedule:
+      interval: monthly
+      time: "09:00"
+      timezone: America/Denver
+    open-pull-requests-limit: 3
   - package-ecosystem: github-actions
     directory: /
     schedule:

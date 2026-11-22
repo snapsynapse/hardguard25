@@ -164,6 +164,20 @@ assert.equal(
   'agents.json: missing canonical relationships surface'
 );
 
+const briefingReview = fs.readFileSync(briefingCopies[0], 'utf8').match(/^Last reviewed: (\d{4}-\d{2}-\d{2})\.?$/m);
+assert.ok(briefingReview, 'llms.txt: missing Last reviewed date');
+assert.match(agents.last_updated, /^\d{4}-\d{2}-\d{2}$/, 'agents.json: last_updated must be an ISO date');
+assert.ok(agents.last_updated >= briefingReview[1], 'agents.json: last_updated must not be older than the llms.txt review date');
+
+const securityTxt = fs.readFileSync('docs/.well-known/security.txt', 'utf8');
+assert.match(securityTxt, /^Contact: mailto:info@snapsynapse\.com$/m, 'security.txt: contact must match SECURITY.md');
+assert.match(securityTxt, /^Canonical: https:\/\/hardguard25\.com\/\.well-known\/security\.txt$/m, 'security.txt: canonical URL');
+assert.match(securityTxt, /^Policy: https:\/\/github\.com\/snapsynapse\/hardguard25\/blob\/main\/SECURITY\.md$/m, 'security.txt: policy link');
+const securityExpires = securityTxt.match(/^Expires: (\d{4}-\d{2}-\d{2})T/m);
+assert.ok(securityExpires && securityExpires[1] > new Date().toISOString().slice(0, 10), 'security.txt: Expires must be in the future');
+assert.ok(fs.readFileSync('SECURITY.md', 'utf8').includes('info@snapsynapse.com'), 'SECURITY.md: disclosure contact missing');
+assert.equal(JSON.parse(fs.readFileSync('.claude-plugin/plugin.json', 'utf8')).author.email, 'info@snapsynapse.com', 'plugin manifest contact must match SECURITY.md');
+
 const ontology = JSON.parse(fs.readFileSync('docs/ontology.json', 'utf8'));
 assert.equal(ontology.schema_version, '1.0', 'ontology.json: unexpected schema version');
 assert.equal(

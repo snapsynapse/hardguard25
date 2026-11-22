@@ -48,7 +48,7 @@ Place a unique constraint on every stored HardGuard25 identifier or alias. On a 
 
 ## Check Digit and Manual Entry
 
-Use the optional check digit when identifiers are manually entered, read over the phone, copied from paper, printed on labels, or handled by support staff. It detects many substitutions and most adjacent transpositions in the current conformance profile. It is not a message authentication code and does not establish authenticity.
+Use the optional check digit when identifiers are manually entered, read over the phone, copied from paper, printed on labels, or handled by support staff. It detects every single-character substitution except at positions that are multiples of 5, where substitutions between characters whose alphabet indices agree modulo 5 pass (4 of 24 at each such position), and at position 25 and every 25th position after it, where nothing is detected. It detects every adjacent transposition of two distinct characters. Keep the payload at 24 characters or fewer when the check digit is enabled. It is not a message authentication code and does not establish authenticity.
 
 The check digit follows the payload as the final character. Choose the payload length first. An 8-character payload with a check digit produces a 9-character stored identifier.
 
@@ -59,6 +59,7 @@ The check digit follows the payload as the final character. Choose the payload l
 - Normalize only at documented input boundaries.
 - Accept lowercase and grouped input only when it normalizes cleanly.
 - Reject empty, separator-only, and out-of-alphabet input.
+- Log validation failures as the libraries report them: the first offending code point, never the raw input. Treat the generation length as configuration and bound it before it reaches the library if callers can choose it.
 - Do not broaden the separator set beyond the contract in `SPEC.md`.
 
 The pinned separator set includes hyphens, underscores, dots, and the exact Unicode White_Space code points listed in the specification. Similar format characters such as U+200B and U+FEFF remain invalid. Use the package normalizer rather than a language's broader whitespace helper.

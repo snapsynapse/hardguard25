@@ -357,3 +357,30 @@ class TestConformanceValidation:
         for vector in CONFORMANCE["deterministic_generation"]:
             install_entropy_sequence(monkeypatch, bytes.fromhex(vector["bytes_hex"]))
             assert hardguard25.generate(vector["length"]) == vector["output"]
+
+
+class TestRejectionMessagesAndDetectionProfile:
+    def test_errors_name_code_point_and_never_echo_input(self):
+        for vector in CONFORMANCE["rejection_messages"]:
+            for fn in (hardguard25.normalize, hardguard25.check_digit):
+                with pytest.raises(ValueError) as excinfo:
+                    fn(vector["input"])
+                message = str(excinfo.value)
+                assert vector["code_point"] in message, fn.__name__
+                assert vector["forbidden"] not in message, fn.__name__
+            assert hardguard25.validate(vector["input"]) is False
+            assert hardguard25.verify_check_digit(vector["input"]) is False
+
+    def test_known_blind_spots_are_shared_across_runtimes(self):
+        for vector in CONFORMANCE["undetected_substitutions"]:
+            assert hardguard25.check_digit(vector["code"]) == vector["check_digit"]
+            index = vector["position"] - 1
+            assert vector["code"][index] != vector["substitute"]
+            mutated = vector["code"][:index] + vector["substitute"] + vector["code"][index + 1 :]
+            assert hardguard25.check_digit(mutated) == vector["check_digit"], vector["note"]
+            assert hardguard25.verify_check_digit(mutated + vector["check_digit"]) is True
+        for vector in CONFORMANCE["detected_substitutions"]:
+            index = vector["position"] - 1
+            mutated = vector["code"][:index] + vector["substitute"] + vector["code"][index + 1 :]
+            assert hardguard25.check_digit(mutated) != vector["check_digit"], vector["note"]
+            assert hardguard25.verify_check_digit(mutated + vector["check_digit"]) is False
