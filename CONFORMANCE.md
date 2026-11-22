@@ -1,6 +1,6 @@
 # Conformance Report
 
-Report date: 2026-11-18
+Report date: 2026-11-22
 
 Release 1.3.10 has local, exact-head CI and published npm/PyPI consumer evidence in `ops/releases/1.3.10.json`; the Go tag and proxy version are verified. Historical 1.3.9 evidence remains in `ops/releases/1.3.9.json`.
 
@@ -49,10 +49,14 @@ Current repository verification independently computes namespace sizes, rounded 
 
 The canonical verifier checks JavaScript, Python, and Go public-API transcripts against an independent specification oracle using exact integer checksum arithmetic and separately authored normalization, and compares their results across shared vectors, non-ASCII rejection including case expansions, every ASCII insertion boundary, Unicode separator boundaries, and a fixed-seed generated corpus. The current parity corpus contains 469 deterministic cases. Package verification enforces exact npm, wheel, and sdist inventories, metadata, source bytes, and license bytes.
 
-## Unreleased maintenance coverage
+## 1.3.10 maintenance coverage
 
 Compact repeated-payload vectors exercise nonzero high-index checksum terms at modulo boundaries, 13,377 characters on 32-bit Go, and the JavaScript precision boundary at 28,000,001 characters. Source and installed-package checks verify that exported lookup snapshots cannot mutate internal conformance behavior. Linux/386 execution is a CI gate; a local cross-compilation alone is not an execution result.
 
 Search regression fixtures cover one-pass entity decoding, structural sitemap validation, unauthorized URL and redirect refusal before transport, partial collection, body failures, and exact infrastructure/defect classification. Generator evals exercise atomic batches, entropy and clipboard failure recovery, pending-copy races, consistent display/copy/accessibility state, and absence of network/storage calls. Artifact mutation tests and workflow contract checks guard acceptance and publication boundaries.
 
 Python source builds require Python 3.10+ and setuptools >=84.1.0; installed wheels retain Python 3.9+ runtime support. Both the minimum patched backend (84.1.0, executed on Python 3.10.20) and reviewed release backend (84.2.1) pass artifact/consumer checks locally. A clean Python 3.9.25 consumer passes the shared corpus using the minimum-backend wheel. Both complete nine-package build locks have zero known advisories at the 2026-11-18 check.
+
+## Unreleased coverage
+
+Merged to `main` after 1.3.10 and not yet published to any registry. `rejection_messages` vectors require every runtime's invalid-input error to name the first offending code point and never echo the input; the three suites assert the contract for normalization and checksum entry points. `undetected_substitutions` and `detected_substitutions` vectors pin the structural blind spots of the Mod-25 weights so all runtimes agree on misses as well as hits. The hosted-page check recomputes the meta Content Security Policy hashes from the inline blocks and rejects inline handlers, style attributes and external resources; the browser suite runs under that policy. Current counts: 82 JavaScript tests, 50 Python tests, and the 469-case parity corpus unchanged.

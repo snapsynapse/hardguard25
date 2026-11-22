@@ -4,7 +4,7 @@ Use this checklist for npm, PyPI, Go module, docs, and skill updates.
 
 ## Before Tagging
 
-- Update version strings in JavaScript, Python package and runtime metadata, the specification, conformance vectors and report, docs site, skill metadata, and changelogs when applicable.
+- Update version strings in JavaScript, Python package and runtime metadata, the specification (version and date), conformance vectors and report, docs site (byline, footer, JSON-LD `softwareVersion` and `dateModified`), `docs/agents.json`, `docs/llms.txt` and `docs/llm.txt`, the assistant guide metadata and its three mirrors with sidecars, `CITATION.cff`, skill metadata, and changelogs. `scripts/check-release-versions.mjs` asserts the version anchors and the release-date parity.
 - Run the canonical deterministic verifier locally: `npm run verify`.
 - Run `npm run verify:browser` after installing the root development dependencies and Playwright Chromium.
 - Confirm CI passes on `main`.
@@ -35,6 +35,8 @@ Pages runs the canonical verifier and browser suite before deploying the same co
 - Confirm `https://hardguard25.com/llms.txt` and `https://hardguard25.com/llm.txt` are byte-identical plain text.
 - Confirm `https://hardguard25.com/agents.json` returns valid JSON and declares `hosted_agent_api: false`.
 - Confirm both assistant-guide URLs and their SHA-256 sidecars match the reviewed repository bytes.
+- Confirm `https://hardguard25.com/.well-known/security.txt` loads and its `Expires` date is in the future.
+- Run `npm run test:surfaces:production` and require zero defects; exit 2 is a transport failure to retry, not acceptance.
 
 ## After Release
 

@@ -4,11 +4,11 @@
 identifier: hardguard25-assistant-guide
 profile: human-verifiable-assistant-guide
 profile-version: 0.7.1
-guide-version: 1.3.10+guide.20261118
+guide-version: 1.3.10+guide.20261122
 applies-to: hardguard25 1.3.10
 canonical-url: https://hardguard25.com/.well-known/assistant-guide.txt
 repository-url: https://github.com/snapsynapse/hardguard25
-last-reviewed: 2026-10-26
+last-reviewed: 2026-11-22
 recommended-verifier: https://guidecheck.org/verify
 [/assistant-guide-metadata]
 

@@ -10,7 +10,7 @@ const steps = [
   ['numeric guidance', process.execPath, ['scripts/check-numeric-guidance.mjs'], root],
   ['URL conventions', process.execPath, ['scripts/check-url-conventions.mjs'], root],
   ['search contract', process.execPath, ['scripts/check-search.mjs'], root],
-  ['search regressions', process.execPath, ['--test', 'scripts/check-search.test.mjs', 'scripts/check-production-search.test.mjs', 'scripts/check-production-surfaces.test.mjs', 'scripts/search-sitemap.test.mjs'], root],
+  ['search regressions', process.execPath, ['--test', 'scripts/check-search.test.mjs', 'scripts/check-production-search.test.mjs', 'scripts/check-production-surfaces.test.mjs', 'scripts/check-repository-settings.test.mjs', 'scripts/search-sitemap.test.mjs'], root],
   ['agent surfaces', process.execPath, ['scripts/check-agent-surfaces.mjs'], root],
   ['release versions', process.execPath, ['scripts/check-release-versions.mjs'], root],
   ['project metadata', process.execPath, ['scripts/check-project-metadata.mjs'], root],

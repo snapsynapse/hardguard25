@@ -2,7 +2,7 @@
 
 ## Current state
 
-PyPI Trusted Publishing is configured and verified for this project. The 1.3.8 and 1.3.9 releases published successfully through GitHub Actions OIDC with provenance attestations. Release 1.3.9 provenance and clean-consumer evidence is recorded in `ops/releases/1.3.9.json`. The workflow does not pass an API token or password to PyPI, and the legacy `PYPI_API_TOKEN` repository secret was removed after verification.
+PyPI Trusted Publishing is configured and verified for this project. The 1.3.8, 1.3.9 and 1.3.10 releases published successfully through GitHub Actions OIDC with provenance attestations. Release evidence is recorded in `ops/releases/1.3.9.json` and `ops/releases/1.3.10.json`. The workflow does not pass an API token or password to PyPI, and the legacy `PYPI_API_TOKEN` repository secret was removed after verification.
 
 Source builds require Python 3.10+ and setuptools >=84.1.0. Installed wheel runtime support remains Python >=3.9. CI exercises the minimum backend on Python 3.10; publication uses the separately pinned current backend. Sam approved this build/runtime distinction on 2026-11-18.
 
@@ -23,7 +23,7 @@ The activation configuration is:
 1. The `publish-pypi` job grants `id-token: write` and retains read-only repository contents access.
 2. The job targets the `pypi` GitHub environment.
 3. The publish action receives no password input.
-4. The unreleased workflow candidate builds and verifies artifacts once in the read-only preflight job, transfers them with a commit/source/hash manifest, and checks their identity again in the publisher. Only the verified wheel and sdist are copied into `python-publish`; `packages-dir: python-publish` and `skip-existing: false` remain explicit. An existing artifact fails publication. Reconcile content and provenance before recovery; rerun a publishing job only if its artifacts are absent. If upload completed before a job failed, prepare a separately authorized recovery for downstream steps rather than rerunning that publisher.
+4. The release workflow, in effect since 1.3.10, builds and verifies artifacts once in the read-only preflight job, transfers them with a commit/source/hash manifest, and checks their identity again in the publisher. Only the verified wheel and sdist are copied into `python-publish`; `packages-dir: python-publish` and `skip-existing: false` remain explicit. An existing artifact fails publication. Reconcile content and provenance before recovery; rerun a publishing job only if its artifacts are absent. If upload completed before a job failed, prepare a separately authorized recovery for downstream steps rather than rerunning that publisher.
 
 For each authorized release:
 

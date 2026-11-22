@@ -16,6 +16,8 @@ Security audit remediation; see `audits/security-audit-2026-11-22.md`. Runtime b
 - State the exact Mod-25 check digit detection profile: every single substitution is detected except at positions that are multiples of 5 (4 of 24 pass) and at position 25 and every 25th position after it (all pass); every adjacent transposition of distinct characters is detected. Recommend payloads of 24 characters or fewer when the check digit is enabled, and pin known undetected substitutions in shared vectors so runtimes agree on misses as well as hits.
 - Document that the generation length is trusted configuration with no library maximum, across the specification, adoption and implementation guides, briefings, skill and assistant guide.
 - Require `docs/agents.json` to carry a last-updated date no older than the briefing review date.
+- Extend the release-version check to `CITATION.cff`, `docs/agents.json`, the generator JSON-LD, the assistant guide metadata and the briefing, derive the expected agents.json version from the package instead of a literal, and add release-date parity checks for the citation, sitemap and page modification dates. Browser tests now fail on console errors, which is how Content Security Policy violations surface. Add a read-only `npm run check:settings` comparison of live GitHub repository settings against `.github/repository-settings.json`.
+- Reconcile the conformance report, project context, publishing notes, standards declaration, release checklist and maintenance queue with the released 1.3.10 state and the unreleased audit remediation.
 
 ## 1.3.10 -- 2026-11-18
 
