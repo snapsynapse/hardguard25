@@ -18,6 +18,11 @@ updates:
       time: "09:00"
       timezone: America/Denver
     open-pull-requests-limit: 3
+    ignore:
+      # Both setuptools pins are reviewed constants: the minimum lock holds the
+      # pyproject build floor and the release lock holds the reviewed current
+      # pin, and scripts/check-workflows.mjs asserts both. Bump them by hand.
+      - dependency-name: "setuptools"
   - package-ecosystem: github-actions
     directory: /
     schedule:
