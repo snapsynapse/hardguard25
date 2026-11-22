@@ -10,6 +10,8 @@ Security audit remediation; see `audits/security-audit-2026-11-22.md`. Runtime b
 - Publish `/.well-known/security.txt`, extend `SECURITY.md` with an acknowledgement window, the supported-version boundary and provenance verification guidance, and align the plugin manifest contact.
 - Stop persisting the workflow token in checkouts that do not push, disable npm lifecycle scripts for repository tooling through `.npmrc`, add Dependabot coverage for the hash-pinned Python build locks, and add weekly read-only Scorecard and deployed-surface audit workflows with workflow-contract checks.
 
+- Ignore setuptools in the Dependabot `pip` ecosystem, since both lock pins are reviewed constants asserted by the workflow checker, and accept lock rows that carry more than one SHA-256 hash so Dependabot updates of the other locked build tools can pass verification.
+
 ### Changed
 - State the exact Mod-25 check digit detection profile: every single substitution is detected except at positions that are multiples of 5 (4 of 24 pass) and at position 25 and every 25th position after it (all pass); every adjacent transposition of distinct characters is detected. Recommend payloads of 24 characters or fewer when the check digit is enabled, and pin known undetected substitutions in shared vectors so runtimes agree on misses as well as hits.
 - Document that the generation length is trusted configuration with no library maximum, across the specification, adoption and implementation guides, briefings, skill and assistant guide.
