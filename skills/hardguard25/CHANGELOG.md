@@ -1,7 +1,7 @@
 # Changelog
 
 ## 1.4.0 -- 2026-11-22
-Prepared for release as v1.4.0; publication evidence will be recorded in `ops/releases/1.4.0.json`.
+Released as v1.4.0; publication evidence is in `ops/releases/1.4.0.json`.
 - MANIFEST.yaml: Advanced the parent-release-coupled bundle version and date.
 - SKILL.md: Stated the exact check-digit detection profile, the 24-character payload recommendation when a check digit is used, the code-point-only rejection message contract, and the length-as-configuration boundary; file version advanced from 9 to 10.
 - MANIFEST.yaml: Refreshed the SKILL.md hash.
