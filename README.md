@@ -262,7 +262,7 @@ The human-factors rationale and limits are documented in [HUMAN_FACTORS.md](HUMA
 
 The spec is licensed [CC BY 4.0](LICENSE-SPEC). Reference it freely.
 
-Citation metadata for the published 1.3.10 release is available in [CITATION.cff](CITATION.cff).
+Citation metadata for the 1.4.0 release is available in [CITATION.cff](CITATION.cff).
 
 ## Live Demo
 
