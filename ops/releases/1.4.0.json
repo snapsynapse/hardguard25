@@ -5,7 +5,7 @@
   "authority": "R2",
   "candidate_version": "1.4.0",
   "candidate_head": "b442b887a7d91369581e84b9dc04eb60a44cbc4f",
-  "updated_at": "2026-11-23T00:45:00+00:00",
+  "updated_at": "2026-11-23T01:10:00+00:00",
   "steps": [
     {
       "id": "release-commit-and-tag",
@@ -20,7 +20,7 @@
     {
       "id": "candidate-pages",
       "status": "failed",
-      "evidence": "Pages 45088117957 validate passed; deploy attempt 1 failed with no github-pages artifact visible to deploy-pages although the upload succeeded; attempt 2 failed because two github-pages artifacts then existed on the run. The site was not deployed from this commit; the closeout commit carries the deployment."
+      "evidence": "Pages 45088117957 validate passed; deploy attempt 1 failed with no github-pages artifact visible to deploy-pages although the upload succeeded; attempt 2 failed because two github-pages artifacts then existed on the run. The site was not deployed from this commit; the closeout commit carries the deployment. Root cause addressed in #26 (upload and deployment in separate jobs)."
     },
     {
       "id": "artifact-preflight",
@@ -44,8 +44,8 @@
     },
     {
       "id": "go-proxy",
-      "status": "unknown",
-      "evidence": "proxy.golang.org v1.4.0.info still returned unknown revision go/v1.4.0 at 2026-11-23T00:45Z, consistent with a cached not-found from a pre-tag probe. Not yet verified."
+      "status": "completed",
+      "evidence": "proxy.golang.org v1.4.0.info returned 200 at 2026-11-23T01:04:23Z with Origin.Hash b442b887a7d91369581e84b9dc04eb60a44cbc4f and Ref refs/tags/go/v1.4.0. It had served a cached not-found since a pre-tag probe of that URL during this release. A clean consumer with GOPROXY=https://proxy.golang.org and GOSUMDB=sum.golang.org resolved @latest to v1.4.0 and ran; go.sum h1:WrmAU8MPDYN/jZV5OpuKIPMtKTHGdatIscP5XUp3/kY= matches sum.golang.org and the GOPROXY=direct consumer."
     },
     {
       "id": "github-release",
@@ -54,8 +54,8 @@
     },
     {
       "id": "closeout-ci-and-pages",
-      "status": "not_started",
-      "evidence": "This record's closeout commit on main triggers the first 1.4.0 Pages deployment and deployed search verification."
+      "status": "completed",
+      "evidence": "Evidence commit 41f407d passed Test 45089709594 and Scorecard 45089709604; its Pages run 45089709537 failed with the same artifact lookup error. Pages fix commit 0e2ceab (#26) passed Test 45090577381, Scorecard 45090577377 and Pages 45090577389 (validate, build, deploy, verify-search). Nine live files including the landing page, generator, briefings, agents.json, both assistant guides, security.txt and sitemap matched docs/ at 0e2ceab byte for byte; the guide sidecar matched; production surfaces check reported 12 checked, 0 defects."
     }
   ]
 }
