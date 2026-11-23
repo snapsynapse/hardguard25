@@ -3,7 +3,7 @@
 ## Unreleased
 
 ### Changed
-- Add a Versioning (SemVer) section to `CONTRIBUTING.md`, which `INTENT.md` already cited for normative changes, describing the lockstep version and the major, minor and patch rules for the specification, reference libraries, conformance vectors and error message text as the 1.x releases applied them. No policy change.
+- Add a Versioning (SemVer) section to `CONTRIBUTING.md`, which `INTENT.md` already cited for normative changes, describing the lockstep version and the major, minor and patch rules for the specification, reference libraries, conformance vectors and error message text as the 1.x releases applied them. The owner settled the cases that release history left ambiguous. Rewording an error message, adding a non-normative public surface and removing a published surface are minor versions. Raising a runtime minimum is a patch. The pre-INTENT 1.2.0 alphabet change is not a precedent.
 - Upload the Pages artifact in its own job before deployment, matching GitHub's Pages workflow layout, after three consecutive deployments failed when `deploy-pages` queried the artifact list before the upload in the same job was visible. Add a manual trigger so a failed deployment can be redeployed without a new commit, and assert the job order, artifact contents and trigger in the workflow contract checks.
 - Close the 1.4.0 release record with Go proxy, clean default-proxy consumer and deployed-site evidence, and warn in the release checklist against probing the Go proxy for a version before its tag exists.
 

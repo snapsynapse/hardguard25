@@ -42,18 +42,29 @@ A new normative requirement in `SPEC.md` (MUST, MUST NOT, SHOULD or SHOULD NOT) 
 
 Library and vector changes that implement a new normative requirement ride with that minor version.
 
+These are also minor versions:
+
+- a new non-normative public API, package surface, hosted surface or agent-facing surface, such as type declarations, a discovery file or a skill bundle (1.3.0 precedent; 1.3.7 and 1.3.8 shipped such additions as patches, and later releases do not follow them);
+- removing or renaming a published URL, hosted file or other public surface (1.3.4 shipped such a removal as a patch, and later releases do not follow it); and
+- changing error message wording, including wording that still meets the error message requirements below.
+
 ### Patch
 
-Changes that keep the normative contract unchanged are patches. Precedent: the 1.3.x line. This covers:
+Changes that keep the normative contract and the public surface unchanged are patches. Precedent: the 1.3.x line. This covers:
 
 - library fixes that bring a runtime into line with the existing specification or with the other runtimes;
 - security and correctness hardening, packaging, CI and release-process changes;
+- raising the minimum supported runtime or toolchain version (1.3.10 precedent: the Python source-build floor rose to 3.10);
 - new or expanded conformance vectors that pin behavior the specification already requires; and
-- documentation, site, agent-surface and skill changes that do not expand the standard's claims.
+- documentation, site and skill content changes that do not expand the standard's claims or add or remove a surface.
 
 ### Error message text
 
-Error message text is part of the contract only to the extent that `SPEC.md` and the `rejection_messages` vectors require it: a `U+XXXX` code point and no echo of the input. A message change needed to meet a new normative requirement is part of that requirement's minor version, as in 1.4.0. A change that breaks those requirements is not a valid patch.
+`SPEC.md` and the `rejection_messages` vectors require each invalid-input error to name a `U+XXXX` code point and never echo the input. Any change to error message wording is a minor version, whether it implements a new requirement (as in 1.4.0) or only rewords a message that already meets the requirements. A change that breaks those requirements is not a valid minor or patch.
+
+### Releases before INTENT.md
+
+1.2.0 changed the alphabet from 26 to 25 characters as a minor version. That release predates `INTENT.md` (2026-06-03). It is not a precedent: any alphabet change from 1.2.0 onward is a major version.
 
 ## Pull Request Checklist
 
