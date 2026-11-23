@@ -2,17 +2,17 @@
 
 Report date: 2026-11-22
 
-Release 1.3.10 has local, exact-head CI and published npm/PyPI consumer evidence in `ops/releases/1.3.10.json`; the Go tag and proxy version are verified. Historical 1.3.9 evidence remains in `ops/releases/1.3.9.json`.
+Release 1.4.0 is prepared locally and is not yet published. Its evidence record will be `ops/releases/1.4.0.json`. Release 1.3.10 evidence remains in `ops/releases/1.3.10.json`, and historical 1.3.9 evidence in `ops/releases/1.3.9.json`.
 
-Fixture version: `1.3.10`
+Fixture version: `1.4.0`
 
 ## Implementations
 
 | Runtime | Package version | Fixture coverage | Status |
 |---|---:|---|---|
-| JavaScript | 1.3.10 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, known undetected substitutions, rejection-message hygiene, production-generator rejection sampling and entropy failure, packed TypeScript consumer | Published candidate passed local and CI checks |
-| Python | 1.3.10 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, known undetected substitutions, rejection-message hygiene, production-generator rejection sampling and entropy failure, exact wheel and sdist consumer | Published candidate passed local and CI checks |
-| Go | module package | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, known undetected substitutions, rejection-message hygiene, production-generator rejection sampling and entropy failure | Published candidate passed local and CI checks |
+| JavaScript | 1.4.0 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, known undetected substitutions, rejection-message hygiene, production-generator rejection sampling and entropy failure, packed TypeScript consumer | Candidate passed local checks; exact-head CI and publication pending |
+| Python | 1.4.0 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, known undetected substitutions, rejection-message hygiene, production-generator rejection sampling and entropy failure, exact wheel and sdist consumer | Candidate passed local checks; exact-head CI and publication pending |
+| Go | module package | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, known undetected substitutions, rejection-message hygiene, production-generator rejection sampling and entropy failure | Candidate passed local checks; exact-head CI and publication pending |
 
 ## Check Digit Profile
 
@@ -57,6 +57,6 @@ Search regression fixtures cover one-pass entity decoding, structural sitemap va
 
 Python source builds require Python 3.10+ and setuptools >=84.1.0; installed wheels retain Python 3.9+ runtime support. Both the minimum patched backend (84.1.0, executed on Python 3.10.20) and reviewed release backend (84.2.1) pass artifact/consumer checks locally. A clean Python 3.9.25 consumer passes the shared corpus using the minimum-backend wheel. Both complete nine-package build locks have zero known advisories at the 2026-11-18 check.
 
-## Unreleased coverage
+## 1.4.0 coverage
 
-Merged to `main` after 1.3.10 and not yet published to any registry. `rejection_messages` vectors require every runtime's invalid-input error to name the first offending code point and never echo the input; the three suites assert the contract for normalization and checksum entry points. `undetected_substitutions` and `detected_substitutions` vectors pin the structural blind spots of the Mod-25 weights so all runtimes agree on misses as well as hits. The hosted-page check recomputes the meta Content Security Policy hashes from the inline blocks and rejects inline handlers, style attributes and external resources; the browser suite runs under that policy. Current counts: 82 JavaScript tests, 50 Python tests, and the 469-case parity corpus unchanged.
+Merged to `main` after 1.3.10 and first published in 1.4.0. `rejection_messages` vectors require every runtime's invalid-input error to name the first offending code point and never echo the input; the three suites assert the contract for normalization and checksum entry points. `undetected_substitutions` and `detected_substitutions` vectors pin the structural blind spots of the Mod-25 weights so all runtimes agree on misses as well as hits. The hosted-page check recomputes the meta Content Security Policy hashes from the inline blocks and rejects inline handlers, style attributes and external resources; the browser suite runs under that policy. Current counts: 82 JavaScript tests, 50 Python tests, and the 469-case parity corpus unchanged.

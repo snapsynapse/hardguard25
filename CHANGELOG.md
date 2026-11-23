@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.4.0 -- 2026-11-22
+
 Security audit remediation; see `audits/security-audit-2026-11-22.md`. Runtime behavior is unchanged except for error message text.
 
 ### Security
