@@ -102,7 +102,14 @@ export function checkWorkflows(workflows) {
   assert.deepEqual(needs(release['tag-go']), ['publish-npm', 'publish-pypi']);
   assert.match(step(release['tag-go'], 'Tag Go submodule').run, /check-go-release-tag\.mjs/);
   const pages = workflows['pages.yml'].jobs;
-  assert.deepEqual(needs(pages.deploy), ['validate']);
+  assert.ok(workflows['pages.yml'].on.workflow_dispatch !== undefined, 'pages.yml: manual redeploy trigger required');
+  assert.deepEqual(needs(pages.build), ['validate']);
+  assert.deepEqual(needs(pages.deploy), ['build']);
+  const pagesUpload = pages.build.steps.filter(s => s.uses?.startsWith('actions/upload-pages-artifact@'));
+  assert.equal(pagesUpload.length, 1, 'pages.yml: build uploads exactly one Pages artifact');
+  assert.deepEqual(pagesUpload[0].with, { path: 'docs', 'include-hidden-files': true }, 'pages.yml: artifact must be docs/ including .well-known');
+  assert.ok(!pages.deploy.steps.some(s => s.uses?.startsWith('actions/upload-pages-artifact@')), 'pages.yml: upload must not share the deploy job');
+  assert.equal(pages.deploy.steps.filter(s => s.uses?.startsWith('actions/deploy-pages@')).length, 1, 'pages.yml: deploy job runs deploy-pages once');
   assert.deepEqual(commands(step(pages.validate, 'Verify the exact deployment commit')), ['npm run verify', 'npm run verify:browser']);
   assert.deepEqual(needs(pages['verify-search']), ['deploy']);
   const surfaces = workflows['surfaces.yml'];
