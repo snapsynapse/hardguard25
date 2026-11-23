@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Changed
+- Add a Versioning (SemVer) section to `CONTRIBUTING.md`, which `INTENT.md` already cited for normative changes, describing the lockstep version and the major, minor and patch rules for the specification, reference libraries, conformance vectors and error message text as the 1.x releases applied them. The owner settled the cases that release history left ambiguous. Rewording an error message, adding a non-normative public surface and removing a published surface are minor versions. Raising a runtime minimum is a patch. The pre-INTENT 1.2.0 alphabet change is not a precedent.
 - Upload the Pages artifact in its own job before deployment, matching GitHub's Pages workflow layout, after three consecutive deployments failed when `deploy-pages` queried the artifact list before the upload in the same job was visible. Add a manual trigger so a failed deployment can be redeployed without a new commit, and assert the job order, artifact contents and trigger in the workflow contract checks.
 - Close the 1.4.0 release record with Go proxy, clean default-proxy consumer and deployed-site evidence, and warn in the release checklist against probing the Go proxy for a version before its tag exists.
 
@@ -15,7 +16,6 @@ Security audit remediation; see `audits/security-audit-2026-11-22.md`. Runtime b
 - Add a hashed meta Content Security Policy to the landing page and generator, move inline handlers and style attributes into the hashed script and style blocks, and verify the policy hashes and the absence of inline attributes in CI.
 - Publish `/.well-known/security.txt`, extend `SECURITY.md` with an acknowledgement window, the supported-version boundary and provenance verification guidance, and align the plugin manifest contact.
 - Stop persisting the workflow token in checkouts that do not push, disable npm lifecycle scripts for repository tooling through `.npmrc`, add Dependabot coverage for the hash-pinned Python build locks, and add weekly read-only Scorecard and deployed-surface audit workflows with workflow-contract checks.
-
 - Ignore setuptools in the Dependabot `pip` ecosystem, since both lock pins are reviewed constants asserted by the workflow checker, and accept lock rows that carry more than one SHA-256 hash so Dependabot updates of the other locked build tools can pass verification.
 
 ### Changed
