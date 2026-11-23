@@ -2,7 +2,7 @@
 
 Report date: 2026-11-22
 
-Release 1.4.0 is prepared locally and is not yet published. Its evidence record will be `ops/releases/1.4.0.json`. Release 1.3.10 evidence remains in `ops/releases/1.3.10.json`, and historical 1.3.9 evidence in `ops/releases/1.3.9.json`.
+Release 1.4.0 has exact-head CI and published npm/PyPI consumer evidence in `ops/releases/1.4.0.json`; the Go tag resolves directly, and Go proxy and deployed-site verification are pending in that record. Release 1.3.10 evidence remains in `ops/releases/1.3.10.json`, and historical 1.3.9 evidence in `ops/releases/1.3.9.json`.
 
 Fixture version: `1.4.0`
 
@@ -10,9 +10,9 @@ Fixture version: `1.4.0`
 
 | Runtime | Package version | Fixture coverage | Status |
 |---|---:|---|---|
-| JavaScript | 1.4.0 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, known undetected substitutions, rejection-message hygiene, production-generator rejection sampling and entropy failure, packed TypeScript consumer | Candidate passed local checks; exact-head CI and publication pending |
-| Python | 1.4.0 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, known undetected substitutions, rejection-message hygiene, production-generator rejection sampling and entropy failure, exact wheel and sdist consumer | Candidate passed local checks; exact-head CI and publication pending |
-| Go | module package | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, known undetected substitutions, rejection-message hygiene, production-generator rejection sampling and entropy failure | Candidate passed local checks; exact-head CI and publication pending |
+| JavaScript | 1.4.0 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, known undetected substitutions, rejection-message hygiene, production-generator rejection sampling and entropy failure, packed TypeScript consumer | Published candidate passed local and CI checks |
+| Python | 1.4.0 | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, known undetected substitutions, rejection-message hygiene, production-generator rejection sampling and entropy failure, exact wheel and sdist consumer | Published candidate passed local and CI checks |
+| Go | module package | normalize, validation, exact Unicode White_Space boundaries, excluded chars, non-ASCII rejection, check digit, verification, substitution profile, transposition profile, known undetected substitutions, rejection-message hygiene, production-generator rejection sampling and entropy failure | Published candidate passed local and CI checks |
 
 ## Check Digit Profile
 

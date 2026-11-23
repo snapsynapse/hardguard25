@@ -34,7 +34,7 @@ Precise, standards-document register: short declarative sentences, explicit scop
 
 ## Current status
 
-Stable and maintenance-only. Prepared spec version 1.4.0, dated November 2026, follows published 1.3.10, which has a signed Git tag, GitHub Release, npm and PyPI publication, clean consumers and a deployed documentation site. The Go tag and proxy version are verified in the release record. Published 1.3.9 was independently verified across all release surfaces. The alphabet and checksum algorithm are unchanged. Release 1.4.0 is not yet published; its evidence will be recorded in `ops/releases/1.4.0.json`. Release and consumer evidence for 1.3.10 is recorded in `ops/releases/1.3.10.json` and `ops/releases/1.3.9.json`; historical 1.3.7/1.3.8 evidence is preserved. Local validation, a pushed commit, deployment and registry publication remain separate claims for future releases. The 2026-11-22 security audit remediation (`audits/security-audit-2026-11-22.md`) is merged to `main` and ships in 1.4.0.
+Stable and maintenance-only. Current published spec version 1.4.0, dated November 2026, has a signed Git tag, GitHub Release, npm and PyPI publication and clean consumers. The Go tag resolves directly; Go proxy and deployed-site verification are pending in the release record. Published 1.3.10 was verified across all release surfaces. Published 1.3.9 was independently verified across all release surfaces. The alphabet and checksum algorithm are unchanged. Release and consumer evidence is recorded in `ops/releases/1.4.0.json`, `ops/releases/1.3.10.json` and `ops/releases/1.3.9.json`; historical 1.3.7/1.3.8 evidence is preserved. Local validation, a pushed commit, deployment and registry publication remain separate claims for future releases. The 2026-11-22 security audit remediation (`audits/security-audit-2026-11-22.md`) is merged to `main` and ships in 1.4.0.
 
 Routine work is limited to security, correctness, conformance, compatibility, accessibility, dependency, release-process, and evidence-backed documentation maintenance. New runtimes, hosted services, identifier capabilities, benchmark execution, comparative claims, and feature expansion require renewed owner authorization under `INTENT.md`.
 
@@ -58,7 +58,7 @@ The repository does not use general document frontmatter. Root reference documen
 - `INTENT.md` owns purpose, scope, invariants, and repository-standard exceptions.
 - `SPEC.md` owns normative behavior. `conformance/vectors.json` and runtime tests prove executable behavior.
 - `repo-standards.yaml` owns surface inventory, delivery paths, checks, and claim boundaries.
-- Version 1.3.10 is the current published release; 1.4.0 is prepared and unpublished. The release record in `ops/releases/1.3.10.json` identifies the exact commit, workflow runs, registry hashes, provenance, and deployment evidence. `CHANGELOG.md` 1.4.0 lists the merged changes no registry carries yet; the only runtime behavior change among them is invalid-input error message text.
+- Version 1.4.0 is the current published release. The release record in `ops/releases/1.4.0.json` identifies the exact commit, workflow runs, registry hashes, provenance, and deployment evidence. `CHANGELOG.md` Unreleased lists merged changes on `main` that no registry carries yet.
 - Comparative OCR and transcription superiority remains unestablished until a reviewed study supports a stronger claim.
 - GitHub Pages deploys tracked `docs/` bytes after a push to `main`; repository-local checks do not establish live deployment.
 

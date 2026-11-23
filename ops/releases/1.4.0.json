@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "repository": "https://github.com/snapsynapse/hardguard25",
+  "profile": "other",
+  "authority": "R2",
+  "candidate_version": "1.4.0",
+  "candidate_head": "b442b887a7d91369581e84b9dc04eb60a44cbc4f",
+  "updated_at": "2026-11-23T00:45:00+00:00",
+  "steps": [
+    {
+      "id": "release-commit-and-tag",
+      "status": "completed",
+      "evidence": "PR #24 merged as b442b88 with a tree identical to the reviewed commit 7024581; signed annotated v1.4.0 tag points to that commit and GitHub reports the signature verified/valid."
+    },
+    {
+      "id": "candidate-ci",
+      "status": "completed",
+      "evidence": "Test 45088118007, Accessibility 45088118000 and Scorecard 45088117899 passed on the tagged commit."
+    },
+    {
+      "id": "candidate-pages",
+      "status": "failed",
+      "evidence": "Pages 45088117957 validate passed; deploy attempt 1 failed with no github-pages artifact visible to deploy-pages although the upload succeeded; attempt 2 failed because two github-pages artifacts then existed on the run. The site was not deployed from this commit; the closeout commit carries the deployment."
+    },
+    {
+      "id": "artifact-preflight",
+      "status": "completed",
+      "evidence": "Release run 45088255732 verify and preflight passed; retained artifact 14779833590 digest sha256:d7494dc7bafc1f24f3453fb21b66081bb66289a71fd2e4c7a7cbff8f5bf5e231; manifest sha256 914ab69d30eba4d761be9811d4278a84faf8f4cdb16d944aaac1aef82e103a7f, commit b442b88."
+    },
+    {
+      "id": "pypi-publication",
+      "status": "completed",
+      "evidence": "PyPI published wheel sha256 f3794c0af09b57bc9a6bf50fff193d629ce22786001c43d2f3102b8d44b4734e and sdist sha256 1b4aecef3bea5856e5f8f9961a2624c8cbec8b10f60d9917501ce26739ea2647, both matching the preflight manifest. Clean registry consumer reported 1.4.0 and code-point-only rejection text."
+    },
+    {
+      "id": "npm-publication",
+      "status": "completed",
+      "evidence": "Release run 45088255732 published hardguard25@1.4.0 with signed provenance (Sigstore log index 4049269097). Registry tarball sha256 4a327d23fc730bac708ca7f2f072bca2d42b5c5ec811a3e7c661c8730a3afb38 matches the preflight manifest. Clean npm registry consumer passed; npm audit signatures reported a verified registry signature and attestation."
+    },
+    {
+      "id": "go-tag",
+      "status": "completed",
+      "evidence": "go/v1.4.0 pushed at tagged release commit b442b88. Clean GOPROXY=direct module lookup resolved v1.4.0."
+    },
+    {
+      "id": "go-proxy",
+      "status": "unknown",
+      "evidence": "proxy.golang.org v1.4.0.info still returned unknown revision go/v1.4.0 at 2026-11-23T00:45Z, consistent with a cached not-found from a pre-tag probe. Not yet verified."
+    },
+    {
+      "id": "github-release",
+      "status": "completed",
+      "evidence": "https://github.com/snapsynapse/hardguard25/releases/tag/v1.4.0 created 2026-11-23T00:23:41Z from ops/releases/1.4.0-notes.md."
+    },
+    {
+      "id": "closeout-ci-and-pages",
+      "status": "not_started",
+      "evidence": "This record's closeout commit on main triggers the first 1.4.0 Pages deployment and deployed search verification."
+    }
+  ]
+}

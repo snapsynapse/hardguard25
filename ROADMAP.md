@@ -4,7 +4,7 @@ HardGuard25 is stable and maintenance-only. The core standard, reference impleme
 
 ## Release Closeout
 
-Version 1.3.8 completed the maintenance closeout, recorded in `ops/releases/1.3.8.json`. The current published release is 1.3.10; 1.4.0 is prepared and unpublished. The 1.3.10 signed tag, exact-head checks, npm/PyPI publication, clean consumers and deployed-site evidence are recorded in `ops/releases/1.3.10.json`. The Go tag and proxy version are verified. A local pass, pushed commit, deployment run, registry publication, and verified release remain separate claims for future work.
+Version 1.3.8 completed the maintenance closeout, recorded in `ops/releases/1.3.8.json`. The current published release is 1.4.0; its signed tag, exact-head checks, npm/PyPI publication and clean consumers are recorded in `ops/releases/1.4.0.json`, with Go proxy and deployed-site verification pending there. Release 1.3.10 evidence remains in `ops/releases/1.3.10.json`. A local pass, pushed commit, deployment run, registry publication, and verified release remain separate claims for future work.
 
 The repository-owned [maintenance queue](ops/maintenance.md) tracks pending delivery, dependency review findings and deferred documentation work.
 
