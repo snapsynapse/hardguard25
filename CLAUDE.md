@@ -69,7 +69,7 @@ Hosted-site accessibility changes also require `npm ci`, a local Chromium instal
 CI (`.github/workflows/`) additionally runs:
 - `test.yml` (push to main + PRs): installs locked npm tools and resolves Python test/build requirements at run time, then runs the canonical repository verifier. The inputs are deterministic; the Python toolchain is not pinned.
 - `release.yml` (on `vX.Y.Z` tag push): verifies versions and the full preflight suite, publishes through OIDC, and tags Go. PyPI uses the `pypi` environment. Existing npm/PyPI artifacts stop publication for identity reconciliation; an existing Go tag is accepted only at the release commit.
-- `pages.yml` (push to main): requires the canonical and browser verifiers to pass on the deployment commit before publishing `docs/`, including `.well-known`, then verifies production search surfaces.
+- `pages.yml` (push to main, or manual dispatch for a redeploy): requires the canonical and browser verifiers to pass on the deployment commit, uploads `docs/` including `.well-known` in its own job, deploys it in a separate job, then verifies production search surfaces.
 - `accessibility.yml` (relevant PRs and main pushes, release tags, weekly production schedule, and manual runs): executes Playwright/axe checks against the landing page and static generator without adding dependencies to the reference libraries.
 
 ## Current state (as of 2026-11-22)

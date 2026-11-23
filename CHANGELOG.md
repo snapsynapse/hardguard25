@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+### Changed
+- Upload the Pages artifact in its own job before deployment, matching GitHub's Pages workflow layout, after three consecutive deployments failed when `deploy-pages` queried the artifact list before the upload in the same job was visible. Add a manual trigger so a failed deployment can be redeployed without a new commit, and assert the job order, artifact contents and trigger in the workflow contract checks.
+
 ## 1.4.0 -- 2026-11-22
 
 Security audit remediation; see `audits/security-audit-2026-11-22.md`. Runtime behavior is unchanged except for error message text.
