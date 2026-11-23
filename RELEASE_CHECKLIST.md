@@ -23,7 +23,7 @@ npm run verify
 
 ## Publication
 
-Pushing a `vX.Y.Z` tag triggers `.github/workflows/release.yml`, which verifies version strings match the tag, then publishes to npm and PyPI through their configured OIDC trusted publishers without passing registry tokens, and pushes the `go/vX.Y.Z` tag for Go consumers. PyPI publication uses the `pypi` GitHub environment documented in `docs/PYPI_TRUSTED_PUBLISHING.md`.
+Pushing a `vX.Y.Z` tag triggers `.github/workflows/release.yml`, which verifies version strings match the tag, then publishes to npm and PyPI through their configured OIDC trusted publishers without passing registry tokens, and pushes the `go/vX.Y.Z` tag for Go consumers. Do not request `proxy.golang.org/.../@v/vX.Y.Z.info` before `go/vX.Y.Z` exists: the proxy caches the not-found, and during 1.4.0 that blocked default-proxy installs, including `@latest`, for about 45 minutes after the tag. Verify through the proxy only after the tag-go job passes. PyPI publication uses the `pypi` GitHub environment documented in `docs/PYPI_TRUSTED_PUBLISHING.md`.
 
 Existing npm or PyPI artifacts stop their publishing job. Before recovering a partial release, independently reconcile registry content and provenance with the reviewed commit. Rerun a publishing job only when its artifacts are genuinely absent. If a failed job already uploaded artifacts, stop and prepare a separately authorized recovery for the remaining downstream steps; reconciliation does not bypass the existing-artifact guard. An existing Go tag must peel to the release commit; a mismatch fails. Do not move an existing release tag to recover.
 

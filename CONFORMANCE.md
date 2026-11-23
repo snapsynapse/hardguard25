@@ -2,7 +2,7 @@
 
 Report date: 2026-11-22
 
-Release 1.4.0 has exact-head CI and published npm/PyPI consumer evidence in `ops/releases/1.4.0.json`; the Go tag resolves directly, and Go proxy and deployed-site verification are pending in that record. Release 1.3.10 evidence remains in `ops/releases/1.3.10.json`, and historical 1.3.9 evidence in `ops/releases/1.3.9.json`.
+Release 1.4.0 has exact-head CI and published npm/PyPI consumer evidence in `ops/releases/1.4.0.json`; the Go tag and proxy version are verified. Release 1.3.10 evidence remains in `ops/releases/1.3.10.json`, and historical 1.3.9 evidence in `ops/releases/1.3.9.json`.
 
 Fixture version: `1.4.0`
 

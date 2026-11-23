@@ -2,10 +2,6 @@
 
 Scope: HardGuard25 repository maintenance. `INTENT.md` governs the fixed standard and maintenance-only posture. This queue records open work and evidence; it grants no commit, push, PR, merge, release, deployment, provider change, or benchmark authority. Delivered work leaves this queue: its evidence lives in `CHANGELOG.md`, `audits/` and `ops/releases/`.
 
-## 1.4.0 release closeout
-
-Published 2026-11-23: signed tag, GitHub Release, npm and PyPI with clean consumers; evidence in `ops/releases/1.4.0.json`. Open: Go proxy verification and the first 1.4.0 Pages deployment, which this closeout commit triggers. `CHANGELOG.md` 1.4.0 is the authoritative list. The owner chose 1.4.0 (minor) over a patch; `SPEC.md` adds normative requirements since 1.3.10 (invalid-input errors MUST NOT echo input; payloads SHOULD be 24 characters or fewer when the check digit is enabled). The only runtime behavior change is invalid-input error message text (code point, no input echo) in all three libraries.
-
 ## 2026-11-22 security audit remediation
 
 Status: repository changes merged as `422a08a` (#16) and `291f950` (#22); Dependabot's first `pip` PR (#20) was closed because the minimum build lock is pinned at the pyproject floor by design. Findings and the quarterly checklist are in `audits/security-audit-2026-11-22.md`.

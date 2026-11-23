@@ -4,6 +4,7 @@
 
 ### Changed
 - Upload the Pages artifact in its own job before deployment, matching GitHub's Pages workflow layout, after three consecutive deployments failed when `deploy-pages` queried the artifact list before the upload in the same job was visible. Add a manual trigger so a failed deployment can be redeployed without a new commit, and assert the job order, artifact contents and trigger in the workflow contract checks.
+- Close the 1.4.0 release record with Go proxy, clean default-proxy consumer and deployed-site evidence, and warn in the release checklist against probing the Go proxy for a version before its tag exists.
 
 ## 1.4.0 -- 2026-11-22
 
